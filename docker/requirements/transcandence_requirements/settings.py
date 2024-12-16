@@ -69,7 +69,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'transcandence_requirements.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
