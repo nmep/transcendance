@@ -1,20 +1,62 @@
 version: '3'
 
+networks:
+  trancendance:
+    driver: bridge
+
 services:
   postgres:
+    restart: always
     container_name: postgres
-    env_file:
-      - .postgres.env
-    image: postgres:17-bullseye
+    networks:
+      - trancendance
+    # build:
+    #   context: docker
+    #   dockerfile: ./postgresql/Dockerfile
+    image: postgres:latest
+    environment:
+      - DATABASE_HOST=postgres
+    # env_file:
+    #   - .postgres.env
+    secrets:
+      - source: database_initialization
+        target: "/docker-entrypoint-initdb.d/init.sh"
+        mode: 0755
+        uid: "0"
     ports:
       - 5432:5432
+    entrypoint: >
+      sh  -c "cat /docker-entrypoint-initdb.d/init.sh"
+    healthcheck:
+        test: ["CMD", "pg_isready", "-U", "toto", "-d", "postgres_db"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+
 
   django:
     depends_on:
-      - postgres
+        - postgres
+    networks:
+      - trancendance
+    env_file:
+      - .postgres.env
     container_name: django
     build:
       context: docker
       dockerfile: ./django/Dockerfile
     ports:
       - 8080:8080
+    restart: always
+    entrypoint: >
+      sh -c "
+      until pg_isready -h postgres -U toto -d postgres_db; do
+        echo 'Waiting for postgres...';
+        sleep 5;
+      done;
+      python manage.py runserver 0.0.0.0:8080
+      "
+
+secrets:
+  database_initialization:
+    file: docker/postgresql/init.sh
