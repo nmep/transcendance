@@ -1,0 +1,204 @@
+services:
+
+  mariadb:
+    env_file: .env
+    build: ./requirements/mariadb/
+    environment:
+      - MARIADB_ROOT_PASSWORD_FILE
+      - MARIADB_USER_FILE
+      - MARIADB_PASSWORD_FILE
+      - MARIADB_DATABASE=$WORDPRESS_DB_NAME
+    restart: always
+    volumes:
+      - mariadb:/var/lib/mysql
+    networks: 
+      - wordpress
+      - mariadb
+    secrets:
+      - wp_db_user
+      - wp_db_password
+      - db_root_password
+
+  wordpress:
+    env_file: 
+      - .env
+    build: ./requirements/wordpress/
+    environment:
+      - DOMAIN_NAME
+      - CORRECTOR
+      - WORDPRESS_SITE_TITLE
+      - WORDPRESS_ADMIN_USER_FILE
+      - WORDPRESS_ADMIN_PASSWORD_FILE
+      - WORDPRESS_ADMIN_EMAIL_FILE
+      - WORDPRESS_USER_FILE
+      - WORDPRESS_PASSWORD_FILE
+      - WORDPRESS_EMAIL_FILE
+      - WORDPRESS_DB_USER_FILE
+      - WORDPRESS_DB_PASSWORD_FILE
+      - WORDPRESS_DB_NAME
+    restart: always
+    depends_on:
+      - mariadb
+    volumes:
+      - wordpress:/var/www/wordpress
+      - adminer:/var/www/adminer
+    networks:
+      - wordpress
+      - nginx
+    secrets:
+      - wp_admin_email
+      - wp_admin_password
+      - wp_admin_user
+      - wp_user
+      - wp_user_email
+      - wp_user_password
+      - wp_db_password
+      - wp_db_user
+
+  nginx:
+    env_file: 
+      - .env
+    build: ./requirements/nginx/
+    ports:
+      - "443:443"
+    restart: always
+    environment:
+      - DOMAIN_NAME
+      - LOGIN
+    depends_on:
+      - wordpress
+    volumes:
+      - certificate:/etc/nginx/ssl
+      - wordpress:/var/www/wordpress
+      - adminer:/var/www/adminer
+    networks:
+      - nginx
+  
+  adminer:
+    build: ./requirements/bonus/adminer
+    restart: always
+    depends_on:
+      - mariadb
+    volumes:
+      - adminer:/var/www/adminer
+    networks:
+      - nginx
+      - mariadb
+    env_file:
+      - .env
+
+  static_site:
+    build: ./requirements/bonus/static_site
+    restart: always
+    networks:
+      - nginx
+    env_file:
+      - .env
+
+  cadvisor:
+    env_file: 
+      - .env
+    build: ./requirements/bonus/cadvisor
+    restart: always
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - nginx
+  
+  ftp:
+    environment:
+      - FTP_USER_FILE
+      - FTP_PASS_FILE
+    build: ./requirements/bonus/ftp
+    restart: always
+    volumes:
+      - wordpress:/var/www/wordpress
+    ports:
+      - "21:21"
+      - "20:20"
+      - "19990-20000:19990-20000"
+    depends_on:
+      - wordpress  
+    secrets:
+      - ftp_password
+      - ftp_user 
+    env_file:
+      - .env
+  
+  redis:
+    env_file: 
+      - .env
+    build: ./requirements/bonus/redis
+    restart: always
+    depends_on:
+      - wordpress
+    networks:
+      - wordpress
+    privileged: true
+    
+networks:
+  nginx:
+    driver: bridge
+  mariadb:
+    driver: bridge
+  wordpress:
+    driver: bridge
+
+volumes:
+  wordpress:
+    name: wordpress
+    driver_opts:
+      type: "none"
+      o: bind
+      device: $VOLUMES_ROOT/wordpress
+  mariadb:
+    name: mariadb
+    driver_opts:
+      type: "none"
+      o: bind
+      device: $VOLUMES_ROOT/mariadb
+  certificate:
+    name: certificate
+    driver_opts:
+      type: "none"
+      o: bind
+      device: $VOLUMES_ROOT/certificate
+  adminer:
+    name: adminer
+    driver_opts:
+      type: "none"
+      o: bind
+      device: $VOLUMES_ROOT/adminer
+  static_site:
+    name: static_site
+    driver_opts:
+      type: "none"
+      o: bind
+      device: $VOLUMES_ROOT/static_site
+
+secrets:
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  ftp_password:
+    file: ../secrets/ftp_password.txt
+  ftp_user:
+    file: ../secrets/ftp_user.txt
+  wp_admin_email:
+    file: ../secrets/wp_admin_email.txt
+  wp_admin_password:
+    file: ../secrets/wp_admin_password.txt
+  wp_admin_user:
+    file: ../secrets/wp_admin_user.txt
+  wp_user_email:
+    file: ../secrets/wp_user_email.txt
+  wp_user_password:
+    file: ../secrets/wp_user_password.txt
+  wp_user:
+    file: ../secrets/wp_user.txt
+  wp_db_password:
+    file: ../secrets/wp_db_password.txt
+  wp_db_user:
+    file: ../secrets/wp_db_user.txt

@@ -1,0 +1,6 @@
+En gros check le .yml juste pour wordpress
+    Partie secrets t'as les secrets qui vont etre copies dans ton docker
+    Partie environment t'as les paths vers ces fichiers
+    Ligne 182 and further :
+        comment on definit les secrets
+Dans l'entrypoint, tu as la fonction check_secrets, qui va setup les variables en dur (y'a ptet pas besoin d'export pour ca d'ailleurs)
