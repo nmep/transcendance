@@ -6,7 +6,7 @@ networks:
 
 services:
   postgres:
-    restart: always
+    restart: on-failure
     container_name: postgres
     networks:
       - trancendance
@@ -15,18 +15,16 @@ services:
     #   dockerfile: ./postgresql/Dockerfile
     image: postgres:latest
     environment:
-      - DATABASE_HOST=postgres
-    # env_file:
-    #   - .postgres.env
+      DATABASE_HOST: postgres
+    env_file:
+      - .postgres.env
     secrets:
       - source: database_initialization
         target: "/docker-entrypoint-initdb.d/init.sh"
-        mode: 0755
+        mode: 0400
         uid: "0"
     ports:
       - 5432:5432
-    entrypoint: >
-      sh  -c "cat /docker-entrypoint-initdb.d/init.sh"
     healthcheck:
         test: ["CMD", "pg_isready", "-U", "toto", "-d", "postgres_db"]
         interval: 10s
