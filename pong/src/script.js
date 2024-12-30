@@ -58,8 +58,9 @@ selfPaddle.position.x = -3.5
 selfPaddle.scale.x = 0.05
 selfPaddle.scale.y = 1
 selfPaddle.scale.z = 1
-    selfPaddleFolder
-        .addColor(debugObject, 'colorSelf').name('Player Pad Color').onChange(() =>
+
+    selfPaddleFolder.addColor(debugObject, 'colorSelf').name('Player Pad Color')
+            .onChange(() =>
         {
             selfPaddleMaterial.color.set(debugObject.colorSelf)
         })
@@ -70,14 +71,12 @@ selfPaddle.scale.z = 1
             .min(-10).max(10).step(0.00001)
     selfPaddleFolder.add(selfPaddle.position, 'z')
             .min(-10).max(10).step(0.001)
-        selfPaddleFolder.add(selfPaddle.scale, 'x')
-            .min(0.01).max(10).step(0.001)
-        selfPaddleFolder.add(selfPaddle.scale, 'y')
-            .min(0.01).max(10).step(0.001)
-        selfPaddleFolder.add(selfPaddle.scale, 'z')
-            .min(0.01).max(10).step(0.001)
+    selfPaddleFolder.add(selfPaddle.scale, 'x')
+            .min(0.01).max(1).step(0.001).name('Paddle width')
     selfPaddleFolder.add(selfPaddle.scale, 'y')
-            .min(0.01).max(10).step(0.001).name('Paddle Size')
+            .min(0.01).max(1).step(0.001).name('Paddle height')
+    selfPaddleFolder.add(selfPaddle.scale, 'z')
+            .min(0.01).max(1).step(0.001).name('Paddle depth')
 const opponentPaddle = new THREE.Mesh(boxGeometry, opponentPaddleMaterial)
 opponentPaddle.position.x = 3.5
 opponentPaddle.scale.x = 0.05
@@ -95,8 +94,12 @@ opponentPaddle.scale.z = 1
             .min(-10).max(10).step(0.001)
     opponentPaddleFolder.add(opponentPaddle.position, 'z')
             .min(-10).max(10).step(0.001)
+    opponentPaddleFolder.add(opponentPaddle.scale, 'x')
+            .min(0.1).max(1).step(0.001).name('Paddle width')
     opponentPaddleFolder.add(opponentPaddle.scale, 'y')
-            .min(0.1).max(10).step(0.001).name('Paddle Size')
+            .min(0.1).max(1).step(0.001).name('Paddle height')
+    opponentPaddleFolder.add(opponentPaddle.scale, 'z')
+            .min(0.1).max(1).step(0.001).name('Paddle depth')
 
 camera.position.z = 5        
 const controls = new OrbitControls(camera, canvas)
@@ -110,6 +113,33 @@ scene.add(opponentPaddle)
  * Animate
  */
 const clock = new THREE.Clock()
+
+window.addEventListener('keydown', (button) =>
+{
+    if (button.key == 'ArrowUp' && selfPaddle.position.y <= 1.9)
+        {
+                selfPaddle.position.y += 0.1
+                console.log(selfPaddle.position.y)
+        }
+    else if (button.key == 'ArrowDown' && selfPaddle.position.y >= -1.9)
+        {
+                selfPaddle.position.y -= 0.1
+                console.log(selfPaddle.position.y)
+        }
+    if (button.key == 'w' && opponentPaddle.position.y <= 1.9)
+        {
+                opponentPaddle.position.y += 0.1
+                console.log(opponentPaddle.position.y)
+        }
+    else if (button.key == 's' && opponentPaddle.position.y >= -1.9)
+        {
+                opponentPaddle.position.y -= 0.1
+                console.log(opponentPaddle.position.y)
+        }
+    console.log(button)
+    }
+)
+
 
 const tick = () =>
 {
