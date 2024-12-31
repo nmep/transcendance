@@ -114,31 +114,33 @@ scene.add(opponentPaddle)
  */
 const clock = new THREE.Clock()
 
-window.addEventListener('keydown', (button) =>
+var map = {}; // You could also use an array
+
+function move_paddles()
 {
-    if (button.key == 'ArrowUp' && selfPaddle.position.y <= 1.9)
-        {
-                selfPaddle.position.y += 0.1
-                console.log(selfPaddle.position.y)
-        }
-    else if (button.key == 'ArrowDown' && selfPaddle.position.y >= -1.9)
-        {
-                selfPaddle.position.y -= 0.1
-                console.log(selfPaddle.position.y)
-        }
-    if (button.key == 'w' && opponentPaddle.position.y <= 1.9)
-        {
-                opponentPaddle.position.y += 0.1
-                console.log(opponentPaddle.position.y)
-        }
-    else if (button.key == 's' && opponentPaddle.position.y >= -1.9)
-        {
-                opponentPaddle.position.y -= 0.1
-                console.log(opponentPaddle.position.y)
-        }
-    console.log(button)
+    if (map['ArrowDown'] && selfPaddle.position.y >= -2)
+    {
+        selfPaddle.position.y -= 0.01;
     }
-)
+    if (map['ArrowUp'] && !map['ArrowDown'] && selfPaddle.position.y <= 2)
+    {
+        selfPaddle.position.y += 0.01;
+    }
+    if (map['s'] && opponentPaddle.position.y >= -2)
+    {
+        opponentPaddle.position.y -= 0.01;
+    }
+    if (map['w'] && !map['s'] && opponentPaddle.position.y <= 2)
+    {
+        opponentPaddle.position.y += 0.01;
+    }
+}
+
+onkeydown = onkeyup = function(e){
+    map[e.key] = e.type == 'keydown';
+    /* insert conditional here */
+}
+
 
 
 const tick = () =>
@@ -147,7 +149,7 @@ const tick = () =>
 
     // Update controls
     controls.update()
-
+    move_paddles()
     // Render
     renderer.render(scene, camera)
 
