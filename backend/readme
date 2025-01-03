@@ -1,0 +1,12 @@
+Objectif:
+    - faire un serveur django connecte a postgres sql qui deviendra plus tard un micro service
+    - faire un serveur nginx qui servira de serveur et de proxy 
+    - faire des api pour chaque micro service
+
+option pour django pas oblige que ce soit avec docker pour pour l'instant.
+juste avoir quelque chose qui marche sans se prendre la tete on verra la suite plus tard
+
+
+Organisation des dossier:
+    un dossier est un projet django avec dedans une app qui sera son utilite
+
