@@ -8,6 +8,6 @@ from .serializers import authSerializer
 class authClass(APIView):
     def get(self, request):
         person = {'name':'Denis', 'age':28}
-        # auth = authConf.objects.all()
-        # serializer = authSerializer(auth, many=True)
+        auth = authConf.objects.all()
+        serializer = authSerializer(auth, many=True)
         return Response(person)
