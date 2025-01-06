@@ -1,0 +1,23 @@
+
+services:
+  db:
+    image: 'postgres'
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=toto_db
+      - POSTGRES_USER=toto
+      - POSTGRES_PASSWORD=password
+    networks:
+      - auth
+
+  auth:
+    restart: always
+    build: ./backend/auth/
+    ports:
+      - "8080:8000"
+    networks:
+      - auth
+    
+networks:
+  auth:
