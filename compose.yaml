@@ -1,5 +1,15 @@
 
 services:
+  reverseproxy:
+    image: 'nginx:1.27'
+    volumes:
+      - ./nginx/core.conf:/etc/nginx/conf.d/core.conf
+      - ./nginx/reverseproxy.conf:/etc/nginx/conf.d/reverseproxy.conf
+      - ./nginx/html:/var/www/html
+
+    ports:
+      - "8001:80"
+
   db:
     image: 'postgres'
     ports:
@@ -15,7 +25,7 @@ services:
     restart: always
     build: ./backend/auth/
     ports:
-      - "8080:8000"
+      - "8000:8000"
     networks:
       - auth
     
