@@ -2,16 +2,22 @@
 services:
   reverseproxy:
     image: 'nginx:1.27'
+    container_name: nginx
     volumes:
-      - ./nginx/core.conf:/etc/nginx/conf.d/core.conf
-      - ./nginx/reverseproxy.conf:/etc/nginx/conf.d/reverseproxy.conf
+      - ./nginx/conf/core.conf:/etc/nginx/conf.d/core.conf
+      - ./nginx/conf/reverseproxy.conf:/etc/nginx/conf.d/reverseproxy.conf
       - ./nginx/html:/var/www/html
-
+      - ./nginx/conf/ssl_certificate.sh:/usr/local/bin/ssl_certificate.sh
     ports:
-      - "8001:80"
+      - "8080:80"
+      - "8443:443"
+    networks:
+      - auth
+    entrypoint: ["/bin/bash", /usr/local/bin/ssl_certificate.sh]
 
   db:
     image: 'postgres'
+    container_name: postgres
     ports:
       - '5432:5432'
     environment:
@@ -22,6 +28,7 @@ services:
       - auth
 
   auth:
+    container_name: auth_api
     restart: always
     build: ./backend/auth/
     ports:
