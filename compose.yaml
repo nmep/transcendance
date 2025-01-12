@@ -3,6 +3,7 @@ services:
   reverseproxy:
     image: 'nginx:1.27'
     container_name: nginx
+    restart: always
     volumes:
       - ./nginx/conf/core.conf:/etc/nginx/conf.d/core.conf
       - ./nginx/conf/reverseproxy.conf:/etc/nginx/conf.d/reverseproxy.conf
@@ -12,8 +13,33 @@ services:
       - "8080:80"
       - "8443:443"
     networks:
+      - monitoring
       - auth
     entrypoint: ["/bin/bash", /usr/local/bin/ssl_certificate.sh]
+
+  nginx_prometheus_exporter:
+    container_name: nginx_prometheus_exporter
+    image: nginx/nginx-prometheus-exporter:1.4.0
+    depends_on:
+      - prometheus
+    ports:
+      - '9113:9113'
+    networks:
+      - monitoring
+    command:
+      - --nginx.scrape-uri=https://reverseproxy/status
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+
+    restart: always
+    volumes:
+      - ./devops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - '9090:9090'
+    networks:
+      - monitoring
 
   db:
     image: 'postgres'
@@ -35,6 +61,7 @@ services:
       - "8000:8000"
     networks:
       - auth
-    
+
 networks:
+  monitoring:
   auth:
