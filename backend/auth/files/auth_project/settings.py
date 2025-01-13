@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-qr^cc8b@9r7l7$i7zmf)jx3j)z!sucyymm7^_w(70b7##9s_71
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'nginx']
+ALLOWED_HOSTS = ['localhost', 'nginx', 'auth']
 
 
 # Application definition
@@ -37,12 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'django_prometheus',
     'auth_app',
     'rest_framework',
 ]
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 ROOT_URLCONF = 'auth_project.urls'
@@ -125,7 +127,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+# PROMETHEUS_METRICS_EXPORT_PORT = 8001
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
