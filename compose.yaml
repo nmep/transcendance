@@ -31,7 +31,7 @@ services:
 
   prometheus:
     container_name: prometheus
-    image: prom/prometheus:latest
+    image: prom/prometheus:v3.1.0
 
     restart: always
     volumes:
@@ -42,7 +42,7 @@ services:
       - monitoring
 
   db:
-    image: 'postgres'
+    image: 'postgres:16.6'
     container_name: postgres
     ports:
       - '5432:5432'
