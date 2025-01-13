@@ -75,7 +75,8 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=grafana
     volumes:
-      - ./devops/grafana:/etc/grafana/provisioning/datasources
+      - ./devops/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ./devops/grafana/grafana.ini:/etc/grafana/grafana.ini
     networks:
       - monitoring
 

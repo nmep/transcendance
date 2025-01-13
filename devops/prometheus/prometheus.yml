@@ -23,4 +23,10 @@ scrape_configs:
     - targets:
       - auth:8000
 
+  - job_name: grafana
+    scrape_interval: 5s
+    static_configs:
+    - targets:
+      - grafana:3000
+
   
