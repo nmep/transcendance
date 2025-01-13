@@ -27,7 +27,7 @@ services:
     networks:
       - monitoring
     command:
-      - --nginx.scrape-uri=https://reverseproxy/status
+      - --nginx.scrape-uri=https://nginx/status
 
   prometheus:
     container_name: prometheus
@@ -52,6 +52,18 @@ services:
       - POSTGRES_PASSWORD=password
     networks:
       - auth
+      - monitoring
+
+  db_exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    ports:
+      - '9187:9187'
+    environment:
+      - DATA_SOURCE_URI=db:5432/toto_db?sslmode=disable
+      - DATA_SOURCE_USER=toto
+      - DATA_SOURCE_PASS=password
+    networks:
+      - monitoring
 
   auth:
     container_name: auth_api
