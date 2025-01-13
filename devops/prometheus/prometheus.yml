@@ -21,6 +21,6 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
     - targets:
-      - auth_api:8000
+      - auth:8000
 
   
