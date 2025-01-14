@@ -1,14 +1,29 @@
 
 services:
+
+# ------------------------------ securite ------------------------------ #
+
+  # mod_security:
+  #   container_name: mod_security
+  #   image: owasp/modsecurity-crs:nginx
+  #   ports:
+  #     - '8090:80'
+
+# ------------------------------ nginx ------------------------------ #
+
   reverseproxy:
-    image: 'nginx:1.27'
+    image: 'owasp/modsecurity:nginx'
     container_name: nginx
-    restart: always
+    # restart: always
     volumes:
       - ./nginx/conf/core.conf:/etc/nginx/conf.d/core.conf
       - ./nginx/conf/reverseproxy.conf:/etc/nginx/conf.d/reverseproxy.conf
       - ./nginx/html:/var/www/html
       - ./nginx/conf/ssl_certificate.sh:/usr/local/bin/ssl_certificate.sh
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      # ModSecurity
+      - ./security/mod_security/main.conf:/etc/modsecurity.d/main.conf
+      - ./security/mod_security/modsecurity.conf:/etc/modsecurity.d/modsecurity.conf
     ports:
       - "8080:80"
       - "8443:443"
@@ -16,6 +31,8 @@ services:
       - monitoring
       - auth
     entrypoint: ["/bin/bash", /usr/local/bin/ssl_certificate.sh]
+
+# ------------------------------ monitoring ------------------------------ #
 
   nginx_prometheus_exporter:
     container_name: nginx_prometheus_exporter
@@ -41,6 +58,23 @@ services:
     networks:
       - monitoring
 
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+    volumes:
+      - ./devops/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ./devops/grafana/grafana.ini:/etc/grafana/grafana.ini
+    networks:
+      - monitoring
+
+# ------------------------------ micro service ------------------------------ #
+
   db:
     image: 'postgres:16.6'
     container_name: postgres
@@ -65,21 +99,6 @@ services:
     networks:
       - monitoring
 
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    ports:
-      - 3000:3000
-    restart: unless-stopped
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=grafana
-    volumes:
-      - ./devops/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
-      - ./devops/grafana/grafana.ini:/etc/grafana/grafana.ini
-    networks:
-      - monitoring
-
   auth:
     container_name: auth_api
     restart: always
@@ -89,9 +108,8 @@ services:
     networks:
       - auth
       - monitoring
-  
-
 
 networks:
   monitoring:
   auth:
+
