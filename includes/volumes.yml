@@ -1,0 +1,25 @@
+volumes:
+ certs:
+   driver: local
+   driver_opts:
+    device: ../devops/certs
+    type: "none"
+    o: bind
+ esdata01:
+   driver: local
+   driver_opts:
+    device: ../devops/elasticsearch/data
+    type: "none"
+    o: bind
+ kibanadata:
+   driver: local
+   driver_opts:
+    device: ../devops/kibana/data
+    type: "none"
+    o: bind
+ logstashdata01:
+   driver: local
+   driver_opts:
+    device: ../devops/logstash/data
+    type: "none"
+    o: bind

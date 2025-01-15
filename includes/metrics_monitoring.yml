@@ -1,0 +1,40 @@
+# ------------------------------ monitoring ------------------------------ #
+services:
+  nginx_prometheus_exporter:
+    container_name: nginx_prometheus_exporter
+    image: nginx/nginx-prometheus-exporter:1.4.0
+    depends_on:
+      - prometheus
+    ports:
+      - '9113:9113'
+    networks:
+      - monitoring
+    command:
+      - --nginx.scrape-uri=https://nginx/status
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v3.1.0
+
+    restart: always
+    volumes:
+      - ../devops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - '9090:9090'
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+    volumes:
+      - ../devops/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ../devops/grafana/grafana.ini:/etc/grafana/grafana.ini
+    networks:
+      - monitoring

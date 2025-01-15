@@ -1,0 +1,11 @@
+services:
+  db_exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    ports:
+      - '9187:9187'
+    environment:
+      - DATA_SOURCE_URI=db:5432/toto_db?sslmode=disable
+      - DATA_SOURCE_USER=toto
+      - DATA_SOURCE_PASS=password
+    networks:
+      - monitoring
