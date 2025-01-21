@@ -6,3 +6,5 @@ fclean:
 	docker rm -f $(shell docker ps -qa)
 	docker volume rm -f $(shell docker volume ls -q)
 	rm -rf ./devops/elasticsearch/data
+
+re: fclean all
