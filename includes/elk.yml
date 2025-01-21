@@ -54,7 +54,9 @@ services:
      interval: 1s
      timeout: 5s
      retries: 120
-
+   networks:
+    - monitoring
+  
  es01:
    depends_on:
      setup:
@@ -95,6 +97,8 @@ services:
      interval: 10s
      timeout: 10s
      retries: 120
+   networks:
+    - monitoring 
 
  kibana:
    depends_on:
@@ -127,6 +131,8 @@ services:
      interval: 10s
      timeout: 10s
      retries: 120
+   networks:
+    - monitoring
 
  logstash01:
    depends_on:
@@ -153,3 +159,5 @@ services:
      - ELASTIC_HOSTS=https://es01:9200
    command: logstash -f /usr/share/logstash/pipeline/logstash.conf
    mem_limit: ${LS_MEM_LIMIT}
+   networks:
+    - monitoring

@@ -1,9 +1,11 @@
+
+
 include: 
-  - ./includes/elk.yml
-  - ./includes/metrics_monitoring.yml
-  - ./includes/metrics_exporters.yml
-  - ./includes/volumes.yml
-  - ./includes/networks.yml
+ - ./includes/metrics_monitoring.yml
+ - ./includes/metrics_exporters.yml
+ - ./includes/volumes.yml
+ - ./includes/networks.yml
+ - ./includes/elk.yml
 
 
 
@@ -21,6 +23,8 @@ services:
 
   reverseproxy:
     image: 'owasp/modsecurity:nginx'
+    depends_on: 
+      - logstash01
     container_name: nginx
     # restart: always
     volumes:
