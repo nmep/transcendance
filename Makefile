@@ -1,13 +1,15 @@
-VOLUMES_DIR=devops/elasticsearch/data devops/grafana/data devops/kibana/data devops/certs devops/logstash/data devops/prometheus/data
+VOLUMES_DIR=devops/
+VOLUMES=grafana/data logstash/data certs elasticsearch/data kibana/data prometheus/data
+VOLUMES_NAMES=$(addprefix ${VOLUMES_DIR}, ${VOLUMES})
 
 
 all:
-	mkdir -p .${VOLUMES_DIR}
+	mkdir -p ${VOLUMES_DIR}
 	docker compose up
 
 fclean:
 	docker rm -f $(shell docker ps -qa)
 	docker volume rm -f $(shell docker volume ls -q)
-	rm -rf ${VOLUMES_DIR}
+	docker run --rm -v ./$(VOLUMES_DIR):/test -w /test alpine rm -rf $(VOLUMES)
 
 re: fclean all
