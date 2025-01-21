@@ -1,0 +1,4 @@
+- pipeline.id: nginx
+  path.config: "/usr/share/logstash/pipeline/nginx"
+- pipeline.id: django
+  path.config: "/usr/share/logstash/pipeline/django"
