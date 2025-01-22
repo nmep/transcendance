@@ -1,6 +1,5 @@
 ui            = true
 disable_mlock = true
-log_levels    = "debug"
 
 cluster_addr  = "https://127.0.0.1:8201"
 api_addr      = "https://127.0.0.1:8200"
