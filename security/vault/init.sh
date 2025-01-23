@@ -23,29 +23,23 @@ done
 
 echo "unsealing..."
 
-
-echo "{ \"key\" : \"$VAULT_UNSEAL1\"}"
-
-echo ICI 1
-
 curl -k \
     --request POST \
     --data "{ \"key\" : \"$VAULT_UNSEAL1\"}" \
     https://127.0.0.1:8200/v1/sys/unseal
-
-echo ICI 2
 
 curl -k \
     --request POST \
     --data "{ \"key\" : \"$VAULT_UNSEAL2\"}" \
     https://127.0.0.1:8200/v1/sys/unseal
 
-echo ICI 3
-
 curl -k \
     --request POST \
     --data "{ \"key\" : \"$VAULT_UNSEAL3\"}" \
     https://127.0.0.1:8200/v1/sys/unseal
 
+vault status
+
+vault login $VAULT_RTOKEN
 
 wait
