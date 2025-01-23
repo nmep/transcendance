@@ -5,6 +5,7 @@ services:
     image: nginx/nginx-prometheus-exporter:1.4.0
     depends_on:
       - prometheus
+      - reverseproxy
     ports:
       - '9113:9113'
     networks:

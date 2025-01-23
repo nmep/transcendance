@@ -62,6 +62,8 @@ services:
 
   auth:
     container_name: auth_api
+    depends_on:
+      - logstash01
     restart: always
     build: ./backend/auth/
     ports:

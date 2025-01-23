@@ -1,5 +1,7 @@
 services:
   db_exporter:
+    depends_on:
+      - db
     image: quay.io/prometheuscommunity/postgres-exporter
     ports:
       - '9187:9187'
