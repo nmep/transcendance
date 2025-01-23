@@ -27,7 +27,28 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', 'nginx', 'auth']
 
-
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'handlers': {
+      'logstash': {
+          'level': 'DEBUG',
+          'class': 'logstash.LogstashHandler',
+          'host': 'logstash01',
+          'port': 5959, # Default value: 5959
+          'version': 1, # Version of logstash event schema. Default value: 0 (for backward compatibility of the library)
+          'message_type': 'logstash',  # 'type' field in logstash message. Default value: 'logstash'.
+          'fqdn': False, # Fully qualified domain name. Default value: false.
+      },
+  },
+  'loggers': {
+      'django.request': {
+          'handlers': ['logstash'],
+          'level': 'DEBUG',
+          'propagate': True,
+      },
+  },
+}
 # Application definition
 
 INSTALLED_APPS = [
