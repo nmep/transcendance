@@ -4,7 +4,7 @@ VOLUMES_NAMES=$(addprefix ${VOLUMES_DIR}, ${VOLUMES})
 
 
 all:
-	mkdir -p ${VOLUMES_DIR}
+	mkdir -p ${VOLUMES_NAMES}
 	docker compose up
 
 fclean:
