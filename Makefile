@@ -11,5 +11,6 @@ fclean:
 	docker rm -f $(shell docker ps -qa)
 	docker volume rm -f $(shell docker volume ls -q)
 	docker run --rm -v ./$(VOLUMES_DIR):/test -w /test alpine rm -rf $(VOLUMES)
-
+	docker image rm transcendance-auth
+	
 re: fclean all
