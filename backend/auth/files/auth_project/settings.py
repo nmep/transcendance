@@ -31,19 +31,15 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
     'handlers': {
-      'logstash': {
+      'test': {
           'level': 'DEBUG',
-          'class': 'logstash.LogstashHandler',
-          'host': 'logstash01',
-          'port': 5959, # Default value: 5959
-          'version': 1, # Version of logstash event schema. Default value: 0 (for backward compatibility of the library)
-          'message_type': 'logstash',  # 'type' field in logstash message. Default value: 'logstash'.
-          'fqdn': False, # Fully qualified domain name. Default value: false.
+          'class': 'logging.handlers.SysLogHandler',
+          'address': ('logstash01', 5959),
       },
   },
   'loggers': {
       'django.request': {
-          'handlers': ['logstash'],
+          'handlers': ['test'],
           'level': 'DEBUG',
           'propagate': True,
       },
