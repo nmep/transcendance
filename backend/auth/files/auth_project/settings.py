@@ -37,8 +37,8 @@ LOGGING = {
           'address': ('logstash01', 5959),
       },
   },
-  'loggers': {
-      'django.request': {
+    'loggers': {
+      'django.server': {
           'handlers': ['test'],
           'level': 'DEBUG',
           'propagate': True,
