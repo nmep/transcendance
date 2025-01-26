@@ -60,7 +60,6 @@ services:
       - monitoring
     volumes:
       - ./database/syslog.conf:/etc/syslog.conf
-      - ./database/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
 
   auth:
     container_name: auth_api
