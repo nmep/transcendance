@@ -11,7 +11,7 @@ logs:
 	bash prout.sh
 
 rm_logs:
-	rm logs_*
+	rm ./logs/logs_*
 
 fclean:
 	@docker rm -f $(shell docker ps -qa) || echo prout > /dev/null
@@ -20,3 +20,5 @@ fclean:
 	@docker image rm transcendance_cp-auth || echo prout > /dev/null
 	
 re: fclean all
+
+.PHONY: logs
