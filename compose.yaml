@@ -48,7 +48,8 @@ services:
 # ------------------------------ micro service ------------------------------ #
 
   db:
-    image: 'postgres:17.2-alpine3.21'
+    image: 'postgres:16.6'
+    container_name: postgres
     ports:
       - '5432:5432'
     environment:
@@ -58,8 +59,6 @@ services:
     networks:
       - auth
       - monitoring
-    volumes:
-      - ./database/syslog.conf:/etc/syslog.conf
 
   auth:
     container_name: auth_api
