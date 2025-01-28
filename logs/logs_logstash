@@ -1,0 +1,543 @@
+2025/01/28 14:41:09 Setting 'xpack.monitoring.enabled' from environment.
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Get:1 http://security.ubuntu.com/ubuntu focal-security InRelease [128 kB]
+Hit:2 http://archive.ubuntu.com/ubuntu focal InRelease
+Get:3 http://archive.ubuntu.com/ubuntu focal-updates InRelease [128 kB]
+Get:4 http://archive.ubuntu.com/ubuntu focal-backports InRelease [128 kB]
+Get:5 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [4,321 kB]
+Get:6 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [4,690 kB]
+Get:7 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [30.9 kB]
+Get:8 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [1,297 kB]
+Get:9 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [4,214 kB]
+Get:10 http://archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 Packages [34.6 kB]
+Get:11 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [1,589 kB]
+Get:12 http://archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [4,509 kB]
+Fetched 21.1 MB in 1s (23.0 MB/s)
+Reading package lists...
+Building dependency tree...
+Reading state information...
+48 packages can be upgraded. Run 'apt list --upgradable' to see them.
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following NEW packages will be installed:
+  wget
+0 upgraded, 1 newly installed, 0 to remove and 48 not upgraded.
+Need to get 349 kB of archives.
+After this operation, 1,012 kB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 wget amd64 1.20.3-1ubuntu2.1 [349 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 349 kB in 0s (3,733 kB/s)
+Selecting previously unselected package wget.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 5287 files and directories currently installed.)
+Preparing to unpack .../wget_1.20.3-1ubuntu2.1_amd64.deb ...
+Unpacking wget (1.20.3-1ubuntu2.1) ...
+Setting up wget (1.20.3-1ubuntu2.1) ...
+--2025-01-28 14:41:12--  https://jdbc.postgresql.org/download/postgresql-42.7.5.jar
+Resolving jdbc.postgresql.org (jdbc.postgresql.org)... 72.32.157.228, 2001:4800:3e1:1::228
+Connecting to jdbc.postgresql.org (jdbc.postgresql.org)|72.32.157.228|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1087908 (1.0M) [application/java-archive]
+Saving to: ‘/usr/share/logstash/lib/postgresql-42.7.5.jar’
+
+     0K .......... .......... .......... .......... ..........  4%  437K 2s
+    50K .......... .......... .......... .......... ..........  9%  450K 2s
+   100K .......... .......... .......... .......... .......... 14% 56.3M 1s
+   150K .......... .......... .......... .......... .......... 18%  464K 1s
+   200K .......... .......... .......... .......... .......... 23% 16.3M 1s
+   250K .......... .......... .......... .......... .......... 28% 43.5M 1s
+   300K .......... .......... .......... .......... .......... 32% 32.1M 1s
+   350K .......... .......... .......... .......... .......... 37%  473K 1s
+   400K .......... .......... .......... .......... .......... 42% 21.1M 1s
+   450K .......... .......... .......... .......... .......... 47% 56.6M 1s
+   500K .......... .......... .......... .......... .......... 51% 96.4M 0s
+   550K .......... .......... .......... .......... .......... 56% 63.2M 0s
+   600K .......... .......... .......... .......... .......... 61%  197M 0s
+   650K .......... .......... .......... .......... .......... 65% 46.3M 0s
+   700K .......... .......... .......... .......... .......... 70% 35.1M 0s
+   750K .......... .......... .......... .......... .......... 75% 28.5M 0s
+   800K .......... .......... .......... .......... .......... 80%  484K 0s
+   850K .......... .......... .......... .......... .......... 84% 17.6M 0s
+   900K .......... .......... .......... .......... .......... 89% 20.1M 0s
+   950K .......... .......... .......... .......... .......... 94% 55.8M 0s
+  1000K .......... .......... .......... .......... .......... 98% 81.4M 0s
+  1050K .......... ..                                         100%  246M=0.6s
+
+2025-01-28 14:41:13 (1.84 MB/s) - ‘/usr/share/logstash/lib/postgresql-42.7.5.jar’ saved [1087908/1087908]
+
+Using bundled JDK: /usr/share/logstash/jdk
+Sending Logstash logs to /usr/share/logstash/logs which is now configured via log4j2.properties
+[2025-01-28T14:41:17,798][WARN ][deprecation.logstash.runner] NOTICE: Running Logstash as superuser is not recommended and won't be allowed in the future. Set 'allow_superuser' to 'false' to avoid startup errors in future releases.
+[2025-01-28T14:41:17,802][INFO ][logstash.runner          ] Log4j configuration path used is: /usr/share/logstash/config/log4j2.properties
+[2025-01-28T14:41:17,803][INFO ][logstash.runner          ] Starting Logstash {"logstash.version"=>"8.9.2", "jruby.version"=>"jruby 9.3.10.0 (2.6.8) 2023-02-01 107b2e6697 OpenJDK 64-Bit Server VM 17.0.8+7 on 17.0.8+7 +indy +jit [x86_64-linux]"}
+[2025-01-28T14:41:17,804][INFO ][logstash.runner          ] JVM bootstrap flags: [-Xms1g, -Xmx1g, -Djava.awt.headless=true, -Dfile.encoding=UTF-8, -Djruby.compile.invokedynamic=true, -XX:+HeapDumpOnOutOfMemoryError, -Djava.security.egd=file:/dev/urandom, -Dlog4j2.isThreadContextMapInheritable=true, -Dls.cgroup.cpuacct.path.override=/, -Dls.cgroup.cpu.path.override=/, -Djruby.regexp.interruptible=true, -Djdk.io.File.enableADS=true, --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED, --add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED, --add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED, --add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED, --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED, --add-opens=java.base/java.security=ALL-UNNAMED, --add-opens=java.base/java.io=ALL-UNNAMED, --add-opens=java.base/java.nio.channels=ALL-UNNAMED, --add-opens=java.base/sun.nio.ch=ALL-UNNAMED, --add-opens=java.management/sun.management=ALL-UNNAMED]
+[2025-01-28T14:41:17,807][INFO ][logstash.settings        ] Creating directory {:setting=>"path.queue", :path=>"/usr/share/logstash/data/queue"}
+[2025-01-28T14:41:17,808][INFO ][logstash.settings        ] Creating directory {:setting=>"path.dead_letter_queue", :path=>"/usr/share/logstash/data/dead_letter_queue"}
+[2025-01-28T14:41:17,883][INFO ][logstash.agent           ] No persistent UUID file found. Generating new UUID {:uuid=>"57b30d68-f9d6-4213-abd9-667c77ef9167", :path=>"/usr/share/logstash/data/uuid"}
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/sinatra-2.2.4/lib/sinatra/base.rb:938: warning: constant Tilt::Cache is deprecated
+[2025-01-28T14:41:18,065][INFO ][logstash.agent           ] Successfully started Logstash API endpoint {:port=>9600, :ssl_enabled=>false}
+[2025-01-28T14:41:18,238][INFO ][org.reflections.Reflections] Reflections took 49 ms to scan 1 urls, producing 132 keys and 464 values
+[2025-01-28T14:41:18,956][INFO ][logstash.javapipeline    ] Pipeline `postgre` is configured with `pipeline.ecs_compatibility: v8` setting. All plugins in this pipeline will default to `ecs_compatibility => v8` unless explicitly configured otherwise.
+[2025-01-28T14:41:18,956][INFO ][logstash.javapipeline    ] Pipeline `auth` is configured with `pipeline.ecs_compatibility: v8` setting. All plugins in this pipeline will default to `ecs_compatibility => v8` unless explicitly configured otherwise.
+[2025-01-28T14:41:18,956][INFO ][logstash.javapipeline    ] Pipeline `nginx` is configured with `pipeline.ecs_compatibility: v8` setting. All plugins in this pipeline will default to `ecs_compatibility => v8` unless explicitly configured otherwise.
+[2025-01-28T14:41:18,963][INFO ][logstash.outputs.elasticsearch][postgre] New Elasticsearch output {:class=>"LogStash::Outputs::ElasticSearch", :hosts=>["https://es01:9200"]}
+[2025-01-28T14:41:18,964][INFO ][logstash.outputs.elasticsearch][auth] New Elasticsearch output {:class=>"LogStash::Outputs::ElasticSearch", :hosts=>["https://es01:9200"]}
+[2025-01-28T14:41:18,964][INFO ][logstash.outputs.elasticsearch][nginx] New Elasticsearch output {:class=>"LogStash::Outputs::ElasticSearch", :hosts=>["https://es01:9200"]}
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:474: warning: already initialized constant Manticore::Client::SocketConfig
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:474: warning: already initialized constant Manticore::Client::SocketConfig
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:444: warning: already initialized constant Manticore::Client::PlainConnectionSocketFactory
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:444: warning: already initialized constant Manticore::Client::PlainConnectionSocketFactory
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:767: warning: already initialized constant Manticore::Client::KeyStore
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:767: warning: already initialized constant Manticore::Client::KeyStore
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:705: warning: already initialized constant Manticore::Client::CertificateFactory
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:705: warning: already initialized constant Manticore::Client::CertificateFactory
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:455: warning: already initialized constant Manticore::Client::RegistryBuilder
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:455: warning: already initialized constant Manticore::Client::RegistryBuilder
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:456: warning: already initialized constant Manticore::Client::PoolingHttpClientConnectionManager
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:456: warning: already initialized constant Manticore::Client::PoolingHttpClientConnectionManager
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:229: warning: already initialized constant Manticore::Client::RequestConfig
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:229: warning: already initialized constant Manticore::Client::RequestConfig
+[2025-01-28T14:41:19,057][INFO ][logstash.outputs.elasticsearch][postgre] Elasticsearch pool URLs updated {:changes=>{:removed=>[], :added=>[https://elastic:xxxxxx@es01:9200/]}}
+[2025-01-28T14:41:19,057][INFO ][logstash.outputs.elasticsearch][nginx] Elasticsearch pool URLs updated {:changes=>{:removed=>[], :added=>[https://elastic:xxxxxx@es01:9200/]}}
+[2025-01-28T14:41:19,058][INFO ][logstash.outputs.elasticsearch][auth] Elasticsearch pool URLs updated {:changes=>{:removed=>[], :added=>[https://elastic:xxxxxx@es01:9200/]}}
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:278: warning: already initialized constant Manticore::Client::HttpHead
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:278: warning: already initialized constant Manticore::Client::HttpHead
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:560: warning: already initialized constant Manticore::Client::BasicHeader
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:560: warning: already initialized constant Manticore::Client::BasicHeader
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:571: warning: already initialized constant Manticore::Client::HttpClientContext
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:621: warning: already initialized constant Manticore::Client::AuthScope
+/usr/share/logstash/vendor/bundle/jruby/2.6.0/gems/manticore-0.9.1-java/lib/manticore/client.rb:571: warning: already initialized constant Manticore::Client::HttpClientContext
+[2025-01-28T14:41:19,176][WARN ][logstash.outputs.elasticsearch][auth] Restored connection to ES instance {:url=>"https://elastic:xxxxxx@es01:9200/"}
+[2025-01-28T14:41:19,176][WARN ][logstash.outputs.elasticsearch][nginx] Restored connection to ES instance {:url=>"https://elastic:xxxxxx@es01:9200/"}
+[2025-01-28T14:41:19,176][WARN ][logstash.outputs.elasticsearch][postgre] Restored connection to ES instance {:url=>"https://elastic:xxxxxx@es01:9200/"}
+[2025-01-28T14:41:19,182][INFO ][logstash.outputs.elasticsearch][postgre] Elasticsearch version determined (8.9.2) {:es_version=>8}
+[2025-01-28T14:41:19,182][INFO ][logstash.outputs.elasticsearch][nginx] Elasticsearch version determined (8.9.2) {:es_version=>8}
+[2025-01-28T14:41:19,182][INFO ][logstash.outputs.elasticsearch][auth] Elasticsearch version determined (8.9.2) {:es_version=>8}
+[2025-01-28T14:41:19,182][WARN ][logstash.outputs.elasticsearch][nginx] Detected a 6.x and above cluster: the `type` event field won't be used to determine the document _type {:es_version=>8}
+[2025-01-28T14:41:19,182][WARN ][logstash.outputs.elasticsearch][postgre] Detected a 6.x and above cluster: the `type` event field won't be used to determine the document _type {:es_version=>8}
+[2025-01-28T14:41:19,182][WARN ][logstash.outputs.elasticsearch][auth] Detected a 6.x and above cluster: the `type` event field won't be used to determine the document _type {:es_version=>8}
+[2025-01-28T14:41:19,260][INFO ][logstash.outputs.elasticsearch][postgre] Not eligible for data streams because config contains one or more settings that are not compatible with data streams: {"index"=>"pg-%{+YYYY.MM.dd}"}
+[2025-01-28T14:41:19,260][INFO ][logstash.outputs.elasticsearch][nginx] Not eligible for data streams because config contains one or more settings that are not compatible with data streams: {"index"=>"nginxclean-%{+YYYY.MM.dd}"}
+[2025-01-28T14:41:19,260][INFO ][logstash.outputs.elasticsearch][auth] Not eligible for data streams because config contains one or more settings that are not compatible with data streams: {"index"=>"auth-%{+YYYY.MM.dd}"}
+[2025-01-28T14:41:19,260][INFO ][logstash.outputs.elasticsearch][postgre] Data streams auto configuration (`data_stream => auto` or unset) resolved to `false`
+[2025-01-28T14:41:19,260][INFO ][logstash.outputs.elasticsearch][nginx] Data streams auto configuration (`data_stream => auto` or unset) resolved to `false`
+[2025-01-28T14:41:19,260][INFO ][logstash.outputs.elasticsearch][auth] Data streams auto configuration (`data_stream => auto` or unset) resolved to `false`
+[2025-01-28T14:41:19,261][WARN ][logstash.filters.grok    ][nginx] ECS v8 support is a preview of the unreleased ECS v8, and uses the v1 patterns. When Version 8 of the Elastic Common Schema becomes available, this plugin will need to be updated
+[2025-01-28T14:41:19,261][WARN ][logstash.filters.grok    ][auth] ECS v8 support is a preview of the unreleased ECS v8, and uses the v1 patterns. When Version 8 of the Elastic Common Schema becomes available, this plugin will need to be updated
+[2025-01-28T14:41:19,267][INFO ][logstash.javapipeline    ][postgre] Starting pipeline {:pipeline_id=>"postgre", "pipeline.workers"=>20, "pipeline.batch.size"=>125, "pipeline.batch.delay"=>50, "pipeline.max_inflight"=>2500, "pipeline.sources"=>["/usr/share/logstash/pipeline/postgre/postgre.conf"], :thread=>"#<Thread:0x3201d75e@/usr/share/logstash/logstash-core/lib/logstash/java_pipeline.rb:134 run>"}
+[2025-01-28T14:41:19,268][INFO ][logstash.outputs.elasticsearch][nginx] Using a default mapping template {:es_version=>8, :ecs_compatibility=>:v8}
+[2025-01-28T14:41:19,268][INFO ][logstash.outputs.elasticsearch][postgre] Using a default mapping template {:es_version=>8, :ecs_compatibility=>:v8}
+[2025-01-28T14:41:19,268][INFO ][logstash.outputs.elasticsearch][auth] Using a default mapping template {:es_version=>8, :ecs_compatibility=>:v8}
+[2025-01-28T14:41:19,296][INFO ][logstash.outputs.elasticsearch][postgre] Installing Elasticsearch template {:name=>"ecs-logstash"}
+[2025-01-28T14:41:19,296][INFO ][logstash.outputs.elasticsearch][nginx] Installing Elasticsearch template {:name=>"ecs-logstash"}
+[2025-01-28T14:41:19,297][INFO ][logstash.outputs.elasticsearch][auth] Installing Elasticsearch template {:name=>"ecs-logstash"}
+[2025-01-28T14:41:19,318][INFO ][logstash.javapipeline    ][auth] Starting pipeline {:pipeline_id=>"auth", "pipeline.workers"=>20, "pipeline.batch.size"=>125, "pipeline.batch.delay"=>50, "pipeline.max_inflight"=>2500, "pipeline.sources"=>["/usr/share/logstash/pipeline/auth/auth.conf"], :thread=>"#<Thread:0x4227d76c@/usr/share/logstash/logstash-core/lib/logstash/java_pipeline.rb:134 run>"}
+[2025-01-28T14:41:19,319][INFO ][logstash.javapipeline    ][nginx] Starting pipeline {:pipeline_id=>"nginx", "pipeline.workers"=>20, "pipeline.batch.size"=>125, "pipeline.batch.delay"=>50, "pipeline.max_inflight"=>2500, "pipeline.sources"=>["/usr/share/logstash/pipeline/nginx/nginx.conf"], :thread=>"#<Thread:0x4859aff2@/usr/share/logstash/logstash-core/lib/logstash/java_pipeline.rb:134 run>"}
+[2025-01-28T14:41:19,785][INFO ][logstash.javapipeline    ][postgre] Pipeline Java execution initialization time {"seconds"=>0.52}
+[2025-01-28T14:41:19,818][INFO ][logstash.javapipeline    ][nginx] Pipeline Java execution initialization time {"seconds"=>0.5}
+[2025-01-28T14:41:19,824][INFO ][logstash.javapipeline    ][nginx] Pipeline started {"pipeline.id"=>"nginx"}
+[2025-01-28T14:41:19,827][INFO ][logstash.javapipeline    ][auth] Pipeline Java execution initialization time {"seconds"=>0.51}
+[2025-01-28T14:41:19,839][INFO ][logstash.javapipeline    ][auth] Pipeline started {"pipeline.id"=>"auth"}
+[2025-01-28T14:41:19,850][INFO ][logstash.inputs.udp      ][auth][0651e654d6384de229d216a8a35c1512bfcb92ce5f2a08e1e1963643bf2fcaca] Starting UDP listener {:address=>"0.0.0.0:5959"}
+[2025-01-28T14:41:19,850][INFO ][logstash.inputs.udp      ][nginx][b2c5c71c42d9fd6ecb1a5c75d4801b014d8f08543773fef3308da17bcfe0a643] Starting UDP listener {:address=>"0.0.0.0:5555"}
+[2025-01-28T14:41:19,856][INFO ][logstash.inputs.udp      ][nginx][b2c5c71c42d9fd6ecb1a5c75d4801b014d8f08543773fef3308da17bcfe0a643] UDP listener started {:address=>"0.0.0.0:5555", :receive_buffer_bytes=>"106496", :queue_size=>"2000"}
+[2025-01-28T14:41:19,856][INFO ][logstash.inputs.udp      ][auth][0651e654d6384de229d216a8a35c1512bfcb92ce5f2a08e1e1963643bf2fcaca] UDP listener started {:address=>"0.0.0.0:5959", :receive_buffer_bytes=>"106496", :queue_size=>"2000"}
+[2025-01-28T14:41:19,996][INFO ][logstash.inputs.jdbc     ][postgre] ECS compatibility is enabled but `target` option was not specified. This may cause fields to be set at the top-level of the event where they are likely to clash with the Elastic Common Schema. It is recommended to set the `target` option to avoid potential schema conflicts (if your data is ECS compliant or non-conflicting, feel free to ignore this message)
+[2025-01-28T14:41:19,996][INFO ][logstash.javapipeline    ][postgre] Pipeline started {"pipeline.id"=>"postgre"}
+[2025-01-28T14:41:20,008][INFO ][logstash.agent           ] Pipelines running {:count=>3, :running_pipelines=>[:postgre, :auth, :nginx], :non_running_pipelines=>[]}
+{
+       "@version" => "1",
+         "method" => "GET",
+    "forward_for" => "-",
+     "user_agent" => "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0",
+       "http_ref" => "http://localhost:8443/",
+        "message" => "<190>Jan 28 14:42:17 926be5913e79 nginx: 172.20.0.1 - - [28/Jan/2025:14:42:17 +0000] \"GET /favicon.ico HTTP/1.1\" 400 255 \"http://localhost:8443/\" \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0\" \"-\"",
+          "event" => {
+        "original" => "<190>Jan 28 14:42:17 926be5913e79 nginx: 172.20.0.1 - - [28/Jan/2025:14:42:17 +0000] \"GET /favicon.ico HTTP/1.1\" 400 255 \"http://localhost:8443/\" \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0\" \"-\""
+    },
+             "ip" => "172.20.0.1",
+        "request" => "/favicon.ico",
+          "bytes" => "255",
+    "httpversion" => "1.1",
+       "response" => "400",
+     "@timestamp" => 2025-01-28T14:42:17.682678915Z,
+           "host" => {
+        "ip" => "172.21.0.9"
+    },
+           "date" => "28/Jan/2025:14:42:17 +0000"
+}
+{
+       "@version" => "1",
+         "method" => "GET",
+    "forward_for" => "-",
+     "user_agent" => "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0",
+       "http_ref" => "-",
+        "message" => "<190>Jan 28 14:42:17 926be5913e79 nginx: 172.20.0.1 - - [28/Jan/2025:14:42:17 +0000] \"GET / HTTP/1.1\" 400 255 \"-\" \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0\" \"-\"",
+          "event" => {
+        "original" => "<190>Jan 28 14:42:17 926be5913e79 nginx: 172.20.0.1 - - [28/Jan/2025:14:42:17 +0000] \"GET / HTTP/1.1\" 400 255 \"-\" \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0\" \"-\""
+    },
+             "ip" => "172.20.0.1",
+        "request" => "/",
+          "bytes" => "255",
+    "httpversion" => "1.1",
+       "response" => "400",
+     "@timestamp" => 2025-01-28T14:42:17.660838134Z,
+           "host" => {
+        "ip" => "172.21.0.9"
+    },
+           "date" => "28/Jan/2025:14:42:17 +0000"
+}
+{
+       "@version" => "1",
+         "method" => "GET",
+    "forward_for" => "-",
+     "user_agent" => "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0",
+       "http_ref" => "-",
+        "message" => "<190>Jan 28 14:42:24 926be5913e79 nginx: 172.20.0.1 - - [28/Jan/2025:14:42:24 +0000] \"GET / HTTP/1.1\" 200 5 \"-\" \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0\" \"-\"",
+          "event" => {
+        "original" => "<190>Jan 28 14:42:24 926be5913e79 nginx: 172.20.0.1 - - [28/Jan/2025:14:42:24 +0000] \"GET / HTTP/1.1\" 200 5 \"-\" \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0\" \"-\""
+    },
+             "ip" => "172.20.0.1",
+        "request" => "/",
+          "bytes" => "5",
+    "httpversion" => "1.1",
+       "response" => "200",
+     "@timestamp" => 2025-01-28T14:42:24.889084243Z,
+           "host" => {
+        "ip" => "172.21.0.9"
+    },
+           "date" => "28/Jan/2025:14:42:24 +0000"
+}
+{
+       "@version" => "1",
+         "method" => "GET",
+    "forward_for" => "-",
+     "user_agent" => "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0",
+       "http_ref" => "https://localhost:8443/",
+        "message" => "<190>Jan 28 14:42:24 926be5913e79 nginx: 172.20.0.1 - - [28/Jan/2025:14:42:24 +0000] \"GET /favicon.ico HTTP/1.1\" 404 153 \"https://localhost:8443/\" \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0\" \"-\"",
+          "event" => {
+        "original" => "<190>Jan 28 14:42:24 926be5913e79 nginx: 172.20.0.1 - - [28/Jan/2025:14:42:24 +0000] \"GET /favicon.ico HTTP/1.1\" 404 153 \"https://localhost:8443/\" \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0\" \"-\""
+    },
+             "ip" => "172.20.0.1",
+        "request" => "/favicon.ico",
+          "bytes" => "153",
+    "httpversion" => "1.1",
+       "response" => "404",
+     "@timestamp" => 2025-01-28T14:42:24.897689535Z,
+           "host" => {
+        "ip" => "172.21.0.9"
+    },
+           "date" => "28/Jan/2025:14:42:24 +0000"
+}
+{
+       "@version" => "1",
+         "method" => "GET",
+    "forward_for" => "-",
+     "user_agent" => "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0",
+       "http_ref" => "-",
+        "message" => "<190>Jan 28 14:42:29 926be5913e79 nginx: 172.20.0.1 - - [28/Jan/2025:14:42:29 +0000] \"GET /auth HTTP/1.1\" 404 153 \"-\" \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0\" \"-\"",
+          "event" => {
+        "original" => "<190>Jan 28 14:42:29 926be5913e79 nginx: 172.20.0.1 - - [28/Jan/2025:14:42:29 +0000] \"GET /auth HTTP/1.1\" 404 153 \"-\" \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0\" \"-\""
+    },
+             "ip" => "172.20.0.1",
+        "request" => "/auth",
+          "bytes" => "153",
+    "httpversion" => "1.1",
+       "response" => "404",
+     "@timestamp" => 2025-01-28T14:42:29.358533506Z,
+           "host" => {
+        "ip" => "172.21.0.9"
+    },
+           "date" => "28/Jan/2025:14:42:29 +0000"
+}
+{
+       "@version" => "1",
+         "method" => "GET",
+    "forward_for" => "-",
+     "user_agent" => "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0",
+       "http_ref" => "-",
+        "message" => "<190>Jan 28 14:42:33 926be5913e79 nginx: 172.20.0.1 - - [28/Jan/2025:14:42:33 +0000] \"GET /auth/ HTTP/1.1\" 404 153 \"-\" \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0\" \"-\"",
+          "event" => {
+        "original" => "<190>Jan 28 14:42:33 926be5913e79 nginx: 172.20.0.1 - - [28/Jan/2025:14:42:33 +0000] \"GET /auth/ HTTP/1.1\" 404 153 \"-\" \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0\" \"-\""
+    },
+             "ip" => "172.20.0.1",
+        "request" => "/auth/",
+          "bytes" => "153",
+    "httpversion" => "1.1",
+       "response" => "404",
+     "@timestamp" => 2025-01-28T14:42:33.878725915Z,
+           "host" => {
+        "ip" => "172.21.0.9"
+    },
+           "date" => "28/Jan/2025:14:42:33 +0000"
+}
+{
+       "@version" => "1",
+         "method" => "GET",
+    "forward_for" => "-",
+     "user_agent" => "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0",
+       "http_ref" => "-",
+        "message" => "<190>Jan 28 14:43:10 926be5913e79 nginx: 172.20.0.1 - - [28/Jan/2025:14:43:10 +0000] \"GET /api HTTP/1.1\" 301 169 \"-\" \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0\" \"-\"",
+          "event" => {
+        "original" => "<190>Jan 28 14:43:10 926be5913e79 nginx: 172.20.0.1 - - [28/Jan/2025:14:43:10 +0000] \"GET /api HTTP/1.1\" 301 169 \"-\" \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0\" \"-\""
+    },
+             "ip" => "172.20.0.1",
+        "request" => "/api",
+          "bytes" => "169",
+    "httpversion" => "1.1",
+       "response" => "301",
+     "@timestamp" => 2025-01-28T14:43:10.622744026Z,
+           "host" => {
+        "ip" => "172.21.0.9"
+    },
+           "date" => "28/Jan/2025:14:43:10 +0000"
+}
+{
+       "@version" => "1",
+          "event" => {
+        "original" => "<12>\"GET /favicon.ico HTTP/1.1\" 404 2635\u0000"
+    },
+         "method" => "GET",
+          "bytes" => "2635",
+    "httpversion" => "1.1",
+       "response" => "404",
+        "message" => "<12>\"GET /favicon.ico HTTP/1.1\" 404 2635\u0000",
+     "@timestamp" => 2025-01-28T14:43:24.613428470Z,
+           "host" => {
+        "ip" => "172.21.0.10"
+    },
+            "uri" => "/favicon.ico"
+}
+{
+       "@version" => "1",
+          "event" => {
+        "original" => "<12>\"GET / HTTP/1.1\" 404 2584\u0000"
+    },
+         "method" => "GET",
+          "bytes" => "2584",
+    "httpversion" => "1.1",
+       "response" => "404",
+        "message" => "<12>\"GET / HTTP/1.1\" 404 2584\u0000",
+     "@timestamp" => 2025-01-28T14:43:24.584607526Z,
+           "host" => {
+        "ip" => "172.21.0.10"
+    },
+            "uri" => "/"
+}
+{
+       "@version" => "1",
+          "event" => {
+        "original" => "<12>\"GET /api HTTP/1.1\" 404 2611\u0000"
+    },
+         "method" => "GET",
+          "bytes" => "2611",
+    "httpversion" => "1.1",
+       "response" => "404",
+        "message" => "<12>\"GET /api HTTP/1.1\" 404 2611\u0000",
+     "@timestamp" => 2025-01-28T14:43:28.290223771Z,
+           "host" => {
+        "ip" => "172.21.0.10"
+    },
+            "uri" => "/api"
+}
+{
+       "@version" => "1",
+          "event" => {
+        "original" => "<12>\"GET /api/ HTTP/1.1\" 404 2709\u0000"
+    },
+         "method" => "GET",
+          "bytes" => "2709",
+    "httpversion" => "1.1",
+       "response" => "404",
+        "message" => "<12>\"GET /api/ HTTP/1.1\" 404 2709\u0000",
+     "@timestamp" => 2025-01-28T14:43:31.521717238Z,
+           "host" => {
+        "ip" => "172.21.0.10"
+    },
+            "uri" => "/api/"
+}
+{
+      "@version" => "1",
+         "event" => {
+        "original" => "<14>\"GET /admin/login/?next=/admin/ HTTP/1.1\" 200 4307\u0000"
+    },
+          "tags" => [
+        [0] "_grokparsefailure"
+    ],
+       "message" => "<14>\"GET /admin/login/?next=/admin/ HTTP/1.1\" 200 4307\u0000",
+    "@timestamp" => 2025-01-28T14:43:36.487208109Z,
+          "host" => {
+        "ip" => "172.21.0.10"
+    }
+}
+{
+       "@version" => "1",
+          "event" => {
+        "original" => "<14>\"GET /admin HTTP/1.1\" 301 0\u0000"
+    },
+         "method" => "GET",
+          "bytes" => "0",
+    "httpversion" => "1.1",
+       "response" => "301",
+        "message" => "<14>\"GET /admin HTTP/1.1\" 301 0\u0000",
+     "@timestamp" => 2025-01-28T14:43:36.458853685Z,
+           "host" => {
+        "ip" => "172.21.0.10"
+    },
+            "uri" => "/admin"
+}
+{
+       "@version" => "1",
+          "event" => {
+        "original" => "<12>\"GET /static/admin/css/base.css HTTP/1.1\" 404 2677\u0000"
+    },
+         "method" => "GET",
+          "bytes" => "2677",
+    "httpversion" => "1.1",
+       "response" => "404",
+        "message" => "<12>\"GET /static/admin/css/base.css HTTP/1.1\" 404 2677\u0000",
+     "@timestamp" => 2025-01-28T14:43:36.504452025Z,
+           "host" => {
+        "ip" => "172.21.0.10"
+    },
+            "uri" => "/static/admin/css/base.css"
+}
+{
+       "@version" => "1",
+          "event" => {
+        "original" => "<14>\"GET /admin/ HTTP/1.1\" 302 0\u0000"
+    },
+         "method" => "GET",
+          "bytes" => "0",
+    "httpversion" => "1.1",
+       "response" => "302",
+        "message" => "<14>\"GET /admin/ HTTP/1.1\" 302 0\u0000",
+     "@timestamp" => 2025-01-28T14:43:36.471762607Z,
+           "host" => {
+        "ip" => "172.21.0.10"
+    },
+            "uri" => "/admin/"
+}
+{
+       "@version" => "1",
+          "event" => {
+        "original" => "<12>\"GET /static/admin/js/theme.js HTTP/1.1\" 404 2674\u0000"
+    },
+         "method" => "GET",
+          "bytes" => "2674",
+    "httpversion" => "1.1",
+       "response" => "404",
+        "message" => "<12>\"GET /static/admin/js/theme.js HTTP/1.1\" 404 2674\u0000",
+     "@timestamp" => 2025-01-28T14:43:36.505988935Z,
+           "host" => {
+        "ip" => "172.21.0.10"
+    },
+            "uri" => "/static/admin/js/theme.js"
+}
+{
+       "@version" => "1",
+          "event" => {
+        "original" => "<12>\"GET /static/admin/css/responsive.css HTTP/1.1\" 404 2695\u0000"
+    },
+         "method" => "GET",
+          "bytes" => "2695",
+    "httpversion" => "1.1",
+       "response" => "404",
+        "message" => "<12>\"GET /static/admin/css/responsive.css HTTP/1.1\" 404 2695\u0000",
+     "@timestamp" => 2025-01-28T14:43:36.515645467Z,
+           "host" => {
+        "ip" => "172.21.0.10"
+    },
+            "uri" => "/static/admin/css/responsive.css"
+}
+{
+       "@version" => "1",
+          "event" => {
+        "original" => "<12>\"GET /static/admin/css/login.css HTTP/1.1\" 404 2680\u0000"
+    },
+         "method" => "GET",
+          "bytes" => "2680",
+    "httpversion" => "1.1",
+       "response" => "404",
+        "message" => "<12>\"GET /static/admin/css/login.css HTTP/1.1\" 404 2680\u0000",
+     "@timestamp" => 2025-01-28T14:43:36.515947046Z,
+           "host" => {
+        "ip" => "172.21.0.10"
+    },
+            "uri" => "/static/admin/css/login.css"
+}
+{
+       "@version" => "1",
+          "event" => {
+        "original" => "<12>\"GET /static/admin/css/nav_sidebar.css HTTP/1.1\" 404 2698\u0000"
+    },
+         "method" => "GET",
+          "bytes" => "2698",
+    "httpversion" => "1.1",
+       "response" => "404",
+        "message" => "<12>\"GET /static/admin/css/nav_sidebar.css HTTP/1.1\" 404 2698\u0000",
+     "@timestamp" => 2025-01-28T14:43:36.516199926Z,
+           "host" => {
+        "ip" => "172.21.0.10"
+    },
+            "uri" => "/static/admin/css/nav_sidebar.css"
+}
+{
+       "@version" => "1",
+          "event" => {
+        "original" => "<12>\"GET /static/admin/js/nav_sidebar.js HTTP/1.1\" 404 2692\u0000"
+    },
+         "method" => "GET",
+          "bytes" => "2692",
+    "httpversion" => "1.1",
+       "response" => "404",
+        "message" => "<12>\"GET /static/admin/js/nav_sidebar.js HTTP/1.1\" 404 2692\u0000",
+     "@timestamp" => 2025-01-28T14:43:36.516074536Z,
+           "host" => {
+        "ip" => "172.21.0.10"
+    },
+            "uri" => "/static/admin/js/nav_sidebar.js"
+}
+{
+       "@version" => "1",
+          "event" => {
+        "original" => "<12>\"GET /static/admin/css/dark_mode.css HTTP/1.1\" 404 2692\u0000"
+    },
+         "method" => "GET",
+          "bytes" => "2692",
+    "httpversion" => "1.1",
+       "response" => "404",
+        "message" => "<12>\"GET /static/admin/css/dark_mode.css HTTP/1.1\" 404 2692\u0000",
+     "@timestamp" => 2025-01-28T14:43:36.513793435Z,
+           "host" => {
+        "ip" => "172.21.0.10"
+    },
+            "uri" => "/static/admin/css/dark_mode.css"
+}
+{
+      "@version" => "1",
+         "event" => {
+        "original" => "<11>\"POST /admin/login/?next=/admin/ HTTP/1.1\" 500 228436\u0000"
+    },
+          "tags" => [
+        [0] "_grokparsefailure"
+    ],
+       "message" => "<11>\"POST /admin/login/?next=/admin/ HTTP/1.1\" 500 228436\u0000",
+    "@timestamp" => 2025-01-28T14:44:12.822264235Z,
+          "host" => {
+        "ip" => "172.21.0.10"
+    }
+}
+[2025-01-28T14:47:13,406][WARN ][logstash.runner          ] SIGTERM received. Shutting down.
+[2025-01-28T14:47:14,355][INFO ][logstash.javapipeline    ][nginx] Pipeline terminated {"pipeline.id"=>"nginx"}
+[2025-01-28T14:47:14,355][INFO ][logstash.javapipeline    ][auth] Pipeline terminated {"pipeline.id"=>"auth"}
+[2025-01-28T14:47:14,414][INFO ][logstash.pipelinesregistry] Removed pipeline from registry successfully {:pipeline_id=>:nginx}
+[2025-01-28T14:47:14,414][INFO ][logstash.pipelinesregistry] Removed pipeline from registry successfully {:pipeline_id=>:auth}
+[2025-01-28T14:47:15,346][INFO ][logstash.javapipeline    ][postgre] Pipeline terminated {"pipeline.id"=>"postgre"}
+[2025-01-28T14:47:15,354][INFO ][logstash.pipelinesregistry] Removed pipeline from registry successfully {:pipeline_id=>:postgre}
+[2025-01-28T14:47:15,357][INFO ][logstash.runner          ] Logstash shut down.

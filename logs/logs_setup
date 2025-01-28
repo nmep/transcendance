@@ -1,0 +1,17 @@
+Creating CA
+Archive:  config/certs/ca.zip
+   creating: config/certs/ca/
+  inflating: config/certs/ca/ca.crt  
+  inflating: config/certs/ca/ca.key  
+Creating certs
+Archive:  config/certs/certs.zip
+   creating: config/certs/es01/
+  inflating: config/certs/es01/es01.crt  
+  inflating: config/certs/es01/es01.key  
+   creating: config/certs/kibana/
+  inflating: config/certs/kibana/kibana.crt  
+  inflating: config/certs/kibana/kibana.key  
+Setting file permissions
+Waiting for Elasticsearch availability
+Setting kibana_system password
+All done!

@@ -1,0 +1,6 @@
+time=2025-01-28T14:40:25.102Z level=WARN source=main.go:85 msg="Error loading config" err="Error opening config file \"postgres_exporter.yml\": open postgres_exporter.yml: no such file or directory"
+time=2025-01-28T14:40:25.102Z level=INFO source=main.go:95 msg="Excluded databases" databases=[]
+time=2025-01-28T14:40:25.103Z level=INFO source=tls_config.go:347 msg="Listening on" address=[::]:9187
+time=2025-01-28T14:40:25.103Z level=INFO source=tls_config.go:350 msg="TLS is disabled." http2=false address=[::]:9187
+time=2025-01-28T14:40:30.457Z level=INFO source=server.go:73 msg="Established new database connection" fingerprint=db:5432
+time=2025-01-28T14:40:30.464Z level=INFO source=postgres_exporter.go:612 msg="Semantic version changed" server=db:5432 from=0.0.0 to=16.6.0

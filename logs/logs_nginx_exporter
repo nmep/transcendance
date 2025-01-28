@@ -1,0 +1,6 @@
+time=2025-01-28T14:41:10.374Z level=INFO source=exporter.go:123 msg=nginx-prometheus-exporter version="(version=1.4.0, branch=HEAD, revision=eb921f6062ff814acf8913cade92def952dfbe2e)"
+time=2025-01-28T14:41:10.374Z level=INFO source=exporter.go:124 msg="build context" build_context="(go=go1.23.3, platform=linux/amd64, user=goreleaser, date=2024-12-04T11:55:36Z, tags=unknown)"
+time=2025-01-28T14:41:10.374Z level=INFO source=tls_config.go:347 msg="Listening on" address=[::]:9113
+time=2025-01-28T14:41:10.375Z level=INFO source=tls_config.go:350 msg="TLS is disabled." http2=false address=[::]:9113
+time=2025-01-28T14:47:11.879Z level=INFO source=exporter.go:217 msg="shutting down"
+time=2025-01-28T14:47:11.879Z level=INFO source=exporter.go:208 msg="HTTP server closed" error="http: Server closed"
