@@ -8,9 +8,9 @@ all:
 	docker compose up
 
 fclean:
-	docker rm -f $(shell docker ps -qa)
-	docker volume rm -f $(shell docker volume ls -q)
-	docker run --rm -v ./$(VOLUMES_DIR):/test -w /test alpine rm -rf $(VOLUMES)
-	docker image rm transcendance-auth
+	@docker rm -f $(shell docker ps -qa) || echo prout > /dev/null
+	@docker volume rm -f $(shell docker volume ls -q) || echo prout > /dev/null
+	@docker run --rm -v ./$(VOLUMES_DIR):/test -w /test alpine rm -rf $(VOLUMES)
+	@docker image rm transcendance_cp-auth || echo prout > /dev/null
 	
 re: fclean all

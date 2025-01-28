@@ -3,6 +3,7 @@ services:
     container_name: postgres_exporter
     depends_on:
       - db
+      - prometheus
     image: quay.io/prometheuscommunity/postgres-exporter
     ports:
       - '9187:9187'
