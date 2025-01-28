@@ -1,5 +1,6 @@
 services:
  setup:
+   container_name: setup
    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
    volumes:
      - certs:/usr/share/elasticsearch/config/certs
@@ -58,6 +59,7 @@ services:
     - monitoring
   
  es01:
+   container_name: elastic
    depends_on:
      setup:
        condition: service_healthy
@@ -101,6 +103,7 @@ services:
     - monitoring 
 
  kibana:
+   container_name: kibana
    depends_on:
      es01:
        condition: service_healthy
@@ -135,6 +138,7 @@ services:
     - monitoring
 
  logstash01:
+   container_name: logstash
    depends_on:
      es01:
        condition: service_healthy

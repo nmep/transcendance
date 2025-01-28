@@ -1,5 +1,6 @@
 services:
   db_exporter:
+    container_name: postgres_exporter
     depends_on:
       - db
     image: quay.io/prometheuscommunity/postgres-exporter
@@ -12,3 +13,16 @@ services:
     networks:
       - monitoring
     command: '--no-collector.stat_bgwriter'
+
+  nginx_prometheus_exporter:
+    container_name: nginx_exporter
+    image: nginx/nginx-prometheus-exporter:1.4.0
+    depends_on:
+      - prometheus
+      - reverseproxy
+    ports:
+      - '9113:9113'
+    networks:
+      - monitoring
+    command:
+      - --nginx.scrape-uri=https://nginx/status
