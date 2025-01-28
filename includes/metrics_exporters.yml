@@ -11,3 +11,4 @@ services:
       - DATA_SOURCE_PASS=password
     networks:
       - monitoring
+    command: '--no-collector.stat_bgwriter'
