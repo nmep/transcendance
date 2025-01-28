@@ -21,4 +21,4 @@ fclean:
 	
 re: fclean all
 
-.PHONY: logs
+.PHONY: logs all rm_logs re fclean
