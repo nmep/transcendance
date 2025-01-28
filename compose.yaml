@@ -77,14 +77,16 @@ services:
         - 3000:3000
       restart: unless-stopped
       environment:
-        - GF_SECURITY_ADMIN_PASSWORD=grafana
+        - VAULT_RTOKEN=$VAULT_RTOKEN
       volumes:
         - ./devops/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
         - ./devops/grafana/grafana.ini:/etc/grafana/grafana.ini
-        - ./devops/grafana/install_package/.sh:/usr/local/bin/install_package.sh
+        - ./devops/grafana/bashrc:/etc/bash/bashrc
       networks:
         - monitoring
         - vault
+      entrypoint: >
+        bash -c "export toto=1 && grafana server"
   
   
   # ------------------------------ micro service ------------------------------ #

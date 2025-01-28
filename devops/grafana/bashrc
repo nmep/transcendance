@@ -1,0 +1,27 @@
+if [[ $- != *i* ]] ; then
+	# Shell is non-interactive.  Be done now!
+	return
+fi
+
+# set fallback PS1; only if currently set to upstream bash default
+if [ "$PS1" = '\s-\v\$ ' ]; then
+	PS1='\h:\w\$ '
+fi
+
+for f in /etc/bash/*.sh; do
+	[ -r "$f" ] && . "$f"
+done
+unset f
+
+
+export GF_SECURITY_ADMIN_PASSWORD=$(curl -s -k \
+									--header "X-Vault-Token:$VAULT_RTOKEN" \
+									https://vault:8200/v1/secret/grafana \
+									| jq -r .data.GF_SECURITY_ADMIN_PASSWORD)
+
+export GF_SECURITY_ADMIN_USER=$(curl -s -k \
+									--header "X-Vault-Token:$VAULT_RTOKEN" \
+									https://vault:8200/v1/secret/grafana \
+									| jq -r .data.GF_SECURITY_ADMIN_USER)
+
+unset VAULT_RTOKEN

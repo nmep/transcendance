@@ -40,6 +40,8 @@ curl -k \
 
 vault status
 
+unset VAULT_UNSEAL1 VAULT_UNSEAL2 VAULT_UNSEAL3
+
 vault login $VAULT_RTOKEN
 
 wait
