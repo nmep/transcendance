@@ -7,6 +7,12 @@ all:
 	mkdir -p ${VOLUMES_NAMES}
 	docker compose up
 
+logs:
+	bash prout.sh
+
+rm_logs:
+	rm logs_*
+
 fclean:
 	@docker rm -f $(shell docker ps -qa) || echo prout > /dev/null
 	@docker volume rm -f $(shell docker volume ls -q) || echo prout > /dev/null
