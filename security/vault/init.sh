@@ -16,24 +16,24 @@ vault server -config /vault/config/config.hcl &
 
 echo "Waiting for vault server to be launched..."
 
-until curl -k -f https://127.0.0.1:8200; do
+until curl -k -s -f https://127.0.0.1:8200; do
     echo attempt failed...
     sleep 2
 done
 
 echo "unsealing..."
 
-curl -k \
+curl -k -s \
     --request POST \
     --data "{ \"key\" : \"$VAULT_UNSEAL1\"}" \
     https://127.0.0.1:8200/v1/sys/unseal
 
-curl -k \
+curl -k -s \
     --request POST \
     --data "{ \"key\" : \"$VAULT_UNSEAL2\"}" \
     https://127.0.0.1:8200/v1/sys/unseal
 
-curl -k \
+curl -k -s \
     --request POST \
     --data "{ \"key\" : \"$VAULT_UNSEAL3\"}" \
     https://127.0.0.1:8200/v1/sys/unseal

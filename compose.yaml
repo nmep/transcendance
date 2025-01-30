@@ -78,6 +78,7 @@ services:
       restart: unless-stopped
       environment:
         - VAULT_RTOKEN=$VAULT_RTOKEN
+        - GF_PATHS_CONFIG=/etc/grafana/grafana.ini
       volumes:
         - ./devops/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
         - ./devops/grafana/grafana.ini:/etc/grafana/grafana.ini
@@ -85,8 +86,6 @@ services:
       networks:
         - monitoring
         - vault
-      entrypoint: >
-        bash -c "export toto=1 && grafana server"
   
   
   # ------------------------------ micro service ------------------------------ #
