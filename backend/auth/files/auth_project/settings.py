@@ -133,6 +133,8 @@ USE_TZ = True
 
 STATIC_URL="http://localhost:8000/static/"
 
+AUTHENTICATION_BACKENDS=['django.contrib.auth.backends.ModelBackend']
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
