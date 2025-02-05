@@ -1,6 +1,6 @@
 #!/bin/bash
 
-while [ $(curl -k -s -f https://vault:8200/v1/sys/seal-status | jq -r .sealed) == "true" ]; do
+while [[ $(curl -k -s -f https://vault:8200/v1/sys/seal-status | jq -r .sealed) = "true" ]]; do
     echo waiting for vault...
     sleep 2
 done

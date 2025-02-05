@@ -76,6 +76,7 @@ services:
       - db
     restart: always
     build: ./backend/auth/
+    image: transcendance_auth
     ports:
       - "8000:8000"
     networks:

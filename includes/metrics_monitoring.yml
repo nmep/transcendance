@@ -4,7 +4,6 @@ services:
   prometheus:
     container_name: prometheus
     image: prom/prometheus:v3.1.0
-
     restart: always
     volumes:
       - ../devops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
@@ -17,6 +16,7 @@ services:
     build:
       context: ../devops/grafana
       dockerfile: Dockerfile
+    image: transcendance_grafana
     depends_on:
       - vault
     container_name: grafana
