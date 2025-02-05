@@ -5,11 +5,9 @@ VOLUMES_NAMES=$(addprefix ${VOLUMES_DIR}, ${VOLUMES})
 DOCKER_DIR=./backend/auth/ ./
 STAMPS=$(addsuffix stamp, ${DOCKER_DIR})
 
-prout:
-	echo ${STAMPS}
-
-all: docker_images
+all: 
 	mkdir -p ${VOLUMES_NAMES}
+	docker compose up
 
 docker_images: ${STAMPS}
 
@@ -27,6 +25,7 @@ fclean:
 	@docker rm -f $(shell docker ps -qa) || echo prout > /dev/null
 	@docker volume rm -f $(shell docker volume ls -q) || echo prout > /dev/null
 	@docker run --rm -v ./$(VOLUMES_DIR):/test -w /test alpine rm -rf $(VOLUMES)
+	@docker image rm -f transcendance_cp-grafana
 	
 re: fclean all
 

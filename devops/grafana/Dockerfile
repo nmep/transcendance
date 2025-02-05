@@ -6,16 +6,16 @@ USER root
 
 RUN apk add jq
 
-COPY bashrc /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 
 # COPY datasource.yml /etc/grafana/provisioning/datasources/datasource.yml
 
 # COPY grafana.ini /etc/grafana/grafana.ini
 
-RUN chmod  755 /entrypoint.sh 
+RUN chmod 755 /entrypoint.sh 
 
 ENTRYPOINT [ "/entrypoint.sh" ]
 
 USER grafana
 
-CMD ["grafana-server", "--config", "/etc/grafana/grafana.ini"]
+CMD ["grafana", "server", "--config", "/etc/grafana/grafana.ini"]

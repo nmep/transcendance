@@ -1,6 +1,4 @@
 
-<<<<<<< HEAD
-
 include: 
  - ./includes/metrics_monitoring.yml
  - ./includes/metrics_exporters.yml
@@ -13,23 +11,23 @@ include:
 services:
 
 # ------------------------------ securite ------------------------------ #
-    vault:
-      container_name: vault
-      image: hashicorp/vault:1.18
-      user: 0:0
-      env_file:
-        - "security/vault/vault.env"
-      ports:
-        - "8200:8200"
-      networks:
-        - vault
-      volumes:
-        - ./security/vault/init.sh:/vault/init.sh
-        - ./security/vault/config/config.hcl:/vault/config/config.hcl
-        - ./security/vault/data:/vault/data
-      cap_add:
-        - IPC_LOCK
-      entrypoint: ["/bin/sh", ./vault/init.sh]
+  vault:
+    container_name: vault
+    image: hashicorp/vault:1.18
+    user: 0:0
+    env_file:
+      - "security/vault/vault.env"
+    ports:
+      - "8200:8200"
+    networks:
+      - vault
+    volumes:
+      - ./security/vault/init.sh:/vault/init.sh
+      - ./security/vault/config/config.hcl:/vault/config/config.hcl
+      - ./security/vault/data:/vault/data
+    cap_add:
+      - IPC_LOCK
+    entrypoint: ["/bin/sh", ./vault/init.sh]
 
 # ------------------------------ nginx ------------------------------ #
 
@@ -83,135 +81,3 @@ services:
     networks:
       - auth
       - monitoring
-
-=======
-services:
-  # ------------------------------ securite ------------------------------ #
-  
-    vault:
-      container_name: vault
-      image: hashicorp/vault:1.18
-      user: 0:0
-      env_file:
-        - "security/vault/vault.env"
-      ports:
-        - "8200:8200"
-      networks:
-        - vault
-      volumes:
-        - ./security/vault/init.sh:/vault/init.sh
-        - ./security/vault/config/config.hcl:/vault/config/config.hcl
-        - ./security/vault/data:/vault/data
-      cap_add:
-        - IPC_LOCK
-      entrypoint: ["/bin/sh", ./vault/init.sh]
-  
-  # ------------------------------ nginx ------------------------------ #
-  
-    reverseproxy:
-      image: 'owasp/modsecurity:nginx'
-      container_name: nginx
-      # restart: always
-      volumes:
-        - ./nginx/conf/core.conf:/etc/nginx/conf.d/core.conf
-        - ./nginx/conf/reverseproxy.conf:/etc/nginx/conf.d/reverseproxy.conf
-        - ./nginx/html:/var/www/html
-        - ./nginx/conf/ssl_certificate.sh:/usr/local/bin/ssl_certificate.sh
-        - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
-        # ModSecurity
-        - ./security/mod_security/:/etc/modsecurity.d/
-      ports:
-        - "8080:80"
-        - "8443:443"
-      networks:
-        - monitoring
-        - auth
-      entrypoint: ["/bin/bash", /usr/local/bin/ssl_certificate.sh]
-  
-  # ------------------------------ monitoring ------------------------------ #
-  
-    nginx_prometheus_exporter:
-      container_name: nginx_prometheus_exporter
-      image: nginx/nginx-prometheus-exporter:1.4.0
-      depends_on:
-        - prometheus
-      ports:
-        - '9113:9113'
-      networks:
-        - monitoring
-      command:
-        - --nginx.scrape-uri=https://nginx/status
-  
-    prometheus:
-      container_name: prometheus
-      image: prom/prometheus:v3.1.0
-  
-      restart: always
-      volumes:
-        - ./devops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      ports:
-        - '9090:9090'
-      networks:
-        - monitoring
-  
-    grafana:
-      build:
-        context: ./devops/grafana
-        dockerfile: Dockerfile
-      container_name: grafana
-      ports:
-        - 3000:3000
-      restart: unless-stopped
-      environment:
-        - VAULT_RTOKEN=$VAULT_RTOKEN
-        - GF_PATHS_CONFIG=/etc/grafana/grafana.ini
-      volumes:
-        - ./devops/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
-        - ./devops/grafana/grafana.ini:/etc/grafana/grafana.ini
-        # - ./devops/grafana/bashrc:/etc/bash/bashrc
-      networks:
-        - monitoring
-        - vault
-  
-  
-  # ------------------------------ micro service ------------------------------ #
-  
-    db:
-      image: 'postgres:16.6'
-      container_name: postgres
-      ports:
-        - '5432:5432'
-      environment:
-        - POSTGRES_DB=toto_db
-        - POSTGRES_USER=toto
-        - POSTGRES_PASSWORD=password
-      networks:
-        - auth
-        - monitoring
-  
-    db_exporter:
-      image: quay.io/prometheuscommunity/postgres-exporter
-      ports:
-        - '9187:9187'
-      environment:
-        - DATA_SOURCE_URI=db:5432/toto_db?sslmode=disable
-        - DATA_SOURCE_USER=toto
-        - DATA_SOURCE_PASS=password
-      networks:
-        - monitoring
-  
-    auth:
-      container_name: auth_api
-      restart: always
-      build: ./backend/auth/
-      ports:
-        - "8000:8000"
-      networks:
-        - auth
-        - monitoring
-
-networks:
-  monitoring:
-  auth:
-  vault:
->>>>>>> nmep
