@@ -25,4 +25,10 @@ class authAPI(APIView):
         elif extract_kwargs_action == "register":
             print("register !!")
             return authManager.register_user(request, request.POST.get('username'), request.POST.get('password'))
+        elif extract_kwargs_action == "logout":
+            print("logout")
+            return authManager.logout_user(request)
+        elif extract_kwargs_action == "remote":
+            print("remote !!")
+            return authManager.remote_connection(request)
         return Response(person)

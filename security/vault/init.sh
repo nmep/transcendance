@@ -4,6 +4,8 @@ apk add openssl curl
 
 mkdir -p /vault/tls
 
+# verifier si les fichier ssl existe deja
+
 openssl req -nodes -newkey rsa:4096 -keyout /vault/tls/vault.key -out /vault/tls/vault.csr \
             -subj "/CN=FR/ST=OpenSSL/L=Paris/O=Dis/CN=127.0.0.1"
 

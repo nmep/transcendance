@@ -4,8 +4,18 @@ EXPOSE 3000
 
 USER root
 
-RUN apk add jq && apk add vim
+RUN apk add jq
+
+COPY bashrc /entrypoint.sh
+
+# COPY datasource.yml /etc/grafana/provisioning/datasources/datasource.yml
+
+# COPY grafana.ini /etc/grafana/grafana.ini
+
+RUN chmod  755 /entrypoint.sh 
+
+ENTRYPOINT [ "/entrypoint.sh" ]
 
 USER grafana
 
-CMD [ "/bin/bash",  "grafana --config /etc/grafana/grafana.ini"]
+CMD ["grafana-server", "--config", "/etc/grafana/grafana.ini"]
