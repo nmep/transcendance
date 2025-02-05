@@ -11,13 +11,15 @@ def index(request):
         print(request.body)
         username=request.POST.get("username")
         password=request.POST.get("password")
-        print("name = ", username, "| password = ", username, password)
+        print(f"name = {username=}]| password = [{password=}]")
         user = authenticate(request, username=username, password=password)
         if user is None:
             print("je ne reconnais pas cette user")
         else:
             print("je reconnais cette user")
-            
+    elif request.method == "GET":
+        print("flemme")
+
     return render(request, "auth_app/index.html")
 
 def result(request, user): #user est un parametre ajouter a cette view depuis l'url
