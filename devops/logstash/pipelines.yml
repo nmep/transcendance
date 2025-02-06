@@ -4,4 +4,6 @@
   path.config: "/usr/share/logstash/pipeline/auth"
 - pipeline.id: postgre
   path.config: "/usr/share/logstash/pipeline/postgre"
+- pipeline.id: vault
+  path.config: "/usr/share/logstash/pipeline/vault"
   

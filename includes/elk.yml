@@ -173,3 +173,4 @@ services:
    mem_limit: ${LS_MEM_LIMIT}
    networks:
     - monitoring
+    - vault
