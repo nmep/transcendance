@@ -9,10 +9,11 @@ all:
 	docker compose up
 
 logs:
+	mkdir -p logs
 	bash prout.sh
 
 rm_logs:
-	rm ./logs/logs_*
+	rm -rf logs
 
 fclean:
 	@docker rm -f $(shell docker ps -qa) || echo prout > /dev/null
