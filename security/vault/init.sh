@@ -3,6 +3,7 @@
 apk add openssl curl
 
 mkdir -p /vault/tls
+syslogd -R logstash:514
 
 # verifier si les fichier ssl existe deja
 
@@ -41,11 +42,10 @@ curl -k -s \
     https://127.0.0.1:8200/v1/sys/unseal
 
 vault status
-
+echo $VAULT_RTOKEN
 unset VAULT_UNSEAL1 VAULT_UNSEAL2 VAULT_UNSEAL3
 
 vault login $VAULT_RTOKEN
-syslogd -R logstash:514
 vault audit enable syslog -format=json
 
 wait
