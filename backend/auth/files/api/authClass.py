@@ -1,7 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.shortcuts import redirect
 from django.http import JsonResponse
 from requests_oauthlib import OAuth2Session
+import requests
 # faire une classe qui a des fonctions pour lauthentification
 
 # login
@@ -39,16 +41,50 @@ class authManager:
 # logout
     @staticmethod
     def logout_user(request):
+        # request.session.clear()
         logout(request)
         return JsonResponse({"success": True, "message":"User loged out"})
 
     @staticmethod
     def remote_connection(request):
-        UID = ""
-        client_secret = ""
+        client_id = "couin"
+        client_secret = "couin"
+        redirect_uri = "http://localhost:8000/api/auth/callback"
+        authorization_base_url = "https://api.intra.42.fr/oauth/authorize"
+        token_url = "https://api.intra.42.fr/oauth/token"
+        user_info_url = "https://api.intra.42.fr/v2/me"
 
-        client = OAuth2Session(UID, client_secret=client_secret)
+        client = OAuth2Session(client_id, redirect_uri=redirect_uri)
 
-        print(f"client = {client}")
-        return JsonResponse({"success": True, "message":"qwer"})
-        
+        authorization_url, state = client.authorization_url(authorization_base_url)
+
+        print(f"authorization url = {authorization_url}")
+        return redirect(authorization_url)
+
+    def revoke_token(token):
+        revoke_url = "https://api.intra.42.fr/oauth/revoke"
+        response = requests.post(revoke_url, data={"token": token})
+        print(f"🚫 Token révoqué: {response.status_code}")
+        return response
+
+    def callback(self, request):
+        client_id = "couin"
+        client_secret = "couin"
+        redirect_uri = "http://localhost:8000/api/auth/callback"
+        authorization_base_url = "https://api.intra.42.fr/oauth/authorize"
+        token_url = "https://api.intra.42.fr/oauth/token"
+        user_info_url = "https://api.intra.42.fr/v2/me"
+
+        client = OAuth2Session(client_id, redirect_uri=redirect_uri)
+
+        code = request.GET.get("code")
+        if not code:
+            return JsonResponse({"error": "Authorization code missing"}, status=400)
+
+        token = client.fetch_token(token_url, client_secret=client_secret, code=code)
+        client = OAuth2Session(client_id, token=token)
+
+        user_info = client.get(user_info_url).json()
+        self.revoke_token(token["acces_token"])
+        print(f"👤 Infos utilisateur: {user_info}")
+        return JsonResponse({"success": True, "user_info": user_info})

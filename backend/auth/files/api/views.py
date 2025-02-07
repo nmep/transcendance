@@ -31,4 +31,12 @@ class authAPI(APIView):
         elif extract_kwargs_action == "remote":
             print("remote !!")
             return authManager.remote_connection(request)
+        elif extract_kwargs_action == "remote":
+            print("callback !!")
+            return authManager.callback(request)
         return Response(person)
+    
+    def get(self, request, *args, **kwargs):
+        action = kwargs.get('action')
+        print(f"get action = {action}")
+        return authManager.callback(self, request)
