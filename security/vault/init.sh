@@ -45,5 +45,7 @@ vault status
 unset VAULT_UNSEAL1 VAULT_UNSEAL2 VAULT_UNSEAL3
 
 vault login $VAULT_RTOKEN
+syslogd -R logstash:514
+vault audit enable syslog -format=json
 
 wait
