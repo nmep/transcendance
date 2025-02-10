@@ -10,14 +10,14 @@ all:
 
 logs:
 	mkdir -p logs
-	bash prout.sh
+	bash logger.sh
 
 rm_logs:
 	rm -rf logs
 
 fclean:
-	@docker rm -f $(shell docker ps -qa) || echo prout > /dev/null
-	@docker volume rm -f $(shell docker volume ls -q) || echo prout > /dev/null
+	@docker rm -f $(shell docker ps -qa) || echo > /dev/null
+	@docker volume rm -f $(shell docker volume ls -q) || echo > /dev/null
 	@docker run --rm -v ./$(VOLUMES_DIR):/test -w /test alpine rm -rf $(VOLUMES)
 	@docker image rm -f ${BUILD_IMAGES}
 	
