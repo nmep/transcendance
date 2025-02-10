@@ -1,5 +1,5 @@
 VOLUMES_DIR=volumes/
-VOLUMES=grafana/data logstash/data certs elasticsearch/data kibana/data prometheus/data security/vault/data security/vault/certs
+VOLUMES=grafana/data logstash/data certs elasticsearch/data kibana/data prometheus/data vault/data vault/certs
 VOLUMES_NAMES=$(addprefix ${VOLUMES_DIR}, ${VOLUMES})
 BUILD_IMAGES=$(addprefix transcendance_, grafana auth)
 
@@ -18,7 +18,7 @@ rm_logs:
 fclean:
 	@docker rm -f $(shell docker ps -qa) || echo > /dev/null
 	@docker volume rm -f $(shell docker volume ls -q) || echo > /dev/null
-	@docker run --rm -v ./$(VOLUMES_DIR):/test -w /test alpine rm -rf $(VOLUMES)
+	@docker run --rm -v ./:/test -w /test alpine rm -rf $(VOLUMES_DIR)
 	@docker image rm -f ${BUILD_IMAGES}
 	
 re: fclean all
