@@ -28,7 +28,7 @@ echo "Vault is unsealed, continuing..."
 while read var; do
 	j=0
 	var_content="null"
-	while [ -z "$var_content" ] || [ "$var_content" = "null" ] ; do
+	while [ "$var_content" = "null" ]; do
 		echo "Waiting for vault content..."
 		sleep 2
 		j=$((j+1))
@@ -47,7 +47,6 @@ done << EOVARS
 GF_SECURITY_ADMIN_PASSWORD
 GF_SECURITY_ADMIN_USER
 EOVARS
-
 unset VAULT_RTOKEN
 echo "Environment variables were properly set using vault, launching $service"
 exec "$@"
