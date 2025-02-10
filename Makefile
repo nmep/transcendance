@@ -1,10 +1,10 @@
-VOLUMES_DIR=devops/
-VOLUMES=grafana/data logstash/data certs elasticsearch/data kibana/data prometheus/data
+VOLUMES_DIR=volumes/
+VOLUMES=grafana/data logstash/data certs elasticsearch/data kibana/data prometheus/data security/vault/data security/vault/certs
 VOLUMES_NAMES=$(addprefix ${VOLUMES_DIR}, ${VOLUMES})
 BUILD_IMAGES=$(addprefix transcendance_, grafana auth)
 
 
-all: 
+all:
 	mkdir -p ${VOLUMES_NAMES}
 	docker compose up
 

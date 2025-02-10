@@ -15,7 +15,7 @@ openssl x509 -req -days 356 \
             -signkey /vault/tls/vault.key \
             -out /vault/tls/vault.crt
 
-vault server -config /vault/config/config.hcl &
+vault server -config /vault/config/config.hcl
 
 echo "Waiting for vault server to be launched..."
 

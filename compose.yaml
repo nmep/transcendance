@@ -5,29 +5,10 @@ include:
  - ./includes/volumes.yml
  - ./includes/networks.yml
  - ./includes/elk.yml
-
+ - ./includes/vault.yml
 
 
 services:
-
-# ------------------------------ securite ------------------------------ #
-  vault:
-    container_name: vault
-    image: hashicorp/vault:1.18
-    user: 0:0
-    env_file:
-      - "security/vault/vault.env"
-    ports:
-      - "8200:8200"
-    networks:
-      - vault
-    volumes:
-      - ./security/vault/init.sh:/vault/init.sh
-      - ./security/vault/config/config.hcl:/vault/config/config.hcl
-      - ./security/vault/data:/vault/data
-    cap_add:
-      - IPC_LOCK
-    entrypoint: ["/bin/sh", ./vault/init.sh]
 
 # ------------------------------ nginx ------------------------------ #
 
