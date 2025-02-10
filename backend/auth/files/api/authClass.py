@@ -8,6 +8,9 @@ import requests
 
 # login
 
+client_id = "COUIN"
+client_secret = "couin"
+
 class authManager:
     @staticmethod
     def login_user(request, username, password):
@@ -41,14 +44,12 @@ class authManager:
 # logout
     @staticmethod
     def logout_user(request):
-        # request.session.clear()
-        logout(request)
+        logout(request=request)
+        # redirect sur le home page ?
         return JsonResponse({"success": True, "message":"User loged out"})
 
     @staticmethod
     def remote_connection(request):
-        client_id = "couin"
-        client_secret = "couin"
         redirect_uri = "http://localhost:8000/api/auth/callback"
         authorization_base_url = "https://api.intra.42.fr/oauth/authorize"
         token_url = "https://api.intra.42.fr/oauth/token"
@@ -61,15 +62,9 @@ class authManager:
         print(f"authorization url = {authorization_url}")
         return redirect(authorization_url)
 
-    def revoke_token(token):
-        revoke_url = "https://api.intra.42.fr/oauth/revoke"
-        response = requests.post(revoke_url, data={"token": token})
-        print(f"🚫 Token révoqué: {response.status_code}")
-        return response
-
-    def callback(self, request):
-        client_id = "couin"
-        client_secret = "couin"
+    @staticmethod
+    def callback(request):
+        print(f"ICI CLIENT ID = {client_id}")
         redirect_uri = "http://localhost:8000/api/auth/callback"
         authorization_base_url = "https://api.intra.42.fr/oauth/authorize"
         token_url = "https://api.intra.42.fr/oauth/token"
@@ -85,6 +80,6 @@ class authManager:
         client = OAuth2Session(client_id, token=token)
 
         user_info = client.get(user_info_url).json()
-        self.revoke_token(token["acces_token"])
-        print(f"👤 Infos utilisateur: {user_info}")
-        return JsonResponse({"success": True, "user_info": user_info})
+        print(f"token = {token}")
+        # print(f"👤 Infos utilisateur: {user_info}")
+        return JsonResponse({"success": True, "user_login": user_info["login"]})

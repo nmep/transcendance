@@ -3,7 +3,6 @@ from rest_framework.views import APIView
 from auth_app.models import authConf
 from .serializers import authSerializer
 from .authClass import authManager
-import json
 
 
 person = {'name':'Denis', 'age':28}
@@ -31,12 +30,9 @@ class authAPI(APIView):
         elif extract_kwargs_action == "remote":
             print("remote !!")
             return authManager.remote_connection(request)
-        elif extract_kwargs_action == "remote":
-            print("callback !!")
-            return authManager.callback(request)
         return Response(person)
     
     def get(self, request, *args, **kwargs):
         action = kwargs.get('action')
         print(f"get action = {action}")
-        return authManager.callback(self, request)
+        return authManager.callback(request)
