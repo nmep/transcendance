@@ -11,9 +11,25 @@ services:
     networks:
       - vault
     volumes:
-      - ../security/vault/init.sh:/vault/init.sh
+      - ../security/vault/entrypoint.sh:/entrypoint.sh
       - ../security/vault/config/config.hcl:/vault/config/config.hcl
+      - vaultcert:/vault/tls
       - vaultdata:/vault/data
     cap_add:
       - IPC_LOCK
-    entrypoint: ["/bin/sh", ./vault/init.sh]
+    environment:
+     VAULT_ADDR: "https://127.0.0.1:8200"
+    entrypoint: ["/bin/sh", ./entrypoint.sh]
+    command: vault server -config /vault/config/config.hcl
+
+  init_vault:
+    image: alpine:latest
+    container_name: init_vault
+    depends_on:
+      - vault
+    volumes:
+      - ../security/vault/init_vault.sh:/init_vault.sh
+      - ../security/vault/secrets.txt:/secrets.txt
+    entrypoint: ["/bin/sh", "/init_vault.sh"]
+    networks: 
+     - vault
