@@ -1,7 +1,7 @@
 #!/bin/bash
 
 service="Grafana"
-
+service_lower=$(echo $service | tr A-Z a-z)
 #Checking for vault token
 
 if [ -z "$VAULT_RTOKEN" ]; then
@@ -38,7 +38,7 @@ while read var; do
 		fi
 		export $var=$(curl -s -k \
 									--header "X-Vault-Token:$VAULT_RTOKEN" \
-									https://vault:8200/v1/secret/grafana \
+									https://vault:8200/v1/secret/${service_lower} \
 									| jq -r .data.$var)
 		var_content=$(eval "echo \${$var}")
 	done
