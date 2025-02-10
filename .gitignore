@@ -5,3 +5,4 @@ data/
 certs/
 stamp
 logs/
+secrets.txt
