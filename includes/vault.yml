@@ -29,7 +29,8 @@ services:
       - vault
     volumes:
       - ../security/vault/init_vault.sh:/init_vault.sh
-      - ../security/vault/secrets.txt:/secrets.txt
+      - init_vault:/secret/
     entrypoint: ["/bin/sh", "/init_vault.sh"]
+    restart: no
     networks: 
      - vault

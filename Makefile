@@ -1,5 +1,5 @@
 VOLUMES_DIR=volumes/
-VOLUMES=grafana/data logstash/data certs elasticsearch/data kibana/data prometheus/data vault/data vault/cert
+VOLUMES=grafana/data logstash/data certs elasticsearch/data kibana/data prometheus/data vault/data vault/cert vault/secret
 VOLUMES_NAMES=$(addprefix ${VOLUMES_DIR}, ${VOLUMES})
 BUILD_IMAGES=$(addprefix transcendance_, grafana auth)
 

@@ -35,3 +35,9 @@ volumes:
     device: ../volumes/vault/cert
     type: "none"
     o: bind
+ init_vault:
+   driver: local
+   driver_opts:
+    device: ../volumes/vault/secret
+    type: "none"
+    o: bind

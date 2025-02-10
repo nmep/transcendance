@@ -29,6 +29,8 @@ services:
     volumes:
       - ../devops/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
       - ../devops/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - init_vault:/secret/
+
     networks:
       - monitoring
       - vault

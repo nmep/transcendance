@@ -164,8 +164,8 @@ services:
      - ELASTIC_HOSTS=https://es01:9200
    command: >
             bash -c '
-            apt update;
-            apt install wget -y;
+            apt-get update;
+            apt-get install wget -y;
             wget -O /usr/share/logstash/lib/postgresql-42.7.5.jar https://jdbc.postgresql.org/download/postgresql-42.7.5.jar;
             chmod 755 /usr/share/logstash/lib/postgresql-42.7.5.jar;
             exec logstash
