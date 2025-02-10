@@ -21,9 +21,9 @@ mkdir -p $CERT_DIR
 
 # Vérification si le certificat existe déjà
 if [ -f "$CERT_FILE" ] && [ -f "$KEY_FILE" ]; then
-    echo "✅ Certificat SSL déjà en place. Aucune action requise."
+    echo "✅ Certificat SSL already created"
 else
-    echo "🔐 Génération du certificat SSL auto-signé pour Vault..."
+    echo "🔐 Generating self-signed certificate for Vault..."
 
     # Génération de la clé privée
     openssl genpkey -algorithm RSA -out "$KEY_FILE"
@@ -37,6 +37,6 @@ else
     # Création d'un CA auto-signé (si besoin)
     cp "$CERT_FILE" "$CA_FILE"
 
-    echo "✅ Certificat généré et enregistré dans : $CERT_DIR"
+    echo "✅ Certificate successfully created at : $CERT_DIR"
 fi
 exec "$@"

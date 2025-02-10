@@ -6,4 +6,5 @@ certs/
 stamp
 logs/
 secrets.txt
+secrets.json
 volumes/

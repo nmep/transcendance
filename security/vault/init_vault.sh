@@ -52,10 +52,10 @@ if [ "$initialized" = "true" ]; then
     if [ "$seal" = "true" ]; then
         unseal_vault
     else
-        echo "✅ Vault est déjà descellé."
+        echo "✅ Vault is already unsealed."
     fi
 else
-    echo "🚀 Initialisation de Vault..."
+    echo "🚀 Initializing Vault..."
     INIT_OUTPUT=$(curl -sk --request POST $VAULT_ADDR/v1/sys/init --data '{"secret_shares": 3, "secret_threshold": 2}')
     echo "$INIT_OUTPUT" > $SECRET_DIR/init_output.json
 
@@ -68,15 +68,32 @@ else
     unseal_vault
 fi
 
-echo "🔐 Ajout des secrets dans Vault..."
+echo "🔐 Adding secrets to Vault..."
 ROOT_TOKEN=$(cat $SECRET_DIR/root_token.txt)
 curl -sk --header "X-Vault-Token: $ROOT_TOKEN" --request POST --data '{"type":"kv-v2"}' $VAULT_ADDR/v1/sys/mounts/secret > /dev/null
 
-curl -sk --header "X-Vault-Token: $ROOT_TOKEN" --request POST --data '{"data":{"API_KEY":"123456", "SECRET_KEY":"abcdef"}}' $VAULT_ADDR/v1/secret/data/app > /dev/null
+SECRETS_JSON=$(cat secrets.json)
 
-echo "✅ Secrets ajoutés."
-echo "📝 Activation du logging audit sur Syslog..."
+echo "$SECRETS_JSON" | jq -c '.services | to_entries[]' | while read -r entry; do
+    SERVICE=$(echo "$entry" | jq -r '.key') 
+    SECRET_DATA=$(echo "$entry" | jq -c '.value') 
+
+    VAULT_PATH="secret/data/$SERVICE"
+
+    echo "📤 Sending secrets for service : $SERVICE"
+
+    # Envoi des secrets dans Vault via API
+    curl -sk --header "X-Vault-Token: $ROOT_TOKEN" \
+         --request POST \
+         --data "{\"data\": $SECRET_DATA}" \
+         "$VAULT_ADDR/v1/$VAULT_PATH" &> /dev/null
+
+    echo "✅ $SERVICE's secrets successfully sent to Vault !"
+done
+echo "✅ All secrets added."
+
+echo "📝 Activating syslogs for Vault..."
 curl -sk --header "X-Vault-Token: $ROOT_TOKEN" --request PUT --data '{"type":"syslog"}' $VAULT_ADDR/v1/sys/audit/syslog
-echo "✅ Audit syslog activé."
-echo "✅ Initialisation terminée."
+echo "✅ Syslog activated !"
+echo "✅ Initialization done !"
 touch "$SECRETS_FILE"

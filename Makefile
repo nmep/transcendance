@@ -1,7 +1,19 @@
 VOLUMES_DIR=volumes/
-VOLUMES=grafana/data logstash/data certs elasticsearch/data kibana/data prometheus/data vault/data vault/cert vault/secret
+VOLUMES=grafana/data\
+		logstash/data\
+		certs\
+		elasticsearch/data\
+		kibana/data\
+		prometheus/data\
+		vault/data\
+		vault/cert\
+		vault/secret
+
 VOLUMES_NAMES=$(addprefix ${VOLUMES_DIR}, ${VOLUMES})
-BUILD_IMAGES=$(addprefix transcendance_, grafana auth)
+IMAGES= grafana\
+		auth
+	
+BUILD_IMAGES=$(addprefix transcendance_, ${IMAGES})
 
 
 all:
