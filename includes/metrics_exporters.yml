@@ -7,6 +7,8 @@ services:
     image: quay.io/prometheuscommunity/postgres-exporter
     ports:
       - '9187:9187'
+    volumes:
+     - init_vault:/secret/
     environment:
       - DATA_SOURCE_URI=db:5432/toto_db?sslmode=disable
       - DATA_SOURCE_USER=toto
