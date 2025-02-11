@@ -110,7 +110,10 @@ services:
    depends_on:
      es01:
        condition: service_healthy
-   image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
+   image: transcendance_kibana
+   build:
+      context: ../devops/kibana
+      dockerfile: Dockerfile
    labels:
      co.elastic.logs/module: kibana
    volumes:
@@ -129,6 +132,8 @@ services:
      - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${ENCRYPTION_KEY}
      - XPACK_REPORTING_ENCRYPTIONKEY=${ENCRYPTION_KEY}
    mem_limit: ${KB_MEM_LIMIT}
+   entrypoint: /entrypoint.sh
+   command: /usr/local/bin/kibana-docker
    healthcheck:
      test:
        [

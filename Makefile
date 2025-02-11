@@ -12,7 +12,8 @@ VOLUMES=grafana/data\
 VOLUMES_NAMES=$(addprefix ${VOLUMES_DIR}, ${VOLUMES})
 
 IMAGES= grafana\
-		auth
+		auth\
+		kibana
 	
 BUILD_IMAGES=$(addprefix transcendance_, ${IMAGES})
 
