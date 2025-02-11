@@ -7,7 +7,7 @@ services:
     env_file:
       - "../security/vault/vault.env"
     ports:
-      - "8200:8200"
+      - "8203:8200"
     networks:
       - vault
     volumes:
