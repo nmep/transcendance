@@ -17,9 +17,14 @@ IMAGES= grafana\
 BUILD_IMAGES=$(addprefix transcendance_, ${IMAGES})
 
 
-all:
+all: volumes
 	mkdir -p ${VOLUMES_NAMES}
 	docker compose up
+
+volumes: ${VOLUMES_NAMES}
+
+${VOLUMES_NAMES}:
+	mkdir -p ${VOLUMES_NAMES}
 
 logs:
 	mkdir -p logs
@@ -39,4 +44,4 @@ fclean:
 	
 re: fclean all
 
-.PHONY: logs all rm_logs re fclean down
+.PHONY: logs all rm_logs re fclean down volumes

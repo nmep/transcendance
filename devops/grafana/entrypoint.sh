@@ -32,11 +32,12 @@ while [ "$seal" = "null" ] || [ "$seal" = "true" ]; do
 done
 echo "✅ Vault is unsealed, continuing..."
 #Error count
+echo "⏳ Waiting for Vault content..."
 while read var; do
 	j=0
+	echo "⏳ Setting up $var..."
 	var_content="null"
 	while [ "$var_content" = "null" ]; do
-		echo "⏳ Waiting for Vault content..."
 		sleep 2
 		j=$((j+1))
 		if  [ $j -gt 30 ]; then
@@ -55,5 +56,5 @@ GF_SECURITY_ADMIN_PASSWORD
 GF_SECURITY_ADMIN_USER
 EOVARS
 unset VAULT_RTOKEN
-echo "🚀 Environment variables were properly set using vault, launching $service"
+echo "🚀 Environment variables were properly set using Vault, launching $service"
 exec "$@"
