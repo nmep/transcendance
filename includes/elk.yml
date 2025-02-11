@@ -57,6 +57,7 @@ services:
      retries: 120
    networks:
     - monitoring
+    - vault
   
  es01:
    container_name: elastic
@@ -100,6 +101,7 @@ services:
      retries: 120
    networks:
     - monitoring 
+    - vault
 
  kibana:
    container_name: kibana
@@ -135,6 +137,7 @@ services:
      retries: 120
    networks:
     - monitoring
+    - vault
 
  logstash01:
    container_name: logstash

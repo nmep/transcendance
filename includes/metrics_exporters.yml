@@ -13,6 +13,7 @@ services:
       - DATA_SOURCE_PASS=password
     networks:
       - monitoring
+      - vault
     command: '--no-collector.stat_bgwriter'
 
   nginx_prometheus_exporter:

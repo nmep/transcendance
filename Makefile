@@ -10,6 +10,7 @@ VOLUMES=grafana/data\
 		vault/secret
 
 VOLUMES_NAMES=$(addprefix ${VOLUMES_DIR}, ${VOLUMES})
+
 IMAGES= grafana\
 		auth
 	
@@ -27,6 +28,9 @@ logs:
 rm_logs:
 	rm -rf logs
 
+down:
+	docker compose down
+
 fclean:
 	@docker rm -f $(shell docker ps -qa) || echo > /dev/null
 	@docker volume rm -f $(shell docker volume ls -q) || echo > /dev/null
@@ -35,4 +39,4 @@ fclean:
 	
 re: fclean all
 
-.PHONY: logs all rm_logs re fclean
+.PHONY: logs all rm_logs re fclean down

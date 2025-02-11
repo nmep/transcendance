@@ -49,6 +49,7 @@ services:
     networks:
       - auth
       - monitoring
+      - vault
 
   auth:
     container_name: auth_api
@@ -63,3 +64,4 @@ services:
     networks:
       - auth
       - monitoring
+      - vault
