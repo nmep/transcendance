@@ -1,9 +1,23 @@
 #!/bin/bash
+apk update
+apk add openssl curl rsyslog
+####################################################################
+#a clean et mettre dans un dockerfile pour avoir en cache###########
+####################################################################
+cat << ''eof > rsyslog.conf
+# Charger les modules nécessaires
+module(load="imuxsock")  # Logs des applications locales via syslog
+# Augmenter la taille des messages pour éviter le tronquage (défaut = 1024)
+$MaxMessageSize 64k
 
-apk add openssl curl
+# Envoyer tous les logs vers Logstash en UDP (changer en TCP si nécessaire)
+*.* action(type="omfwd" target="logstash" port="514" protocol="udp")
+
+eof
+rsyslogd -f rsyslog.conf
 
 mkdir -p /vault/tls
-syslogd -R logstash:514
+
 
 # verifier si les fichier ssl existe deja
 
@@ -39,4 +53,5 @@ else
 
     echo "✅ Certificate successfully created at : $CERT_DIR"
 fi
+echo ==="$@"====
 exec "$@"

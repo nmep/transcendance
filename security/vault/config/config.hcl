@@ -1,3 +1,5 @@
+log_level = "info"
+
 ui            = true
 disable_mlock = true
 
