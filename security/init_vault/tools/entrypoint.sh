@@ -1,55 +1,59 @@
-#!/bin/sh
+#!/bin/bash
 
 unseal_vault() {
     echo "🔓 Unsealing Vault..."
     UNSEAL_KEYS=$(cat $SECRET_DIR/unseal_keys.txt)
 
     for KEY in $UNSEAL_KEYS; do
-        curl -ks --request POST --data "{\"key\": \"$KEY\"}" $VAULT_ADDR/v1/sys/unseal > /dev/null
+        curl -ks --request POST --data "{\"key\": \"$KEY\"}" $VAULT_ADDR/v1/sys/unseal >/dev/null
     done
 
     echo "✅ Vault is now unsealed."
 }
 
 SECRET_DIR="/secret"
+SECRET_JSON="/secrets.json"
 SECRETS_FILE="$SECRET_DIR/secrets_set"
 if [ -f "$SECRETS_FILE" ]; then
     echo "✅ Initialization process already done !"
     exit 0
 fi
 
-apk add curl jq
-VAULT_ADDR="https://vault:8200"
-mkdir -p /vault/data
+if [ ! -f "$SECRET_JSON" ]; then
+    echo "❌ Please provide secrets .json file !"
+    exit 1
+fi
 
+VAULT_ADDR="https://vault:8200"
+mkdir -p /vault/data $SECRET_DIR
 
 echo "Checking Vault status..."
 j=0
 until [ "$initialized" = "true" ] || [ "$initialized" = "false" ]; do
     echo "⏳ Waiting for Vault to answer..."
-	j=$((j+1))
-	if  [ $j -gt 30 ]; then
-			echo "❌ Vault is not responding after a minute, aborting..."
-			exit 1
-	fi
-	initialized=$(curl -k -s -f $VAULT_ADDR/v1/sys/seal-status | jq -r .initialized)
+    j=$((j + 1))
+    if [ $j -gt 30 ]; then
+        echo "❌ Vault is not responding after a minute, aborting..."
+        exit 1
+    fi
+    initialized=$(curl -k -s -f $VAULT_ADDR/v1/sys/seal-status | jq -r .initialized)
     sleep 2
 done
 
 j=0
 if [ "$initialized" = "true" ]; then
     echo "✅ Vault is already initialized. Checking seal..."
-    seal="null"
-    while [ "$seal" = "null" ] || [ -z "$seal" ]; do
-        j=$((j+1))
-        if  [ $j -gt 30 ]; then
-                echo "❌ Vault is not responding after a minute, aborting..."
-                exit 1
+    SEAL="null"
+    while [ "$SEAL" = "null" ] || [ -z "$SEAL" ]; do
+        j=$((j + 1))
+        if [ $j -gt 30 ]; then
+            echo "❌ Vault is not responding after a minute, aborting..."
+            exit 1
         fi
-        seal=$(curl -k -s -f https://vault:8200/v1/sys/seal-status | jq -r .sealed)
+        SEAL=$(curl -k -s -f https://vault:8200/v1/sys/seal-status | jq -r .sealed)
         sleep 2
     done
-    if [ "$seal" = "true" ]; then
+    if [ "$SEAL" = "true" ]; then
         unseal_vault
     else
         echo "✅ Vault is already unsealed."
@@ -57,26 +61,25 @@ if [ "$initialized" = "true" ]; then
 else
     echo "🚀 Initializing Vault..."
     INIT_OUTPUT=$(curl -sk --request POST $VAULT_ADDR/v1/sys/init --data '{"secret_shares": 3, "secret_threshold": 2}')
-    echo "$INIT_OUTPUT" > $SECRET_DIR/init_output.json
+    echo "$INIT_OUTPUT" >$SECRET_DIR/init_output.json
 
     UNSEAL_KEYS=$(echo $INIT_OUTPUT | jq -r '.keys[]')
     ROOT_TOKEN=$(echo $INIT_OUTPUT | jq -r '.root_token')
 
-    echo "$UNSEAL_KEYS" > $SECRET_DIR/unseal_keys.txt
-    echo "$ROOT_TOKEN" > $SECRET_DIR/root_token.txt
+    echo "$UNSEAL_KEYS" >$SECRET_DIR/unseal_keys.txt
+    echo "$ROOT_TOKEN" >$SECRET_DIR/root_token.txt
 
     unseal_vault
 fi
 
 echo "🔐 Adding secrets to Vault..."
 ROOT_TOKEN=$(cat $SECRET_DIR/root_token.txt)
-curl -sk --header "X-Vault-Token: $ROOT_TOKEN" --request POST --data '{"type":"kv-v2"}' $VAULT_ADDR/v1/sys/mounts/secret > /dev/null
+curl -sk --header "X-Vault-Token: $ROOT_TOKEN" --request POST --data '{"type":"kv-v2"}' $VAULT_ADDR/v1/sys/mounts/secret
 
-SECRETS_JSON=$(cat secrets.json)
-
+SECRETS_JSON=$(cat $SECRET_JSON)
 echo "$SECRETS_JSON" | jq -c '.services | to_entries[]' | while read -r entry; do
-    SERVICE=$(echo "$entry" | jq -r '.key') 
-    SECRET_DATA=$(echo "$entry" | jq -c '.value') 
+    SERVICE=$(echo "$entry" | jq -r '.key')
+    SECRET_DATA=$(echo "$entry" | jq -c '.value')
 
     VAULT_PATH="secret/data/$SERVICE"
 
@@ -84,11 +87,11 @@ echo "$SECRETS_JSON" | jq -c '.services | to_entries[]' | while read -r entry; d
 
     # Envoi des secrets dans Vault via API
     curl -sk --header "X-Vault-Token: $ROOT_TOKEN" \
-         --request POST \
-         --data "{\"data\": $SECRET_DATA}" \
-         "$VAULT_ADDR/v1/$VAULT_PATH" &> /dev/null
+        --request POST \
+        --data "{\"data\": $SECRET_DATA}" \
+        "$VAULT_ADDR/v1/$VAULT_PATH"
 
-    echo "✅ $SERVICE's secrets successfully sent to Vault !"
+    echo "✅ ${SERVICE^}'s secrets successfully sent to Vault !"
 done
 echo "✅ All secrets added."
 

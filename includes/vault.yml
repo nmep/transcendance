@@ -1,9 +1,11 @@
 services:
-# ------------------------------ securite ------------------------------ #
+  # ------------------------------ securite ------------------------------ #
   vault:
     container_name: vault
-    image: hashicorp/vault:1.18
-    user: 0:0
+    image: transcendance_vault
+    build:
+      context: ../security/vault/
+      dockerfile: Dockerfile
     env_file:
       - "../security/vault/vault.env"
     ports:
@@ -12,26 +14,24 @@ services:
       - vault
     volumes:
       - ../security/vault/entrypoint.sh:/entrypoint.sh
-      - ../security/vault/config/config.hcl:/vault/config/config.hcl
+      - ../security/vault/config/:/vault/config/
       - vaultcert:/vault/tls
       - vaultdata:/vault/data
     cap_add:
       - IPC_LOCK
     environment:
-     VAULT_ADDR: "https://127.0.0.1:8200"
-    entrypoint: ["/bin/sh", ./entrypoint.sh]
-    command: vault server -config /vault/config/config.hcl
+      VAULT_ADDR: "https://127.0.0.1:8200"
 
   init_vault:
-    image: alpine:latest
+    image: transcendance_init_vault
     container_name: init_vault
+    build:
+      context: ../security/init_vault/
+      dockerfile: Dockerfile
     depends_on:
       - vault
     volumes:
-      - ../security/vault/init_vault.sh:/init_vault.sh
-      - ../security/vault/secrets.json:/secrets.json
       - init_vault:/secret/
-    entrypoint: ["/bin/sh", "/init_vault.sh"]
     restart: no
-    networks: 
-     - vault
+    networks:
+      - vault

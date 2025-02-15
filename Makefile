@@ -13,7 +13,9 @@ VOLUMES_NAMES=$(addprefix ${VOLUMES_DIR}, ${VOLUMES})
 
 IMAGES= grafana\
 		auth\
-		kibana
+		kibana\
+		vault\
+		init_vault
 	
 BUILD_IMAGES=$(addprefix transcendance_, ${IMAGES})
 
