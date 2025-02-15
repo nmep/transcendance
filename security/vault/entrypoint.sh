@@ -4,7 +4,7 @@ apk add openssl curl rsyslog
 ####################################################################
 #a clean et mettre dans un dockerfile pour avoir en cache###########
 ####################################################################
-cat << ''eof > rsyslog.conf
+cat <<''eof >rsyslog.conf
 # Charger les modules nécessaires
 module(load="imuxsock")  # Logs des applications locales via syslog
 # Augmenter la taille des messages pour éviter le tronquage (défaut = 1024)
@@ -17,7 +17,6 @@ eof
 rsyslogd -f rsyslog.conf
 
 mkdir -p /vault/tls
-
 
 # verifier si les fichier ssl existe deja
 
@@ -35,23 +34,22 @@ mkdir -p $CERT_DIR
 
 # Vérification si le certificat existe déjà
 if [ -f "$CERT_FILE" ] && [ -f "$KEY_FILE" ]; then
-    echo "✅ Certificat SSL already created"
+	echo "✅ Certificat SSL already created"
 else
-    echo "🔐 Generating self-signed certificate for Vault..."
+	echo "🔐 Generating self-signed certificate for Vault..."
 
-    # Génération de la clé privée
-    openssl genpkey -algorithm RSA -out "$KEY_FILE"
+	# Génération de la clé privée
+	openssl genpkey -algorithm RSA -out "$KEY_FILE"
 
-    # Génération de la requête de certificat (CSR)
-    openssl req -new -key "$KEY_FILE" -out "$CERT_DIR/vault.csr" -subj "/CN=$VAULT_HOST"
+	# Génération de la requête de certificat (CSR)
+	openssl req -new -key "$KEY_FILE" -out "$CERT_DIR/vault.csr" -subj "/CN=$VAULT_HOST"
 
-    # Génération d'un certificat auto-signé
-    openssl x509 -req -in "$CERT_DIR/vault.csr" -signkey "$KEY_FILE" -out "$CERT_FILE" -days "$DAYS_VALID"
+	# Génération d'un certificat auto-signé
+	openssl x509 -req -in "$CERT_DIR/vault.csr" -signkey "$KEY_FILE" -out "$CERT_FILE" -days "$DAYS_VALID"
 
-    # Création d'un CA auto-signé (si besoin)
-    cp "$CERT_FILE" "$CA_FILE"
+	# Création d'un CA auto-signé (si besoin)
+	cp "$CERT_FILE" "$CA_FILE"
 
-    echo "✅ Certificate successfully created at : $CERT_DIR"
+	echo "✅ Certificate successfully created at : $CERT_DIR"
 fi
-echo ==="$@"====
 exec "$@"
