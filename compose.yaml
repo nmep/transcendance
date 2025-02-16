@@ -1,11 +1,11 @@
 
 include: 
- - ./includes/metrics_monitoring.yml
- - ./includes/metrics_exporters.yml
- - ./includes/volumes.yml
- - ./includes/networks.yml
- - ./includes/elk.yml
- - ./includes/vault.yml
+  - ./includes/metrics_exporters.yml
+  - ./includes/volumes.yml
+  - ./includes/metrics_monitoring.yml
+  - ./includes/networks.yml
+  - ./includes/elk.yml
+  - ./includes/vault.yml
 
 
 services:
@@ -41,7 +41,7 @@ services:
     image: 'postgres:16.6'
     container_name: postgres
     volumes:
-     - init_vault:/secret/
+      - init_vault:/secret/
     ports:
       - '5432:5432'
     environment:

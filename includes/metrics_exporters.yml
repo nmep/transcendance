@@ -6,9 +6,9 @@ services:
       - prometheus
     image: quay.io/prometheuscommunity/postgres-exporter
     ports:
-      - '9187:9187'
+      - "9187:9187"
     volumes:
-     - init_vault:/secret/
+      - init_vault:/secret/
     environment:
       - DATA_SOURCE_URI=db:5432/toto_db?sslmode=disable
       - DATA_SOURCE_USER=toto
@@ -16,7 +16,7 @@ services:
     networks:
       - monitoring
       - vault
-    command: '--no-collector.stat_bgwriter'
+    command: "--no-collector.stat_bgwriter"
 
   nginx_prometheus_exporter:
     container_name: nginx_exporter
@@ -25,7 +25,7 @@ services:
       - prometheus
       - reverseproxy
     ports:
-      - '9113:9113'
+      - "9113:9113"
     networks:
       - monitoring
     command:

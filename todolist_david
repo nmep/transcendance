@@ -1,0 +1,38 @@
+INIT_VAULT:
+    - rebosser l'entrypoint pour unseal le vault en cas de restart
+    - condition depends_on à mettre p/r à vault
+VAULT:
+    - réfléchir à un healthcheck
+
+ELK:
+    =>SETUP:
+        - command à mettre dans un entrypoint (besoin des variables dans vault?)
+    =>KIBANA:
+        - de l'environnement a setup en plus dans l'entrypoint
+        - ajouter le depends on de init_vault
+    =>LOGSTASH + ELASTICSEARCH
+        - faire l'entrypoint
+        - ajouter le depends_on de init_vault
+
+EXPORTERS:
+    =>DB_EXPORTER:
+        - entrypoint
+        - depends on
+    
+MONITORING:
+    =>GRAFANA:
+        - healthcheck ?
+    =>PROMETHEUS
+        -???
+
+COMPOSE:
+    Exporter les services pour plus de propreté
+    =>NGINX:
+        -ok?
+    =>DB:
+        - entrypoint à faire
+        - healthcheck ?
+    =>AUTH:
+        - entrypoint à faire
+        - healthcheck ?
+        - modif des settings avec l'environnement
