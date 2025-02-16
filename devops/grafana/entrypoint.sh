@@ -2,6 +2,7 @@
 
 service="Grafana"
 #Checking for vault token
+#VAULT_RTOKEN=$(cat /secret/token_${service,,} 2> /dev/null)
 VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
 j=0
 while [ -z "$VAULT_RTOKEN" ]; do
@@ -11,6 +12,7 @@ while [ -z "$VAULT_RTOKEN" ]; do
 		exit 1
 	fi
 	sleep 2
+	#VAULT_RTOKEN=$(cat /secret/token_${service,,} 2> /dev/null)
 	VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
 	echo "⏳ Vault token is not set, trying again..."
 done
