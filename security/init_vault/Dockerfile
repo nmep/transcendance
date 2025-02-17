@@ -8,4 +8,8 @@ COPY ./tools /
 
 RUN chmod 755 /entrypoint.sh
 
+RUN chmod 755 /check_requirements.sh
+
+RUN mkdir -p /logs
+
 ENTRYPOINT [ "./entrypoint.sh" ]

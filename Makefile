@@ -7,7 +7,8 @@ VOLUMES=grafana/data\
 		prometheus/data\
 		vault/data\
 		vault/cert\
-		vault/secret
+		vault/secret\
+		vault/startup_logs
 
 VOLUMES_NAMES=$(addprefix ${VOLUMES_DIR}, ${VOLUMES})
 

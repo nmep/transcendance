@@ -41,3 +41,9 @@ volumes:
       device: ../volumes/vault/secret
       type: "none"
       o: bind
+  startup_logs:
+    driver: local
+    driver_opts:
+      device: ../volumes/vault/startup_logs
+      type: "none"
+      o: bind

@@ -11,38 +11,22 @@ unseal_vault() {
     echo "✅ Vault is now unsealed."
 }
 
-SECRET_DIR="/secret"
-SECRET_JSON="/secrets.json"
-SECRETS_FILE="$SECRET_DIR/secrets_set"
-if [ -f "$SECRETS_FILE" ]; then
-    echo "✅ Initialization process already done !"
-    exit 0
-fi
+checking_vault() {
+    echo "Checking Vault status..."
+    j=0
+    until [ "$initialized" = "true" ] || [ "$initialized" = "false" ]; do
+        echo "⏳ Waiting for Vault to answer..."
+        j=$((j + 1))
+        if [ $j -gt 30 ]; then
+            echo "❌ Vault is not responding after a minute, aborting..."
+            exit 1
+        fi
+        initialized=$(curl -k -s -f $VAULT_ADDR/v1/sys/seal-status | jq -r .initialized)
+        sleep 2
+    done
+}
 
-if [ ! -f "$SECRET_JSON" ]; then
-    echo "❌ Please provide secrets .json file !"
-    exit 1
-fi
-
-VAULT_ADDR="https://vault:8200"
-mkdir -p /vault/data $SECRET_DIR
-
-echo "Checking Vault status..."
-j=0
-until [ "$initialized" = "true" ] || [ "$initialized" = "false" ]; do
-    echo "⏳ Waiting for Vault to answer..."
-    j=$((j + 1))
-    if [ $j -gt 30 ]; then
-        echo "❌ Vault is not responding after a minute, aborting..."
-        exit 1
-    fi
-    initialized=$(curl -k -s -f $VAULT_ADDR/v1/sys/seal-status | jq -r .initialized)
-    sleep 2
-done
-
-j=0
-if [ "$initialized" = "true" ]; then
-    echo "✅ Vault is already initialized. Checking seal..."
+checking_seal() {
     SEAL="null"
     while [ "$SEAL" = "null" ] || [ -z "$SEAL" ]; do
         j=$((j + 1))
@@ -50,7 +34,7 @@ if [ "$initialized" = "true" ]; then
             echo "❌ Vault is not responding after a minute, aborting..."
             exit 1
         fi
-        SEAL=$(curl -k -s -f https://vault:8200/v1/sys/seal-status | jq -r .sealed)
+        SEAL=$(curl -k -s -f $VAULT_ADDR/v1/sys/seal-status | jq -r .sealed)
         sleep 2
     done
     if [ "$SEAL" = "true" ]; then
@@ -58,6 +42,32 @@ if [ "$initialized" = "true" ]; then
     else
         echo "✅ Vault is already unsealed."
     fi
+}
+
+SECRET_DIR="/secret"
+SECRET_JSON="/secrets.json"
+SECRETS_FILE="$SECRET_DIR/secrets_set"
+VAULT_ADDR="https://vault:8200"
+mkdir -p /vault/data $SECRET_DIR
+
+if [ -f "$SECRETS_FILE" ]; then
+    echo "✅ Initialization process already done !"
+    checking_vault
+    checking_seal
+    exit 0
+fi
+
+./check_requirements.sh
+if [[ $? -ne 0 ]]; then
+    echo "❌ Configuration error, stopping container."
+    exit 1
+fi
+
+checking_vault
+j=0
+if [ "$initialized" = "true" ]; then
+    echo "✅ Vault is already initialized. Checking seal..."
+    checking_seal
 else
     echo "🚀 Initializing Vault..."
     INIT_OUTPUT=$(curl -sk --request POST $VAULT_ADDR/v1/sys/init --data '{"secret_shares": 3, "secret_threshold": 2}')

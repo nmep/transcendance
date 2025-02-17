@@ -32,6 +32,7 @@ services:
       - vault
     volumes:
       - init_vault:/secret/
+      - startup_logs:/logs
     restart: no
     networks:
       - vault
