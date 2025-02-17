@@ -46,11 +46,11 @@ checking_seal() {
 
 SECRET_DIR="/secret"
 SECRET_JSON="/secrets.json"
-SECRETS_FILE="$SECRET_DIR/secrets_set"
+SECRETS_ARE_SET_FILE="$SECRET_DIR/secrets_set"
 VAULT_ADDR="https://vault:8200"
 mkdir -p /vault/data $SECRET_DIR
 
-if [ -f "$SECRETS_FILE" ]; then
+if [ -f "$SECRETS_ARE_SET_FILE" ]; then
     echo "✅ Initialization process already done !"
     checking_vault
     checking_seal
@@ -104,9 +104,10 @@ echo "$SECRETS_JSON" | jq -c '.services | to_entries[]' | while read -r entry; d
     echo "✅ ${SERVICE^}'s secrets successfully sent to Vault !"
 done
 echo "✅ All secrets added."
+#IL FAUDRA PENSER A SUPPRIMER LE JSON DES SECRETS ICI
 
 echo "📝 Activating syslogs for Vault..."
 curl -sk --header "X-Vault-Token: $ROOT_TOKEN" --request PUT --data '{"type":"syslog"}' $VAULT_ADDR/v1/sys/audit/syslog
 echo "✅ Syslog activated !"
 echo "✅ Initialization done !"
-touch "$SECRETS_FILE"
+touch "$SECRETS_ARE_SET_FILE"
