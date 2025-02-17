@@ -12,7 +12,7 @@ unseal_vault() {
 }
 
 checking_vault() {
-    echo "Checking Vault status..."
+    echo "❓Checking Vault status..."
     j=0
     until [ "$initialized" = "true" ] || [ "$initialized" = "false" ]; do
         echo "⏳ Waiting for Vault to answer..."
