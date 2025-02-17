@@ -14,4 +14,4 @@ USER 1000
 
 ENTRYPOINT [ "/entrypoint.sh" ]
 
-CMD [ "sleep", "infinity" ]
+CMD [ "eswrapper" ]

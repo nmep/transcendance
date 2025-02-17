@@ -50,11 +50,10 @@ while read var; do
 			jq -r .data.data.$var)
 		var_content=$(eval "echo \${$var}")
 	done
-	echo "✅ $var has been successfully set, continuing..."
+	echo "✅ $var has been successfully set => $var_content, continuing..."
 done <<EOVARS
 ELASTIC_PASSWORD
 EOVARS
 unset VAULT_RTOKEN
 echo "🚀 Environment variables were properly set using Vault, launching $service"
-
-exec "$@"
+exec /bin/tini -- /usr/local/bin/docker-entrypoint.sh "$@"
