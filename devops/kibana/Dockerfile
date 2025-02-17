@@ -12,7 +12,6 @@ COPY entrypoint.sh /entrypoint.sh
 
 RUN chmod 755 /entrypoint.sh 
 
-USER kibana
+USER 1000
 
 ENTRYPOINT [ "/entrypoint.sh" ]
- 
