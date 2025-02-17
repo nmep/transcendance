@@ -9,8 +9,8 @@
             "ELASTIC_USER"
         ],
         "kibana": [
-            "KIBANA_PASSWORD",
-            "KIBANA_USER",
+            "ELASTICSEARCH_PASSWORD",
+            "ELASTICSEARCH_USERNAME",
             "ENCRYPTION_KEY"
         ],
         "logstash": [

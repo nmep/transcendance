@@ -5,7 +5,7 @@ volumes:
       device: ../volumes/certs
       type: "none"
       o: bind
-  esdata01:
+  elastic_data:
     driver: local
     driver_opts:
       device: ../volumes/elasticsearch/data

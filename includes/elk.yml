@@ -28,9 +28,9 @@ services:
           echo "Creating certs";
           echo -ne \
           "instances:\n"\
-          "  - name: es01\n"\
+          "  - name: elasticsearch\n"\
           "    dns:\n"\
-          "      - es01\n"\
+          "      - elasticsearch\n"\
           "      - localhost\n"\
           "    ip:\n"\
           "      - 127.0.0.1\n"\
@@ -49,13 +49,13 @@ services:
         find . -type d -exec chmod 750 \{\} \;;
         find . -type f -exec chmod 640 \{\} \;;
         echo "Waiting for Elasticsearch availability";
-        until curl -s --cacert config/certs/ca/ca.crt https://es01:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
+        until curl -s --cacert config/certs/ca/ca.crt https://elasticsearch:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
         echo "Setting kibana_system password";
-        until curl -s -X POST --cacert config/certs/ca/ca.crt -u "elastic:${ELASTIC_PASSWORD}" -H "Content-Type: application/json" https://es01:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        until curl -s -X POST --cacert config/certs/ca/ca.crt -u "elastic:${ELASTIC_PASSWORD}" -H "Content-Type: application/json" https://elasticsearch:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
         echo "All done!";
       '
     healthcheck:
-      test: ["CMD-SHELL", "[ -f config/certs/es01/es01.crt ]"]
+      test: ["CMD-SHELL", "[ -f config/certs/elasticsearch/elasticsearch.crt ]"]
       interval: 1s
       timeout: 5s
       retries: 120
@@ -63,7 +63,7 @@ services:
       - monitoring
       - vault
   
-  es01:
+  elasticsearch:
     container_name: elastic
     depends_on:
       setup: 
@@ -75,24 +75,24 @@ services:
       co.elastic.logs/module: elasticsearch
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
-      - esdata01:/usr/share/elasticsearch/data
+      - elastic_data:/usr/share/elasticsearch/data
       - init_vault:/secret/
     ports:
       - ${ES_PORT}:9200
     environment:
-      - node.name=es01
+      - node.name=elasticsearch
       - cluster.name=${CLUSTER_NAME}
       - discovery.type=single-node
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - bootstrap.memory_lock=true
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=true
-      - xpack.security.http.ssl.key=certs/es01/es01.key
-      - xpack.security.http.ssl.certificate=certs/es01/es01.crt
+      - xpack.security.http.ssl.key=certs/elasticsearch/elasticsearch.key
+      - xpack.security.http.ssl.certificate=certs/elasticsearch/elasticsearch.crt
       - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.enabled=true
-      - xpack.security.transport.ssl.key=certs/es01/es01.key
-      - xpack.security.transport.ssl.certificate=certs/es01/es01.crt
+      - xpack.security.transport.ssl.key=certs/elasticsearch/elasticsearch.key
+      - xpack.security.transport.ssl.certificate=certs/elasticsearch/elasticsearch.crt
       - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.verification_mode=certificate
       - xpack.license.self_generated.type=${LICENSE}
@@ -113,7 +113,7 @@ services:
   kibana:
     container_name: kibana
     depends_on:
-      es01: 
+      elasticsearch: 
         condition: service_healthy
       init_vault: 
         condition: service_completed_successfully
@@ -131,9 +131,7 @@ services:
       - ${KIBANA_PORT}:5601
     environment:
       - SERVERNAME=kibana
-      - ELASTICSEARCH_HOSTS=https://es01:9200
-      - ELASTICSEARCH_USERNAME=kibana_system
-      - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
+      - ELASTICSEARCH_HOSTS=https://elasticsearch:9200
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=/usr/share/kibana/config/certs/ca/ca.crt
       - XPACK_SECURITY_ENCRYPTIONKEY=${ENCRYPTION_KEY}
       - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${ENCRYPTION_KEY}
@@ -145,7 +143,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
+          "curl -s -I http://kibana:5601 | grep -q 'HTTP/1.1 302 Found'",
         ]
       interval: 10s
       timeout: 10s
@@ -154,17 +152,21 @@ services:
       - monitoring
       - vault
 
-  logstash01:
+  logstash:
     container_name: logstash
     depends_on:
-      es01:
+      elasticsearch:
         condition: service_healthy
       kibana:
         condition: service_healthy
-    image: docker.elastic.co/logstash/logstash:${STACK_VERSION}
+      init_vault:
+        condition: service_completed_successfully
+    image: transcendance_logstash
+    build:
+      context: ../devops/logstash
+      dockerfile: Dockerfile
     labels:
       co.elastic.logs/module: logstash
-    user: root
     ports:
       - 5044:5044
       - 7777:7777
@@ -178,17 +180,7 @@ services:
       - init_vault:/secret/
     environment:
       - xpack.monitoring.enabled=false
-      - ELASTIC_USER=elastic
-      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
-      - ELASTIC_HOSTS=https://es01:9200
-    command: >
-            bash -c '
-            apt-get update;
-            apt-get install wget -y;
-            wget -O /usr/share/logstash/lib/postgresql-42.7.5.jar https://jdbc.postgresql.org/download/postgresql-42.7.5.jar;
-            chmod 755 /usr/share/logstash/lib/postgresql-42.7.5.jar;
-            exec logstash
-            '
+      - ELASTIC_HOSTS=https://elasticsearch:9200
     mem_limit: ${LS_MEM_LIMIT}
     networks:
       - monitoring

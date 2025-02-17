@@ -16,7 +16,8 @@ IMAGES= grafana\
 		auth\
 		kibana\
 		vault\
-		init_vault
+		init_vault\
+		logstash
 	
 BUILD_IMAGES=$(addprefix transcendance_, ${IMAGES})
 

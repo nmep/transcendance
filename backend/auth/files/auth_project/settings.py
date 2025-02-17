@@ -34,7 +34,7 @@ LOGGING = {
       'test': {
           'level': 'DEBUG',
           'class': 'logging.handlers.SysLogHandler',
-          'address': ('logstash01', 5959),
+          'address': ('logstash', 5959),
       },
   },
     'loggers': {
