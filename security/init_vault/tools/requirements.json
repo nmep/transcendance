@@ -4,6 +4,10 @@
             "GF_SECURITY_ADMIN_PASSWORD",
             "GF_SECURITY_ADMIN_USER"
         ],
+        "setup_elk": [
+            "ELASTIC_PASSWORD",
+            "KIBANA_PASSWORD"
+        ],
         "elastic": [
             "ELASTIC_PASSWORD",
             "ELASTIC_USER"
