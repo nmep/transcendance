@@ -5,7 +5,6 @@ ELK:
     =>KIBANA:
         - de l'environnement a setup en plus dans l'entrypoint
     =>LOGSTASH + ELASTICSEARCH
-        - faire l'entrypoint
         - refaire les pipelines
 
 EXPORTERS:
