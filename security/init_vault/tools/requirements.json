@@ -14,9 +14,34 @@
         ],
         "grafana": [
             "GF_SECURITY_ADMIN_PASSWORD",
-            "GF_SECURITY_ADMIN_USER",
-            "oauth_client_secret",
-            "session_timeout"
+            "GF_SECURITY_ADMIN_USER"
+        ],
+        "elastic": [
+            "ELASTIC_PASSWORD",
+            "ELASTIC_USER"
+        ],
+        "kibana": [
+            "KIBANA_PASSWORD",
+            "KIBANA_USER",
+            "ENCRYPTION_KEY"
+        ],
+        "logstash": [
+            "ELASTIC_PASSWORD",
+            "ELASTIC_USER"
+        ],
+        "db_exporter": [
+            "DATA_SOURCE_USER",
+            "DATA_SOURCE_PASSWORD"
+        ],
+        "postgres": [
+            "POSTGRES_DB",
+            "POSTGRES_USER",
+            "POSTGRES_PASSWORD"
+        ],
+        "auth": [
+            "POSTGRES_DB",
+            "POSTGRES_USER",
+            "POSTGRES_PASSWORD"
         ]
     }
 }
