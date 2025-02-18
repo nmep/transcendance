@@ -3,7 +3,7 @@ services:
     container_name: setup
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     depends_on:
-      init_vault: 
+      init_vault:
         condition: service_completed_successfully
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
@@ -62,16 +62,16 @@ services:
     networks:
       - monitoring
       - vault
-  
+
   elasticsearch:
     container_name: elastic
     build:
       context: ../devops/elasticsearch
       dockerfile: Dockerfile
     depends_on:
-      setup: 
+      setup:
         condition: service_healthy
-      init_vault: 
+      init_vault:
         condition: service_completed_successfully
     image: transcendance_elasticsearch
     labels:
@@ -110,15 +110,15 @@ services:
       timeout: 10s
       retries: 120
     networks:
-      - monitoring 
+      - monitoring
       - vault
 
   kibana:
     container_name: kibana
     depends_on:
-      elasticsearch: 
+      elasticsearch:
         condition: service_healthy
-      init_vault: 
+      init_vault:
         condition: service_completed_successfully
     image: transcendance_kibana
     build:
@@ -136,9 +136,6 @@ services:
       - SERVERNAME=kibana
       - ELASTICSEARCH_HOSTS=https://elasticsearch:9200
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=/usr/share/kibana/config/certs/ca/ca.crt
-      - XPACK_SECURITY_ENCRYPTIONKEY=${ENCRYPTION_KEY}
-      - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${ENCRYPTION_KEY}
-      - XPACK_REPORTING_ENCRYPTIONKEY=${ENCRYPTION_KEY}
     mem_limit: ${KB_MEM_LIMIT}
     entrypoint: /entrypoint.sh
     command: /usr/local/bin/kibana-docker
