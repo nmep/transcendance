@@ -1,9 +1,5 @@
 
 ELK:
-    =>SETUP:
-        - command à mettre dans un entrypoint (besoin des variables dans vault?)
-    =>KIBANA:
-        - de l'environnement a setup en plus dans l'entrypoint
     =>LOGSTASH + ELASTICSEARCH
         - refaire les pipelines
 
