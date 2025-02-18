@@ -1,6 +1,6 @@
 #!/bin/bash
 
-service="Setup_elk"
+service="Setup_ELK"
 service_lower=$(echo $service | tr A-Z a-z)
 #Checking for vault token
 VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
@@ -31,7 +31,6 @@ while [ "$seal" = "null" ] || [ "$seal" = "true" ]; do
 	sleep 2
 done
 echo "✅ Vault is unsealed, continuing..."
-#Error count
 echo "⏳ Waiting for Vault content..."
 while read var; do
 	j=0
@@ -52,11 +51,9 @@ while read var; do
 	done
 	echo "✅ $var has been successfully set, continuing..."
 done <<EOVARS
-ELASTICPASSWORD
+ELASTIC_PASSWORD
 KIBANA_PASSWORD
-ENCRYPTION_KEY
 EOVARS
 unset VAULT_RTOKEN
 echo "🚀 Environment variables were properly set using Vault, launching $service"
-
 exec "$@"

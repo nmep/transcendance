@@ -84,7 +84,7 @@ fi
 
 echo "🔐 Adding secrets to Vault..."
 ROOT_TOKEN=$(cat $SECRET_DIR/root_token.txt)
-curl -sk --header "X-Vault-Token: $ROOT_TOKEN" --request POST --data '{"type":"kv-v2"}' $VAULT_ADDR/v1/sys/mounts/secret
+curl -sk --header "X-Vault-Token: $ROOT_TOKEN" --request POST --data '{"type":"kv-v2"}' $VAULT_ADDR/v1/sys/mounts/secret >/dev/null
 
 SECRETS_JSON=$(cat $SECRET_JSON)
 echo "$SECRETS_JSON" | jq -c '.services | to_entries[]' | while read -r entry; do
@@ -99,7 +99,7 @@ echo "$SECRETS_JSON" | jq -c '.services | to_entries[]' | while read -r entry; d
     curl -sk --header "X-Vault-Token: $ROOT_TOKEN" \
         --request POST \
         --data "{\"data\": $SECRET_DATA}" \
-        "$VAULT_ADDR/v1/$VAULT_PATH"
+        "$VAULT_ADDR/v1/$VAULT_PATH" >/dev/null
 
     echo "✅ ${SERVICE^}'s secrets successfully sent to Vault !"
 done
@@ -107,7 +107,7 @@ echo "✅ All secrets added."
 #IL FAUDRA PENSER A SUPPRIMER LE JSON DES SECRETS ICI
 
 echo "📝 Activating syslogs for Vault..."
-curl -sk --header "X-Vault-Token: $ROOT_TOKEN" --request PUT --data '{"type":"syslog"}' $VAULT_ADDR/v1/sys/audit/syslog
+curl -sk --header "X-Vault-Token: $ROOT_TOKEN" --request PUT --data '{"type":"syslog"}' $VAULT_ADDR/v1/sys/audit/syslog >/dev/null
 echo "✅ Syslog activated !"
 echo "✅ Initialization done !"
 touch "$SECRETS_ARE_SET_FILE"

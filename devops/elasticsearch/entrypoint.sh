@@ -50,7 +50,7 @@ while read var; do
 			jq -r .data.data.$var)
 		var_content=$(eval "echo \${$var}")
 	done
-	echo "✅ $var has been successfully set => $var_content, continuing..."
+	echo "✅ $var has been successfully set, continuing..."
 done <<EOVARS
 ELASTIC_PASSWORD
 EOVARS
