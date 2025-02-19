@@ -58,8 +58,6 @@ services:
   auth:
     container_name: auth_api
     depends_on:
-      logstash:
-        condition: service_started
       db:
         condition: service_started
       init_vault:

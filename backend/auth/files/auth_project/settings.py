@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import logging
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,21 +30,31 @@ ALLOWED_HOSTS = ['localhost', 'nginx', 'auth']
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'syslog': {
+            'format': '%(asctime)s %(levelname)s %(name)s %(message)s'
+        },
+    },
     'handlers': {
-      'test': {
-          'level': 'DEBUG',
-          'class': 'logging.handlers.SysLogHandler',
-          'address': ('logstash', 5959),
-      },
-  },
+        'syslog': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.SysLogHandler',
+            'address': '/dev/log',  # Local, sinon ('logstash', 514) pour un serveur distant
+            'formatter': 'syslog',
+        },
+    },
+    'root': {
+        'handlers': ['syslog'],
+        'level': 'DEBUG',
+    },
     'loggers': {
-      'django.server': {
-          'handlers': ['test'],
-          'level': 'DEBUG',
-          'propagate': True,
-      },
-  },
+        'django': {
+            'handlers': ['syslog'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
 }
 # Application definition
 

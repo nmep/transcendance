@@ -8,20 +8,9 @@ ELK:
         - conf de kibana pour avoir deja les indexages
 
 EXPORTERS:
-    =>DB_EXPORTER:
-        - entrypoint
     
 MONITORING:
     =>GRAFANA:
-        - healthcheck ?
+        - les dashboards
     =>PROMETHEUS
-        -???
-
-COMPOSE:
-    Exporter les services pour plus de propreté
-    =>NGINX:
-        -ok?
-    =>AUTH:
-        - entrypoint à faire
-        - healthcheck ?
-        - modif des settings avec l'environnement
+        -
