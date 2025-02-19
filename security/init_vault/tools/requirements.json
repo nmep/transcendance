@@ -23,12 +23,17 @@
         ],
         "db_exporter": [
             "DATA_SOURCE_USER",
-            "DATA_SOURCE_PASSWORD"
+            "DATA_SOURCE_PASSWORD",
+            "POSTGRES_DB"
         ],
         "postgres": [
             "POSTGRES_DB",
             "POSTGRES_USER",
-            "POSTGRES_PASSWORD"
+            "POSTGRES_PASSWORD",
+            "EXPORTER_USER",
+            "EXPORTER_PASSWORD",
+            "AUTH_USER",
+            "AUTH_PASSWORD"
         ],
         "auth": [
             "POSTGRES_DB",

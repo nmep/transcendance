@@ -132,7 +132,6 @@ services:
       - certs:/usr/share/logstash/certs
       - logstashdata01:/usr/share/logstash/data
       - ../devops/logstash/pipelines/:/usr/share/logstash/pipeline/:ro
-      - ../devops/logstash/patterns/:/usr/share/logstash/patterns/:ro
       - ../devops/logstash/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
       - init_vault:/secret/
     environment:

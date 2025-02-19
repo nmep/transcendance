@@ -19,7 +19,8 @@ IMAGES= grafana\
 		init_vault\
 		logstash\
 		elasticsearch\
-		setup_elk
+		setup_elk\
+		db_exporter
 	
 BUILD_IMAGES=$(addprefix transcendance_, ${IMAGES})
 
