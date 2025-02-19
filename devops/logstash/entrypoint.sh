@@ -63,7 +63,7 @@ while read var; do
 			break
 		fi
 	done
-	echo "✅ $var has been successfully set => $var_content, continuing..."
+	echo "✅ $var has been successfully set, continuing..."
 done <<EOVARS
 ELASTIC_USER
 ELASTIC_PASSWORD

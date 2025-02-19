@@ -38,7 +38,10 @@ services:
   # ------------------------------ micro service ------------------------------ #
 
   db:
-    image: 'postgres:16.6'
+    image: transcendance_postgres
+    build:
+      context: ./devops/postgres
+      dockerfile: Dockerfile
     depends_on:
       init_vault:
         condition: service_completed_successfully
@@ -47,14 +50,15 @@ services:
       - init_vault:/secret/
     ports:
       - '5432:5432'
-    environment:
-      - POSTGRES_DB=toto_db
-      - POSTGRES_USER=toto
-      - POSTGRES_PASSWORD=password
     networks:
       - auth
       - monitoring
       - vault
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -h localhost -p 5432" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   auth:
     container_name: auth_api
@@ -62,7 +66,7 @@ services:
       logstash:
         condition: service_started
       db:
-        condition: service_started
+        condition: service_healthy
       init_vault:
         condition: service_completed_successfully
     restart: always

@@ -63,7 +63,7 @@ while read var; do
             break
         fi
     done
-    echo "✅ $var has been successfully set => $var_content, continuing..."
+    echo "✅ $var has been successfully set, continuing..."
 done <<EOVARS
 POSTGRES_DB
 DATA_SOURCE_USER
@@ -71,7 +71,7 @@ DATA_SOURCE_PASSWORD
 EOVARS
 unset VAULT_RTOKEN
 export DATA_SOURCE_NAME="postgresql://$DATA_SOURCE_USER:$DATA_SOURCE_PASSWORD@db:5432/$POSTGRES_DB?sslmode=disable"
-echo "✅ DATA_SOURCE_NAME has been successfully set => $DATA_SOURCE_NAME, continuing..."
+echo "✅ DATA_SOURCE_NAME has been successfully set, continuing..."
 echo "🚀 Environment variables were properly set using Vault, launching $service"
 
 exec "$@"

@@ -22,7 +22,11 @@ checking_vault() {
             exit 1
         fi
         initialized=$(curl -k -s -f $VAULT_ADDR/v1/sys/seal-status | jq -r .initialized)
-        sleep 2
+        if [ "$initialized" = "true" ] || [ "$initialized" = "false" ]; then
+            break
+        else
+            sleep 2
+        fi
     done
 }
 
@@ -35,7 +39,11 @@ checking_seal() {
             exit 1
         fi
         SEAL=$(curl -k -s -f $VAULT_ADDR/v1/sys/seal-status | jq -r .sealed)
-        sleep 2
+        if [ "$SEAL" = "null" ] || [ -z "$SEAL" ]; then
+            sleep 2
+        else
+            break
+        fi
     done
     if [ "$SEAL" = "true" ]; then
         unseal_vault

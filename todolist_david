@@ -1,7 +1,11 @@
 
+VAULT:
+    creer un token par service (droits sur les fichiers?)
+
 ELK:
     =>LOGSTASH + ELASTICSEARCH
         - refaire les pipelines
+        - conf de kibana pour avoir deja les indexages
 
 EXPORTERS:
     =>DB_EXPORTER:
@@ -20,6 +24,7 @@ COMPOSE:
     =>DB:
         - entrypoint à faire
         - healthcheck ?
+        - creer un user pour l'exporter
     =>AUTH:
         - entrypoint à faire
         - healthcheck ?
