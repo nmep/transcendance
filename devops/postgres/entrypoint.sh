@@ -1,6 +1,6 @@
 #!/bin/bash
 
-service="DB_Exporter"
+service="Postgres"
 service_lower=$(echo $service | tr A-Z a-z)
 #Checking for vault token
 VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
@@ -66,12 +66,14 @@ while read var; do
     echo "✅ $var has been successfully set => $var_content, continuing..."
 done <<EOVARS
 POSTGRES_DB
-DATA_SOURCE_USER
-DATA_SOURCE_PASSWORD
+EXPORTER_USER
+EXPORTER_PASSWORD
+AUTH_USER
+AUTH_PASSWORD
+POSTGRES_PASSWORD
+POSTGRES_USER
 EOVARS
 unset VAULT_RTOKEN
-export DATA_SOURCE_NAME="postgresql://$DATA_SOURCE_USER:$DATA_SOURCE_PASSWORD@db:5432/$POSTGRES_DB?sslmode=disable"
-echo "✅ DATA_SOURCE_NAME has been successfully set => $DATA_SOURCE_NAME, continuing..."
 echo "🚀 Environment variables were properly set using Vault, launching $service"
 
-exec "$@"
+exec "/usr/local/bin/docker-entrypoint.sh" "$@"
