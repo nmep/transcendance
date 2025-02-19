@@ -1,6 +1,6 @@
 #!/bin/bash
 
-service="Elastic"
+service="Auth"
 service_lower=$(echo $service | tr A-Z a-z)
 #Checking for vault token
 VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
@@ -64,8 +64,16 @@ while read var; do
 	done
 	echo "✅ $var has been successfully set, continuing..."
 done <<EOVARS
-ELASTIC_PASSWORD
+POSTGRES_DB
+AUTH_USER
+AUTH_PASSWORD
 EOVARS
 unset VAULT_RTOKEN
+
+until pg_isready -d $POSTGRES_DB -h db -p 5432 -U $AUTH_USER >/dev/null; do
+	echo "Connexion to database didn't succeed, retrying..."
+	sleep 2
+done
 echo "🚀 Environment variables were properly set using Vault, launching $service"
-exec /bin/tini -- /usr/local/bin/docker-entrypoint.sh "$@"
+
+exec "$@"

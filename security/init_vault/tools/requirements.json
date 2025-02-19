@@ -37,8 +37,8 @@
         ],
         "auth": [
             "POSTGRES_DB",
-            "POSTGRES_USER",
-            "POSTGRES_PASSWORD"
+            "AUTH_USER",
+            "AUTH_PASSWORD"
         ]
     }
 }

@@ -46,7 +46,6 @@ while read var; do
     echo "⏳ Setting up $var..."
     var_content="null"
     while [ "$var_content" = "null" ]; do
-        sleep 2
         j=$((j + 1))
         if [ $j -gt 100 ]; then
             echo "❌ $var couldn't be set within a minute, aborting..."

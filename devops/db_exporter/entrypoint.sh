@@ -46,7 +46,6 @@ while read var; do
     echo "⏳ Setting up $var..."
     var_content="null"
     while [ "$var_content" = "null" ]; do
-        sleep 2
         j=$((j + 1))
         if [ $j -gt 100 ]; then
             echo "❌ $var couldn't be set within a minute, aborting..."
@@ -72,6 +71,11 @@ EOVARS
 unset VAULT_RTOKEN
 export DATA_SOURCE_NAME="postgresql://$DATA_SOURCE_USER:$DATA_SOURCE_PASSWORD@db:5432/$POSTGRES_DB?sslmode=disable"
 echo "✅ DATA_SOURCE_NAME has been successfully set, continuing..."
+
+until pg_isready -d $POSTGRES_DB -h db -p 5432 -U $DATA_SOURCE_USER >/dev/null; do
+    echo "Connexion to database didn't succeed, retrying..."
+    sleep 2
+done
 echo "🚀 Environment variables were properly set using Vault, launching $service"
 
 exec "$@"
