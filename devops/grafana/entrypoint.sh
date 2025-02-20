@@ -1,6 +1,7 @@
 #!/bin/bash
 
 service="Grafana"
+service_lower=${service,,}
 #Checking for vault token
 #VAULT_RTOKEN=$(cat /secret/token_${service,,} 2> /dev/null)
 VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
