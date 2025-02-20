@@ -8,7 +8,7 @@ RUN apk add curl openssl rsyslog
 
 RUN mkdir -p /etc/syslog /vault/tls
 
-COPY ./tools/rsyslog.conf /rsyslog.conf
+COPY ./syslog/rsyslog.conf /rsyslog.conf
 
 COPY ./entrypoint.sh /entrypoint.sh
 
