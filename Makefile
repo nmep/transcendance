@@ -21,7 +21,8 @@ IMAGES= grafana\
 		elasticsearch\
 		setup_elk\
 		db_exporter\
-		postgres
+		postgres\
+		nginx_exporter
 	
 BUILD_IMAGES=$(addprefix transcendance_, ${IMAGES})
 

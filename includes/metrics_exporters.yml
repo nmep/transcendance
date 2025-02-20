@@ -22,7 +22,10 @@ services:
 
   nginx_prometheus_exporter:
     container_name: nginx_exporter
-    image: nginx/nginx-prometheus-exporter:1.4.0
+    image: transcendance_nginx_exporter
+    build:
+      context: ../devops/nginx_exporter
+      dockerfile: Dockerfile
     depends_on:
       prometheus:
         condition: service_started
@@ -34,5 +37,3 @@ services:
       - "9113:9113"
     networks:
       - monitoring
-    command:
-      - --nginx.scrape-uri=https://nginx/status
