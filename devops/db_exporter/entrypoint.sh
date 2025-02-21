@@ -3,6 +3,7 @@
 service="DB_Exporter"
 service_lower=$(echo $service | tr A-Z a-z)
 rsyslogd -i /tmp/rsyslogd.pid -f /etc/rsyslog.conf
+/logrotate_script.sh &
 #Checking for vault token
 VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
 j=0
@@ -79,4 +80,4 @@ until pg_isready -d $POSTGRES_DB -h db -p 5432 -U $DATA_SOURCE_USER >/dev/null; 
 done
 echo "🚀 Environment variables were properly set using Vault, launching $service"
 
-exec "$@" >>/var/log/postgres_exporter.log 2>&1
+exec "$@" >>/tmp/log/postgres_exporter.log 2>&1
