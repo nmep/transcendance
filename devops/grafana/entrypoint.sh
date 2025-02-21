@@ -2,7 +2,8 @@
 
 service="Grafana"
 service_lower=${service,,}
-rsyslogd -i /tmp/rsyslogd.pid -f /etc/rsyslog.conf
+rsyslogd -i /tmp/rsyslogd.pid -f /syslog/rsyslog.conf
+/logrotate_script.sh &
 #Checking for vault token
 #VAULT_RTOKEN=$(cat /secret/token_${service,,} 2> /dev/null)
 VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
@@ -71,4 +72,4 @@ GF_SECURITY_ADMIN_USER
 EOVARS
 unset VAULT_RTOKEN
 echo "🚀 Environment variables were properly set using Vault, launching $service"
-exec "$@"
+exec "$@" >>/tmp/log/grafana.log
