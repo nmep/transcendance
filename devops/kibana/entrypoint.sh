@@ -2,6 +2,10 @@
 
 service="Kibana"
 service_lower=$(echo $service | tr A-Z a-z)
+
+/logrotate_script.sh &
+rsyslogd -i /tmp/rsyslogd.pid -f /syslog/rsyslog.conf
+
 #Checking for vault token
 VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
 j=0
@@ -74,4 +78,4 @@ export XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${ENCRYPTION_KEY}
 export XPACK_REPORTING_ENCRYPTIONKEY=${ENCRYPTION_KEY}
 echo "🚀 Environment variables were properly set using Vault, launching $service"
 
-exec "$@"
+exec "$@" >>/tmp/log/kibana.log 2>&1
