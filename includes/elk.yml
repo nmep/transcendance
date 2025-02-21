@@ -11,6 +11,7 @@ services:
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
       - init_vault:/secret/
+      - ../volumes/setup_elk:/kibana_set
     healthcheck:
       test: ["CMD-SHELL", "[ -f config/certs/elasticsearch/elasticsearch.crt ]"]
       interval: 1s

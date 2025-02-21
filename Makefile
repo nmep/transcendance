@@ -8,7 +8,8 @@ VOLUMES=grafana/data\
 		vault/data\
 		vault/cert\
 		vault/secret\
-		vault/startup_logs
+		vault/startup_logs\
+		setup_elk
 
 VOLUMES_NAMES=$(addprefix ${VOLUMES_DIR}, ${VOLUMES})
 
