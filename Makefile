@@ -23,7 +23,8 @@ IMAGES= grafana\
 		setup_elk\
 		db_exporter\
 		postgres\
-		nginx_exporter
+		nginx_exporter\
+		prometheus
 	
 BUILD_IMAGES=$(addprefix transcendance_, ${IMAGES})
 

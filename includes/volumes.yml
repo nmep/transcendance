@@ -47,3 +47,9 @@ volumes:
       device: ../volumes/vault/startup_logs
       type: "none"
       o: bind
+  prometheusdata:
+    driver: local
+    driver_opts:
+      device: ../volumes/prometheus/data
+      type: "none"
+      o: bind

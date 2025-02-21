@@ -2,10 +2,13 @@
 services:
   prometheus:
     container_name: prometheus
-    image: prom/prometheus:v3.1.0
-    restart: always
+    image: transcendance_prometheus
+    build:
+      context: ../devops/prometheus
+      dockerfile: Dockerfile
     volumes:
-      - ../devops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheusdata:/data
+    restart: no
     ports:
       - "9090:9090"
     networks:
