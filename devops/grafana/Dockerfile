@@ -5,7 +5,7 @@ USER root
 # Installer rsyslog
 RUN apk update && apk add rsyslog jq
 
-RUN mkdir -p /var/log/grafana
+RUN mkdir -p /var/log/grafana /tmp/grafana/log
 RUN chown -R 1000:1000 /var/log/grafana
 # Copier la configuration de rsyslog
 COPY ./syslog/rsyslog.conf /etc/rsyslog.conf
