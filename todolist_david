@@ -2,6 +2,12 @@
 VAULT:
     creer un token par service (droits sur les fichiers?)
 
+REWORK GLOBAL DES LOGS
+  ALL GOOD BUT
+    setup elk
+    nginx
+    postgres
+    auth/django
 ELK:
     =>LOGSTASH + ELASTICSEARCH
         - refaire les pipelines
