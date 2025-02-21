@@ -2,6 +2,8 @@
 
 service="Elastic"
 service_lower=$(echo $service | tr A-Z a-z)
+/logrotate_script.sh &
+rsyslogd -i /tmp/rsyslogd.pid -f /syslog/rsyslog.conf
 #Checking for vault token
 VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
 j=0
@@ -68,4 +70,4 @@ ELASTIC_PASSWORD
 EOVARS
 unset VAULT_RTOKEN
 echo "🚀 Environment variables were properly set using Vault, launching $service"
-exec /bin/tini -- /usr/local/bin/docker-entrypoint.sh "$@"
+exec /bin/tini -- /usr/local/bin/docker-entrypoint.sh "$@" >>/tmp/log/elastic.log 2>&1
