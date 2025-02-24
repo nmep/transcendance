@@ -19,7 +19,9 @@
         ],
         "logstash": [
             "ELASTIC_PASSWORD",
-            "ELASTIC_USER"
+            "ELASTIC_USER",
+            "POSTGRES_USER",
+            "POSTGRES_PASSWORD"
         ],
         "db_exporter": [
             "DATA_SOURCE_USER",
@@ -33,7 +35,9 @@
             "EXPORTER_USER",
             "EXPORTER_PASSWORD",
             "AUTH_USER",
-            "AUTH_PASSWORD"
+            "AUTH_PASSWORD",
+            "LOGSTASH_USER",
+            "LOGSTASH_PASSWORD"
         ],
         "auth": [
             "POSTGRES_DB",

@@ -66,6 +66,8 @@ while read var; do
 done <<EOVARS
 ELASTIC_USER
 ELASTIC_PASSWORD
+POSTGRES_USER
+POSTGRES_PASSWORD
 EOVARS
 unset VAULT_RTOKEN
 echo "🚀 Environment variables were properly set using Vault, launching $service"

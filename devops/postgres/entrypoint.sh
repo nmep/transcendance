@@ -71,6 +71,8 @@ AUTH_USER
 AUTH_PASSWORD
 POSTGRES_PASSWORD
 POSTGRES_USER
+LOGSTASH_USER
+LOGSTASH_PASSWORD
 EOVARS
 unset VAULT_RTOKEN
 echo "🚀 Environment variables were properly set using Vault, launching $service"
