@@ -21,7 +21,8 @@
             "ELASTIC_PASSWORD",
             "ELASTIC_USER",
             "POSTGRES_USER",
-            "POSTGRES_PASSWORD"
+            "POSTGRES_PASSWORD",
+            "POSTGRES_DB"
         ],
         "db_exporter": [
             "DATA_SOURCE_USER",

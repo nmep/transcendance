@@ -59,5 +59,32 @@ REVOKE ALL ON SCHEMA public FROM postgres;
 EOF
 
 echo "✅ Rôle postgres créé avec accès limité."
+echo "🛠 Création du rôle pour Logstash"
+psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" <<EOF
+CREATE USER $LOGSTASH_USER WITH PASSWORD '$LOGSTASH_PASSWORD';
+
+GRANT CONNECT ON DATABASE $POSTGRES_DB TO $LOGSTASH_USER;
+
+GRANT USAGE ON SCHEMA public TO $LOGSTASH_USER;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO $LOGSTASH_USER;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO $LOGSTASH_USER;
+EOF
+echo "✅ Rôle logstash créé avec accès limité."
+
+psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" <<EOF
+DROP TABLE IF EXISTS dummy;
+
+CREATE TABLE dummy (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO dummy (name) VALUES ('Alice'), ('Bob'), ('Charlie');
+
+SELECT * FROM dummy;
+EOF
 
 echo "Configuration terminée."

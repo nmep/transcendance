@@ -2,6 +2,8 @@
 
 service="Postgres"
 service_lower=$(echo $service | tr A-Z a-z)
+rsyslogd -i /tmp/rsyslogd.pid -f /etc/rsyslog.conf
+/logrotate_script.sh &
 #Checking for vault token
 VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
 j=0
@@ -77,4 +79,4 @@ EOVARS
 unset VAULT_RTOKEN
 echo "🚀 Environment variables were properly set using Vault, launching $service"
 
-exec "/usr/local/bin/docker-entrypoint.sh" "$@"
+exec "/usr/local/bin/docker-entrypoint.sh" "$@" >>/tmp/log/postgres.log 2>&1
