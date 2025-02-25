@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 from requests_oauthlib import OAuth2Session
 import requests
+from rest_framework_simplejwt.tokens import RefreshToken
 # faire une classe qui a des fonctions pour lauthentification
 
 # login
@@ -14,19 +15,21 @@ client_secret = "couin"
 class authManager:
     @staticmethod
     def login_user(request, username, password):
-        print("AZEFJKEZJKEZKEZKAZEKJRZAJR")
         if username == None:
             return JsonResponse({"success": False, "message":"Username is not defined"})
         elif password == None:
             return JsonResponse({"success": False, "message":"Password is not defined"})
 
         user = authenticate(request, username=username, password=password)
-        data = ({"username": username, "password": password})
+
         if user:
-            jwt = requests.post("http://localhost:8000/api/token", data=data)
-            print(f"jwt = {jwt}")
+            refresh = RefreshToken.for_user(user)
             login(request, user)
-            return JsonResponse({"success": True, "message":"success"})
+            return JsonResponse({
+                "success": True,
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            })
         else:
             return JsonResponse({"success": False, "message":"login or password is not recognize"})
 
