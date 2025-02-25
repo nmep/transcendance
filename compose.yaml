@@ -2,23 +2,23 @@
 services:
   # ------------------------------ securite ------------------------------ #
   
-    vault:
-      container_name: vault
-      image: hashicorp/vault:1.18
-      user: 0:0
-      env_file:
-        - "security/vault/vault.env"
-      ports:
-        - "8200:8200"
-      networks:
-        - vault
-      volumes:
-        - ./security/vault/init.sh:/vault/init.sh
-        - ./security/vault/config/config.hcl:/vault/config/config.hcl
-        - ./security/vault/data:/vault/data
-      cap_add:
-        - IPC_LOCK
-      entrypoint: ["/bin/sh", ./vault/init.sh]
+    # vault:
+    #   container_name: vault
+    #   image: hashicorp/vault:1.18
+    #   user: 0:0
+    #   env_file:
+    #     - "security/vault/vault.env"
+    #   ports:
+    #     - "8200:8200"
+    #   networks:
+    #     - vault
+    #   volumes:
+    #     - ./security/vault/init.sh:/vault/init.sh
+    #     - ./security/vault/config/config.hcl:/vault/config/config.hcl
+    #     - ./security/vault/data:/vault/data
+    #   cap_add:
+    #     - IPC_LOCK
+    #   entrypoint: ["/bin/sh", ./vault/init.sh]
   
   # ------------------------------ nginx ------------------------------ #
   
@@ -41,9 +41,9 @@ services:
         - monitoring
         - auth
       entrypoint: ["/bin/bash", /usr/local/bin/ssl_certificate.sh]
-  
+
   # ------------------------------ monitoring ------------------------------ #
-  
+
     nginx_prometheus_exporter:
       container_name: nginx_prometheus_exporter
       image: nginx/nginx-prometheus-exporter:1.4.0

@@ -14,18 +14,22 @@ client_secret = "couin"
 class authManager:
     @staticmethod
     def login_user(request, username, password):
+        print("AZEFJKEZJKEZKEZKAZEKJRZAJR")
         if username == None:
             return JsonResponse({"success": False, "message":"Username is not defined"})
         elif password == None:
             return JsonResponse({"success": False, "message":"Password is not defined"})
 
         user = authenticate(request, username=username, password=password)
+        data = ({"username": username, "password": password})
         if user:
+            jwt = requests.post("http://localhost:8000/api/token", data=data)
+            print(f"jwt = {jwt}")
             login(request, user)
             return JsonResponse({"success": True, "message":"success"})
         else:
             return JsonResponse({"success": False, "message":"login or password is not recognize"})
-    
+
 # inscription
     @staticmethod
     def register_user(request, username, password):
@@ -82,4 +86,5 @@ class authManager:
         user_info = client.get(user_info_url).json()
         print(f"token = {token}")
         # print(f"👤 Infos utilisateur: {user_info}")
+
         return JsonResponse({"success": True, "user_login": user_info["login"]})

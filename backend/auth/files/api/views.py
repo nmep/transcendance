@@ -4,7 +4,6 @@ from auth_app.models import authConf
 from .serializers import authSerializer
 from .authClass import authManager
 
-
 person = {'name':'Denis', 'age':28}
 
 class authAPI(APIView):
@@ -31,8 +30,9 @@ class authAPI(APIView):
             print("remote !!")
             return authManager.remote_connection(request)
         return Response(person)
-    
+
     def get(self, request, *args, **kwargs):
         action = kwargs.get('action')
         print(f"get action = {action}")
+		# ici cible l'action sur le cas ou l'action c'est call back
         return authManager.callback(request)

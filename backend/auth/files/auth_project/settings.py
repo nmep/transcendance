@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', 'nginx', 'auth']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,6 +39,12 @@ INSTALLED_APPS = [
     'django_prometheus',
     'auth_app',
     'rest_framework',
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
+    'django_otp.plugins.otp_email',  # <- if you want email capability.
+    'two_factor',
+    'two_factor.plugins.email',  # <- if you want email capability.
 ]
 
 MIDDLEWARE = [
@@ -49,12 +54,19 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 ROOT_URLCONF = 'auth_project.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 TEMPLATES = [
     {
@@ -131,7 +143,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL="http://localhost:8000/static/"
+LOGIN_URL = 'two_factor:login'
+
+LOGIN_REDIRECT_URL = '/account/two_factor/'
+
+STATIC_URL= "static/"
 
 AUTHENTICATION_BACKENDS=['django.contrib.auth.backends.ModelBackend']
 
@@ -140,3 +156,10 @@ AUTHENTICATION_BACKENDS=['django.contrib.auth.backends.ModelBackend']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+EMAIL_BACKED = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'the.42.transcendance@gmail.com'
+EMAIL_HOST_PASSWORD = 'eruibhbfsyzdlgex'
