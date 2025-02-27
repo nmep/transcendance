@@ -110,6 +110,10 @@ echo "$SECRETS_JSON" | jq -c '.services | to_entries[]' | while read -r entry; d
         "$VAULT_ADDR/v1/$VAULT_PATH" >/dev/null
 
     echo "✅ ${SERVICE^}'s secrets successfully sent to Vault !"
+    curl -sk --header "X-Vault-Token: $ROOT_TOKEN" --request PUT --data '{"policy": "path \"secret/data/'"$SERVICE"'/*\" { capabilities = [\"read\", \"list\"] }"}' $VAULT_ADDR/v1/sys/policy/${SERVICE}-policy
+    response=$(curl -k --header "X-Vault-Token: $ROOT_TOKEN" --request POST --data '{"policies": ["'"${SERVICE}"'-policy"], "bound_cidrs": "'"${SERVICE}"'/32", "token_type": "default"}' $VAULT_ADDR/v1/auth/token/create)
+    echo $response | jq -r
+
 done
 echo "✅ All secrets added."
 #IL FAUDRA PENSER A SUPPRIMER LE JSON DES SECRETS ICI
