@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_prometheus',
     'auth_app',
+    'api',
     'rest_framework',
     'django_otp',
     'django_otp.plugins.otp_static',

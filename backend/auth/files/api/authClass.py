@@ -5,6 +5,8 @@ from django.http import JsonResponse
 from requests_oauthlib import OAuth2Session
 import requests
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 # faire une classe qui a des fonctions pour lauthentification
 
 # login
@@ -20,6 +22,7 @@ class authManager:
         elif password == None:
             return JsonResponse({"success": False, "message":"Password is not defined"})
 
+        print(f"username = {username} | password = {password}")
         user = authenticate(request, username=username, password=password)
 
         if user:
@@ -54,6 +57,41 @@ class authManager:
         logout(request=request)
         # redirect sur le home page ?
         return JsonResponse({"success": True, "message":"User loged out"})
+
+    @staticmethod
+    def unregister_user(request):
+        print(f"the user = {request.user.email}")
+
+        if request.user:
+            # si l'user a un email (ce qui est normalement obligatoire)
+            # envoyer un email de suppression de compte
+
+            # First, render the plain text content.
+            text_content = render_to_string(
+                "emails/unregister.txt",
+                context={"1": 42},
+            )
+
+            # Secondly, render the HTML content.
+            html_content = render_to_string(
+                "emails/unregister.html",
+                context={"2": 42},
+            )
+
+            # Then, create a multipart email instance.
+            msg = EmailMultiAlternatives(
+                "Unregister from transcance",
+                text_content,
+                "the.42.transcendance@gmail.com",
+                [request.user.email],
+                headers={"List-Unsubscribe": "<mailto:unsub@example.com>"},
+            )
+
+            # Lastly, attach the HTML content to the email instance and send.
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+        return JsonResponse({"success": True, "message":"User unregistered"})
+        
 
     @staticmethod
     def remote_connection(request):
