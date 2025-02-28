@@ -7,4 +7,10 @@ do
     sleep 3;
 done
 
+echo avant migrate
+
+python manage.py migrate
+
+echo apres migrate
+
 exec "$@"

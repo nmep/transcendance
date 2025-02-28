@@ -86,10 +86,9 @@ services:
       networks:
         - monitoring
         - vault
-  
-  
+
   # ------------------------------ micro service ------------------------------ #
-  
+
     db:
       image: 'postgres:16.6'
       container_name: postgres
@@ -102,6 +101,8 @@ services:
       networks:
         - auth
         - monitoring
+      volumes:
+        - ./backend/auth/create_table.sh:/docker-entrypoint-initdb.d/create_table.sh
   
     db_exporter:
       image: quay.io/prometheuscommunity/postgres-exporter
@@ -110,10 +111,8 @@ services:
       environment:
         - DATA_SOURCE_URI=db:5432/toto_db?sslmode=disable
         - DATA_SOURCE_USER=toto
-        - DATA_SOURCE_PASS=password
-      networks:
-        - monitoring
-  
+        - DATA_SOURCE_PASS=passwordrequests_oauthlib
+
     auth:
       container_name: auth_api
       restart: always

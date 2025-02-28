@@ -35,10 +35,12 @@ class authAPI(APIView):
         return Response(person)
 
     def get(self, request, *args, **kwargs):
+
         action = kwargs.get('action')
         print(f"get action = {action}")
+
         if action == "unregister":
             print("unregister !!")
             return authManager.unregister_user(request)
-		# ici cible l'action sur le cas ou l'action c'est call back
+
         return authManager.callback(request)

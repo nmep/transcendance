@@ -80,7 +80,7 @@ class authManager:
 
             # Then, create a multipart email instance.
             msg = EmailMultiAlternatives(
-                "Unregister from transcance",
+                "transcendance unreigster confirmation",
                 text_content,
                 "the.42.transcendance@gmail.com",
                 [request.user.email],
@@ -90,8 +90,10 @@ class authManager:
             # Lastly, attach the HTML content to the email instance and send.
             msg.attach_alternative(html_content, "text/html")
             msg.send()
-        return JsonResponse({"success": True, "message":"User unregistered"})
-        
+
+            user = User.objects.get(username = request.user)
+            user.delete()
+        return JsonResponse({"success": True, "message": "Unregistered mail sended"})
 
     @staticmethod
     def remote_connection(request):
