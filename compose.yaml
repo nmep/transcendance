@@ -11,7 +11,10 @@ services:
   # ------------------------------ nginx ------------------------------ #
 
   reverseproxy:
-    image: 'owasp/modsecurity:nginx'
+    image: transcendance_nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
     depends_on:
       logstash:
         condition: service_started
@@ -33,7 +36,6 @@ services:
     networks:
       - monitoring
       - auth
-    entrypoint: [ "/bin/bash", /usr/local/bin/ssl_certificate.sh ]
 
   # ------------------------------ micro service ------------------------------ #
 

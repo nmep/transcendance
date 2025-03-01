@@ -24,7 +24,8 @@ IMAGES= grafana\
 		db_exporter\
 		postgres\
 		nginx_exporter\
-		prometheus
+		prometheus\
+		nginx
 	
 BUILD_IMAGES=$(addprefix transcendance_, ${IMAGES})
 
