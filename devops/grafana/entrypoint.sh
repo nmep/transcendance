@@ -8,14 +8,14 @@ rsyslogd -i /tmp/rsyslogd.pid -f /syslog/rsyslog.conf
 #VAULT_RTOKEN=$(cat /secret/token_${service,,} 2> /dev/null)
 VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
 j=0
-while [ -z "$VAULT_RTOKEN" ]; do
+while [ x"$VAULT_RTOKEN" = x ]; do
 	j=$((j + 1))
 	if [ $j -gt 30 ]; then
 		echo "❌ Couldn't set Vault token within 1 minute, aborting..."
 		exit 1
 	fi
 	VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
-	if [ -z "$VAULT_RTOKEN" ]; then
+	if [ x"$VAULT_RTOKEN" = x ]; then
 		echo "⏳ Vault token is not set, trying again..."
 		sleep 2
 	else
@@ -48,7 +48,7 @@ while read var; do
 	j=0
 	echo "⏳ Setting up $var..."
 	var_content="null"
-	while while [ "$var_content" = "null" ] || [ -z "$var_content" ] do
+	while [ "$var_content" = "null" ] || [ -z "$var_content" ]; do
 		j=$((j + 1))
 		if [ $j -gt 100 ]; then
 			echo "❌ $var couldn't be set within a minute, aborting..."
