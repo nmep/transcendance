@@ -6,7 +6,11 @@ RUN apk update
 
 RUN apk add openssl rsyslog logrotate
 
-RUN mkdir -p /syslog /vault/tls /vault/data
+RUN mkdir -p /syslog /vault/tls /vault/data /vault/config
+
+COPY ./config/config.hcl /vault/config/
+
+RUN chown vault:vault /vault/config/config.hcl
 
 COPY ./syslog /syslog
 

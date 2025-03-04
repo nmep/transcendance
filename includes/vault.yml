@@ -13,8 +13,6 @@ services:
     networks:
       - vault
     volumes:
-      - ../security/vault/entrypoint.sh:/entrypoint.sh
-      - ../security/vault/config/:/vault/config/
       - vaultcert:/vault/tls
       - vaultdata:/vault/data
     cap_add:
