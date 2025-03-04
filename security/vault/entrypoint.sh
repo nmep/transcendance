@@ -1,12 +1,13 @@
 #!/bin/bash
-
+set -e
 CERT_DIR="/vault/tls"
 CERT_FILE="$CERT_DIR/vault.crt"
 KEY_FILE="$CERT_DIR/vault.key"
 CA_FILE="$CERT_DIR/ca.crt"
 DAYS_VALID=365
 VAULT_HOST="vault.local"
-rsyslogd -f /rsyslog.conf
+/logrotate_script.sh &
+rsyslogd -i /tmp/rsyslogd.pid -f /syslog/rsyslog.conf
 # Création du dossier si non existant
 mkdir -p $CERT_DIR
 
@@ -30,4 +31,4 @@ else
 
 	echo "✅ Certificate successfully created at : $CERT_DIR"
 fi
-exec "$@"
+exec "$@" >>/tmp/log/vault.log 2>&1
