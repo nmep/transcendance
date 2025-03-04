@@ -2,6 +2,8 @@
 
 service="Logstash"
 service_lower=$(echo $service | tr A-Z a-z)
+touch .env
+/usr/share/logstash/lib/logstash-exporter &
 #Checking for vault token
 VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
 j=0

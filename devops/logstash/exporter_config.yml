@@ -1,0 +1,8 @@
+logstash:
+  instances:
+    - url: "http://localhost:9600" # URL to Logstash API
+server:
+  host: "0.0.0.0" # Host on which the application will be exposed (default: all interfaces)
+  port: 9198      # Port on which the application will be exposed
+logging:
+  level: "debug"  # Log level (debug, info, warn, error)

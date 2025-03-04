@@ -29,4 +29,9 @@ scrape_configs:
     - targets:
       - grafana:3000
 
+  - job_name: logstash
+    scrape_interval: 5s
+    static_configs:
+    - targets:
+      - logstash:9187
   
