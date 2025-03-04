@@ -34,4 +34,13 @@ scrape_configs:
     static_configs:
     - targets:
       - logstash:9198
+
+  - job_name: elastic
+    scrape_interval: 5s
+    static_configs:
+    - targets:
+      - elastic:9114
+
+
+
   

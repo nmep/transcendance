@@ -4,7 +4,15 @@ USER root
 
 RUN apt-get update 
 
-RUN apt-get install -y jq curl logrotate rsyslog
+RUN apt-get install -y jq curl logrotate rsyslog wget
+
+RUN wget -O /tmp/elastic-exporter.tar.gz https://github.com/prometheus-community/elasticsearch_exporter/releases/download/v1.9.0/elasticsearch_exporter-1.9.0.linux-386.tar.gz
+
+RUN tar -xf /tmp/elastic-exporter.tar.gz 
+
+RUN mv elasticsearch_exporter-1.9.0.linux-386 exporter
+
+RUN mv exporter/elasticsearch_exporter /usr/share/elasticsearch/bin
 
 COPY entrypoint.sh /entrypoint.sh
 
@@ -27,7 +35,6 @@ RUN chmod 664 /tmp/log/elastic.log
 RUN mkdir -p /var/spool/rsyslog
 RUN chown -R 1000:1000 /var/spool/rsyslog
 RUN chmod -R 775 /var/spool/rsyslog
-
 
 USER 1000
 

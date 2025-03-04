@@ -67,7 +67,13 @@ while read var; do
 	echo "✅ $var has been successfully set, continuing..."
 done <<EOVARS
 ELASTIC_PASSWORD
+ELASTIC_USER
 EOVARS
 unset VAULT_RTOKEN
+export ES_URI=https://localhost:9200
+export ES_USERNAME=$ELASTIC_USER
+export ES_PASSWORD=$ELASTIC_PASSWORD
+export ES_SSL_SKIP_VERIFY=true
+elasticsearch_exporter >/dev/null 2>&1 &
 echo "🚀 Environment variables were properly set using Vault, launching $service"
 exec /bin/tini -- /usr/local/bin/docker-entrypoint.sh "$@" >>/tmp/log/elastic.log 2>&1
