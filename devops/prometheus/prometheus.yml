@@ -33,5 +33,5 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
     - targets:
-      - logstash:9187
+      - logstash:9198
   
