@@ -118,8 +118,5 @@ done
 echo "✅ All secrets added."
 #IL FAUDRA PENSER A SUPPRIMER LE JSON DES SECRETS ICI
 
-echo "📝 Activating syslogs for Vault..."
-curl -sk --header "X-Vault-Token: $ROOT_TOKEN" --request PUT --data '{"type":"syslog"}' $VAULT_ADDR/v1/sys/audit/syslog >/dev/null
-echo "✅ Syslog activated !"
 echo "✅ Initialization done !"
 touch "$SECRETS_ARE_SET_FILE"
