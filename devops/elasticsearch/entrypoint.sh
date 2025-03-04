@@ -47,7 +47,7 @@ while read var; do
 	j=0
 	echo "⏳ Setting up $var..."
 	var_content="null"
-	while [ "$var_content" = "null" ]; do
+	while [ "$var_content" = "null" ] || [ -z "$var_content ] || [ -z "$var_content" ]; do
 		j=$((j + 1))
 		if [ $j -gt 100 ]; then
 			echo "❌ $var couldn't be set within a minute, aborting..."
@@ -58,7 +58,7 @@ while read var; do
 			https://vault:8200/v1/secret/data/${service_lower} |
 			jq -r .data.data.$var)
 		var_content=$(eval "echo \${$var}")
-		if [ "$var_content" = "null" ]; then
+		if [ "$var_content" = "null" ] || [ -z "$var_content" ]; then
 			sleep 2
 		else
 			break
