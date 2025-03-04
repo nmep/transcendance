@@ -1,13 +1,6 @@
 services:
   db_exporter:
     container_name: postgres_exporter
-    depends_on:
-      db:
-        condition: service_started
-      prometheus:
-        condition: service_started
-      init_vault:
-        condition: service_completed_successfully
     image: transcendance_db_exporter
     build:
       context: ../devops/db_exporter
@@ -26,13 +19,6 @@ services:
     build:
       context: ../devops/nginx_exporter
       dockerfile: Dockerfile
-    depends_on:
-      prometheus:
-        condition: service_started
-      reverseproxy:
-        condition: service_started
-      init_vault:
-        condition: service_completed_successfully
     ports:
       - "9113:9113"
     networks:

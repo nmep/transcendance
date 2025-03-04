@@ -1,0 +1,14 @@
+logs_auth_api | db_started
+logs_elastic | setup healthy
+logs_grafana | ok
+logs_init_vault | ok
+logs_kibana | elastic healthy
+logs_logstash | elastic and kibana healthy
+logs_nginx | logstash started
+logs_nginx_exporter | nginx and prometheus started
+logs_postgres | ok
+logs_postgres_exporter | db and prometheus started
+logs_prometheus | ok
+logs_setup | ok
+logs_vault | ok
+init_vault rework token

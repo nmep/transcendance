@@ -27,8 +27,6 @@ services:
     build:
       context: ../security/init_vault/
       dockerfile: Dockerfile
-    depends_on:
-      - vault
     volumes:
       - init_vault:/secret/
       - startup_logs:/logs

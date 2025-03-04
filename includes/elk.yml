@@ -26,11 +26,6 @@ services:
     build:
       context: ../devops/elasticsearch
       dockerfile: Dockerfile
-    depends_on:
-      setup:
-        condition: service_healthy
-      init_vault:
-        condition: service_completed_successfully
     image: transcendance_elasticsearch
     labels:
       co.elastic.logs/module: elasticsearch
@@ -73,11 +68,6 @@ services:
 
   kibana:
     container_name: kibana
-    depends_on:
-      elasticsearch:
-        condition: service_healthy
-      init_vault:
-        condition: service_completed_successfully
     image: transcendance_kibana
     build:
       context: ../devops/kibana
@@ -110,13 +100,6 @@ services:
 
   logstash:
     container_name: logstash
-    depends_on:
-      elasticsearch:
-        condition: service_healthy
-      kibana:
-        condition: service_healthy
-      init_vault:
-        condition: service_completed_successfully
     image: transcendance_logstash
     build:
       context: ../devops/logstash

@@ -19,9 +19,6 @@ services:
       context: ../devops/grafana
       dockerfile: Dockerfile
     image: transcendance_grafana
-    depends_on:
-      init_vault:
-        condition: service_completed_successfully
     container_name: grafana
     ports:
       - 3000:3000
