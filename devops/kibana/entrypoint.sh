@@ -76,6 +76,7 @@ unset VAULT_RTOKEN
 export XPACK_SECURITY_ENCRYPTIONKEY=${ENCRYPTION_KEY}
 export XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${ENCRYPTION_KEY}
 export XPACK_REPORTING_ENCRYPTIONKEY=${ENCRYPTION_KEY}
+bin/kibana_exporter -kibana.uri http://localhost:5601 -wait -kibana.password ${ELASTICSEARCH_PASSWORD} -kibana.username ${ELASTICSEARCH_USERNAME} &
 echo "🚀 Environment variables were properly set using Vault, launching $service"
 
 exec "$@" >>/tmp/log/kibana.log 2>&1
