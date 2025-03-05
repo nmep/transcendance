@@ -1,9 +1,9 @@
 services:
-  db_exporter:
+  postgres_exporter:
     container_name: postgres_exporter
-    image: transcendance_db_exporter
+    image: transcendance_postgres_exporter
     build:
-      context: ../devops/db_exporter
+      context: ../devops/postgres_exporter
       dockerfile: Dockerfile
     ports:
       - "9187:9187"

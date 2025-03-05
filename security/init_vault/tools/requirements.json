@@ -24,7 +24,7 @@
             "POSTGRES_PASSWORD",
             "POSTGRES_DB"
         ],
-        "db_exporter": [
+        "postgres_exporter": [
             "DATA_SOURCE_USER",
             "DATA_SOURCE_PASSWORD",
             "POSTGRES_DB"

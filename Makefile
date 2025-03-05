@@ -21,7 +21,7 @@ IMAGES= grafana\
 		logstash\
 		elasticsearch\
 		setup_elk\
-		db_exporter\
+		postgres_exporter\
 		postgres\
 		nginx_exporter\
 		prometheus\
