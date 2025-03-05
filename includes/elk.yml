@@ -1,13 +1,10 @@
 services:
   setup:
-    container_name: setup
+    container_name: setup_elk
     image: transcendance_setup_elk
     build:
       context: ../devops/setup_elk
       dockerfile: Dockerfile
-    depends_on:
-      init_vault:
-        condition: service_completed_successfully
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
       - init_vault:/secret/

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+CURL_OPTS="-k"
+
 unseal_vault() {
     echo "🔓 Unsealing Vault..."
     UNSEAL_KEYS=$(cat $SECRET_DIR/unseal_keys.txt)
@@ -50,6 +52,78 @@ checking_seal() {
     else
         echo "✅ Vault is already unsealed."
     fi
+}
+
+create_token() {
+    echo "Processing service: $1"
+
+    # Wait until the service's IP is resolvable, trying up to 60 seconds (12 attempts)
+    retries=0
+    max_retries=12
+    ip=""
+    while [ x"$ip" = x ] && [ $retries -lt $max_retries ]; do
+        ip=$(getent hosts "$1" | awk '{print $1}')
+        if [ x"$ip" = x ]; then
+            echo "Waiting for $1 to resolve... attempt $((retries + 1))"
+            sleep 5
+            retries=$((retries + 1))
+        fi
+    done
+
+    if [ x"$ip" = x ]; then
+        echo "Error: Failed to resolve $1 after 60 seconds. Exiting."
+        exit 1
+    fi
+    echo "$1 resolved to IP: $ip"
+
+    # Define names for policy and role
+    policy_name="${1}-policy"
+    role_name="${1}-role"
+
+    # Check if the policy exists
+    policy_status=$(curl $CURL_OPTS --silent --output /dev/null --write-out "%{http_code}" \
+        --header "X-Vault-Token: $ROOT_TOKEN" \
+        "$VAULT_ADDR/v1/sys/policies/acl/$policy_name")
+    echo policy $policy_status status
+    if [ "$policy_status" -eq 404 ]; then
+        echo "Policy $policy_name does not exist. Creating it..."
+        # Create a read-only policy for the service's secrets (read & list only)
+        policy_content="path \\\"secret/data/${1}/*\\\" { capabilities = [\\\"read\\\", \\\"list\\\"] }"
+        curl $CURL_OPTS --silent --header "X-Vault-Token: $ROOT_TOKEN" \
+            --request PUT \
+            --data "{\"policy\": \"$policy_content\"}" \
+            "$VAULT_ADDR/v1/sys/policies/acl/$policy_name"
+
+    else
+        echo "Policy $policy_name already exists; skipping creation."
+    fi
+
+    # Create or update the token role with a 5-minute TTL and bind_ip set to the service IP
+    role_payload=$(jq -n \
+        --arg allowed_policies "$policy_name" \
+        --arg bound_cidrs "$ip/32" \
+        --arg ttl "5m" \
+        '{allowed_policies: $allowed_policies, bound_cidrs: $bound_cidrs, ttl: $ttl}')
+    echo "Creating/updating role $role_name..."
+    curl $CURL_OPTS --silent --header "X-Vault-Token: $ROOT_TOKEN" \
+        --request PUT \
+        --data "$role_payload" \
+        "$VAULT_ADDR/v1/auth/token/roles/$role_name" >/dev/null
+
+    # Create a token using the role with TTL of 5 minutes
+    echo "Creating token for role $role_name..."
+    token_resp=$(curl $CURL_OPTS --silent --header "X-Vault-Token: $ROOT_TOKEN" \
+        --request POST \
+        "$VAULT_ADDR/v1/auth/token/create/$role_name")
+    token=$(echo "$token_resp" | jq -r '.auth.client_token')
+    if [ x"$token" = x ]; then
+        echo "Failed to create token for $1" >&2
+        exit 1
+    fi
+
+    token_file="$SECRET_DIR/${1}_token.txt"
+    echo "$token" >"$token_file"
+    echo "Token for $1 stored in $token_file"
 }
 
 SECRET_DIR="/secret"
@@ -110,13 +184,11 @@ echo "$SECRETS_JSON" | jq -c '.services | to_entries[]' | while read -r entry; d
         "$VAULT_ADDR/v1/$VAULT_PATH" >/dev/null
 
     echo "✅ ${SERVICE^}'s secrets successfully sent to Vault !"
-    curl -sk --header "X-Vault-Token: $ROOT_TOKEN" --request PUT --data '{"policy": "path \"secret/data/'"$SERVICE"'/*\" { capabilities = [\"read\", \"list\"] }"}' $VAULT_ADDR/v1/sys/policy/${SERVICE}-policy
-    response=$(curl -k --header "X-Vault-Token: $ROOT_TOKEN" --request POST --data '{"policies": ["'"${SERVICE}"'-policy"], "bound_cidrs": "'"${SERVICE}"'/32", "token_type": "default"}' $VAULT_ADDR/v1/auth/token/create)
-    echo $response | jq -r
-
+    create_token $SERVICE
 done
 echo "✅ All secrets added."
 #IL FAUDRA PENSER A SUPPRIMER LE JSON DES SECRETS ICI
 
 echo "✅ Initialization done !"
 touch "$SECRETS_ARE_SET_FILE"
+sleep infinity
