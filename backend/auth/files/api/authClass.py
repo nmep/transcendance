@@ -22,7 +22,6 @@ class authManager:
         elif password == None:
             return JsonResponse({"success": False, "message":"Password is not defined"})
 
-        print(f"username = {username} | password = {password}")
         user = authenticate(request, username=username, password=password)
 
         if user:
@@ -39,7 +38,6 @@ class authManager:
 # inscription
     @staticmethod
     def register_user(request, username, password):
-        print(f"user name = {username} | password = {password}")
         if username == None:
             return JsonResponse({"success": False, "message":"Username is not defined"})
         elif password == None:
@@ -54,13 +52,14 @@ class authManager:
 # logout
     @staticmethod
     def logout_user(request):
+        refresh = request.data["refresh"]
+        token = RefreshToken(refresh)
+        token.blacklist()
         logout(request=request)
-        # redirect sur le home page ?
         return JsonResponse({"success": True, "message":"User loged out"})
 
     @staticmethod
     def unregister_user(request):
-        print(f"the user = {request.user.email}")
 
         if request.user:
             # si l'user a un email (ce qui est normalement obligatoire)
