@@ -27,7 +27,7 @@ COPY ./logstash.yml config/logstash.yml
 
 COPY ./patterns /usr/share/logstash/patterns
 
-# USER 1000
+USER 1000
 
 ENTRYPOINT [ "/entrypoint.sh" ]
 

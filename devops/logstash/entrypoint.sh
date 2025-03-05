@@ -3,7 +3,6 @@
 service="Logstash"
 service_lower=$(echo $service | tr A-Z a-z)
 touch .env
-/usr/share/logstash/lib/logstash-exporter &
 #Checking for vault token
 VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
 j=0
@@ -72,6 +71,17 @@ POSTGRES_PASSWORD
 POSTGRES_DB
 EOVARS
 unset VAULT_RTOKEN
+until curl -s --cacert certs/ca/ca.crt https://elastic:9200 | grep -q 'missing authentication credentials'; do
+	echo "Waiting for Elasticsearch to be ready..."
+	sleep 3
+done
+echo "Elasticsearch is now ready !"
+until curl -s -I http://kibana:5601 | grep -q 'HTTP/1.1 302 Found'; do
+	echo "Wait for Kibana to be ready..."
+	sleep 3
+done
+echo "Kibana is now ready !"
+/usr/share/logstash/lib/logstash-exporter &
 echo "🚀 Environment variables were properly set using Vault, launching $service"
 
 exec "$@"
