@@ -4,7 +4,7 @@ service="Logstash"
 service_lower=$(echo $service | tr A-Z a-z)
 touch .env
 #Checking for vault token
-VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
+VAULT_RTOKEN=$(cat /secret/${service_lower}_token.txt 2>/dev/null)
 j=0
 while [ x"$VAULT_RTOKEN" = x ]; do
 	j=$((j + 1))
@@ -12,7 +12,7 @@ while [ x"$VAULT_RTOKEN" = x ]; do
 		echo "❌ Couldn't set Vault token within 1 minute, aborting..."
 		exit 1
 	fi
-	VAULT_RTOKEN=$(cat /secret/root_token.txt 2>/dev/null)
+	VAULT_RTOKEN=$(cat /secret/${service_lower}_token.txt 2>/dev/null)
 	if [ x"$VAULT_RTOKEN" = x ]; then
 		echo "⏳ Vault token is not set, trying again..."
 		sleep 2

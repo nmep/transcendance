@@ -88,7 +88,7 @@ create_token() {
     if [ "$policy_status" -eq 404 ]; then
         echo "Policy $policy_name does not exist. Creating it..."
         # Create a read-only policy for the service's secrets (read & list only)
-        policy_content="path \\\"secret/data/${1}/*\\\" { capabilities = [\\\"read\\\", \\\"list\\\"] }"
+        policy_content="path \\\"secret/data/${1}*\\\" { capabilities = [\\\"read\\\", \\\"list\\\"] }"
         curl $CURL_OPTS --silent --header "X-Vault-Token: $ROOT_TOKEN" \
             --request PUT \
             --data "{\"policy\": \"$policy_content\"}" \
@@ -160,7 +160,7 @@ else
 
     echo "$UNSEAL_KEYS" >$SECRET_DIR/unseal_keys.txt
     echo "$ROOT_TOKEN" >$SECRET_DIR/root_token.txt
-
+    chmod 400 $SECRET_DIR/root_token.txt
     unseal_vault
 fi
 
