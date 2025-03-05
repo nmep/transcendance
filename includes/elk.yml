@@ -15,8 +15,7 @@ services:
       timeout: 5s
       retries: 120
     networks:
-      - monitoring
-      - vault
+      - transcendance
 
   elasticsearch:
     container_name: elastic
@@ -60,8 +59,7 @@ services:
       timeout: 10s
       retries: 120
     networks:
-      - monitoring
-      - vault
+      - transcendance
 
   kibana:
     container_name: kibana
@@ -92,8 +90,7 @@ services:
       timeout: 10s
       retries: 120
     networks:
-      - monitoring
-      - vault
+      - transcendance
 
   logstash:
     container_name: logstash
@@ -119,5 +116,4 @@ services:
       - ELASTIC_HOSTS=https://elasticsearch:9200
     mem_limit: 1073741824
     networks:
-      - monitoring
-      - vault
+      - transcendance

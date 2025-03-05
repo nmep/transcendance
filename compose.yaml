@@ -29,8 +29,7 @@ services:
       - "8080:80"
       - "8443:443"
     networks:
-      - monitoring
-      - auth
+      - transcendance
 
   # ------------------------------ micro service ------------------------------ #
 
@@ -45,9 +44,7 @@ services:
     ports:
       - '5432:5432'
     networks:
-      - auth
-      - monitoring
-      - vault
+      - transcendance
 
   auth:
     container_name: auth_api
@@ -59,6 +56,4 @@ services:
     ports:
       - "8000:8000"
     networks:
-      - auth
-      - monitoring
-      - vault
+      - transcendance

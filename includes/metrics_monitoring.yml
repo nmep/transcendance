@@ -12,7 +12,7 @@ services:
     ports:
       - "9090:9090"
     networks:
-      - monitoring
+      - transcendance
 
   grafana:
     build:
@@ -30,5 +30,4 @@ services:
       - ../devops/grafana/grafana.ini:/etc/grafana/grafana.ini
       - init_vault:/secret/
     networks:
-      - monitoring
-      - vault
+      - transcendance

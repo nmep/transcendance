@@ -10,8 +10,7 @@ services:
     volumes:
       - init_vault:/secret/
     networks:
-      - monitoring
-      - vault
+      - transcendance
 
   nginx_prometheus_exporter:
     container_name: nginx_exporter
@@ -22,4 +21,4 @@ services:
     ports:
       - "9113:9113"
     networks:
-      - monitoring
+      - transcendance
