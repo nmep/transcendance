@@ -43,7 +43,6 @@ while [ "$seal" = "null" ] || [ "$seal" = "true" ]; do
 	fi
 done
 echo "✅ Vault is unsealed, continuing..."
-#Error count
 echo "⏳ Waiting for Vault content..."
 while read var; do
 	j=0

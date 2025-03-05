@@ -41,7 +41,6 @@ while [ "$seal" = "null" ] || [ "$seal" = "true" ]; do
 	fi
 done
 echo "✅ Vault is unsealed, continuing..."
-#Error count
 echo "⏳ Waiting for Vault content..."
 while read var; do
 	j=0
@@ -75,5 +74,9 @@ export ES_USERNAME=$ELASTIC_USER
 export ES_PASSWORD=$ELASTIC_PASSWORD
 export ES_SSL_SKIP_VERIFY=true
 elasticsearch_exporter >/dev/null 2>&1 &
+until [ -f "/usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt" ]; do
+	sleep 1
+	echo "Waiting for certificate..."
+done
 echo "🚀 Environment variables were properly set using Vault, launching $service"
 exec /bin/tini -- /usr/local/bin/docker-entrypoint.sh "$@" >>/tmp/log/elastic.log 2>&1
