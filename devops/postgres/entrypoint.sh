@@ -2,6 +2,13 @@
 
 service="Postgres"
 service_lower=$(echo $service | tr A-Z a-z)
+current_ip=$(getent hosts $service_lower | awk '{print $1}')
+old_ip=$(cat /secret/ips/${service_lower}_ip.txt 2>/dev/null)
+until [ "$current_ip" = "$old_ip" ]; do
+    echo "Container's ip has changed, waiting for new token"
+    old_ip=$(cat /secret/ips/${service_lower}_ip.txt 2>/dev/null)
+    sleep 2
+done
 rsyslogd -i /tmp/rsyslogd.pid -f /etc/rsyslog.conf
 /logrotate_script.sh &
 #Checking for vault token

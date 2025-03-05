@@ -74,8 +74,9 @@ create_token() {
         echo "Error: Failed to resolve $1 after 60 seconds. Exiting."
         exit 1
     fi
+    cat ${1}_ip.txt 2>/dev/null
     echo "$1 resolved to IP: $ip"
-
+    echo $ip >${SECRET_DIR}/ips/${1}_ip.txt
     # Define names for policy and role
     policy_name="${1}-policy"
     role_name="${1}-role"
@@ -130,13 +131,13 @@ SECRET_DIR="/secret"
 SECRET_JSON="/secrets.json"
 SECRETS_ARE_SET_FILE="$SECRET_DIR/secrets_set"
 VAULT_ADDR="https://vault:8200"
-mkdir -p /vault/data $SECRET_DIR
+mkdir -p /vault/data $SECRET_DIR/ips
 
 if [ -f "$SECRETS_ARE_SET_FILE" ]; then
     echo "✅ Initialization process already done !"
     checking_vault
     checking_seal
-    exit 0
+    sleep infinity
 fi
 
 ./check_requirements.sh
