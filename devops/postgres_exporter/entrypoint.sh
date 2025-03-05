@@ -187,5 +187,4 @@ main() {
     # Execute the command passed to the container, logging output.
     exec "$@" >>"$LOG_FILE" 2>&1
 }
-
-main
+main "$@"

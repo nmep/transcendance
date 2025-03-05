@@ -1,7 +1,6 @@
 #!/bin/bash
 
 KIBANA_SET=/kibana_set/kibana
-
 if [ ! -f config/certs/ca.zip ]; then
     echo "Creating CA"
     bin/elasticsearch-certutil ca --silent --pem -out config/certs/ca.zip

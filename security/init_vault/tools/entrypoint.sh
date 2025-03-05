@@ -237,5 +237,4 @@ main() {
     fi
 
 }
-
-main
+main "$@"

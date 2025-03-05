@@ -1,78 +1,116 @@
 #!/bin/bash
+# Refactored Setup_ELK entrypoint script
 
-service="Setup_ELK"
-service_lower=$(echo $service | tr A-Z a-z)
-current_ip=$(getent hosts $service_lower | awk '{print $1}')
-old_ip=$(cat /secret/ips/${service_lower}_ip.txt 2>/dev/null)
-until [ "$current_ip" = "$old_ip" ]; do
-	echo "Container's ip has changed, waiting for new token"
-	old_ip=$(cat /secret/ips/${service_lower}_ip.txt 2>/dev/null)
-	sleep 2
-done
-#Checking for vault token
-VAULT_RTOKEN=$(cat /secret/${service_lower}_token.txt 2>/dev/null)
-j=0
-while [ x"$VAULT_RTOKEN" = x ]; do
-	j=$((j + 1))
-	if [ $j -gt 30 ]; then
-		echo "❌ Couldn't set Vault token within 1 minute, aborting..."
-		exit 1
-	fi
-	VAULT_RTOKEN=$(cat /secret/${service_lower}_token.txt 2>/dev/null)
-	if [ x"$VAULT_RTOKEN" = x ]; then
-		echo "⏳ Vault token is not set, trying again..."
-		sleep 2
-	else
-		break
-	fi
-done
-echo "✅ Vault token is properly set, continuing..."
+#######################################
+# Global Configuration
+#######################################
+VAULT_ADDR="https://vault:8200"
+SECRET_DIR="/secret"
+SERVICE="Setup_ELK"
+SERVICE_LOWER=$(echo "$SERVICE" | tr 'A-Z' 'a-z')
 
-#Checking for vault seal
-seal="null"
-j=0
-while [ "$seal" = "null" ] || [ "$seal" = "true" ]; do
-	echo "⏳ Waiting for vault to unseal..."
-	j=$((j + 1))
-	if [ $j -gt 30 ]; then
-		echo "❌ Vault is still sealed after a minute, aborting..."
-		exit 1
-	fi
-	seal=$(curl -k -s -f https://vault:8200/v1/sys/seal-status | jq -r .sealed)
-	if [ "$seal" = "null" ] || [ "$seal" = "true" ]; then
+#######################################
+# Logging Functions
+#######################################
+log_info() {
+	local icon="$1"
+	shift
+	echo "$icon $@" >&2
+}
+log_error() {
+	local icon="$1"
+	shift
+	echo "$icon $@" >&2
+}
+
+#######################################
+# Helper Functions (same as above)
+#######################################
+wait_for_ip_sync() {
+	local current_ip old_ip
+	current_ip=$(getent hosts "$SERVICE_LOWER" | awk '{print $1}' || true)
+	old_ip=$(cat "$SECRET_DIR/ips/${SERVICE_LOWER}_ip.txt" 2>/dev/null || true)
+	while [ "$current_ip" != "$old_ip" ]; do
+		log_info "⏳" "Container's IP has changed ($current_ip vs $old_ip), waiting for new token..."
 		sleep 2
-	else
-		break
-	fi
-done
-echo "✅ Vault is unsealed, continuing..."
-echo "⏳ Waiting for Vault content..."
-while read var; do
-	j=0
-	echo "⏳ Setting up $var..."
-	var_content="null"
-	while [ "$var_content" = "null" ] || [ -z "$var_content" ]; do
-		j=$((j + 1))
-		if [ $j -gt 100 ]; then
-			echo "❌ $var couldn't be set within a minute, aborting..."
+		old_ip=$(cat "$SECRET_DIR/ips/${SERVICE_LOWER}_ip.txt" 2>/dev/null || true)
+		current_ip=$(getent hosts "$SERVICE_LOWER" | awk '{print $1}' || true)
+	done
+}
+
+wait_for_vault_token() {
+	local token attempt=0 max_attempts=30
+	token=$(cat "$SECRET_DIR/${SERVICE_LOWER}_token.txt" 2>/dev/null || true)
+	while [ -z "$token" ]; do
+		attempt=$((attempt + 1))
+		if [ $attempt -gt $max_attempts ]; then
+			log_error "❌" "Couldn't set Vault token within 1 minute, aborting..."
 			exit 1
 		fi
-		export $var=$(curl -s -k \
-			--header "X-Vault-Token:$VAULT_RTOKEN" \
-			https://vault:8200/v1/secret/data/${service_lower} |
-			jq -r .data.data.$var)
-		var_content=$(eval "echo \${$var}")
-		if [ "$var_content" = "null" ] || [ -z "$var_content" ]; then
-			sleep 2
-		else
+		log_info "⏳" "Vault token is not set, trying again... (attempt: $attempt)"
+		sleep 2
+		token=$(cat "$SECRET_DIR/${SERVICE_LOWER}_token.txt" 2>/dev/null || true)
+	done
+	echo "$token"
+}
+
+wait_for_vault_unseal() {
+	local seal="null" attempt=0 max_attempts=30
+	while [ "$seal" = "null" ] || [ "$seal" = "true" ]; do
+		log_info "⏳" "Waiting for vault to unseal... (attempt: $((attempt + 1)))"
+		sleep 2
+		attempt=$((attempt + 1))
+		if [ $attempt -gt $max_attempts ]; then
+			log_error "❌" "Vault is still sealed after a minute, aborting..."
+			exit 1
+		fi
+		seal=$(curl -k -s -f "$VAULT_ADDR/v1/sys/seal-status" | jq -r .sealed)
+	done
+	log_info "✅" "Vault is unsealed, continuing..."
+}
+
+fetch_vault_variable() {
+	local service_lower="$1" vault_token="$2" var_name="$3"
+	local attempt=0 max_attempts=100 value=""
+	while true; do
+		value=$(curl -s -k --header "X-Vault-Token:$vault_token" "$VAULT_ADDR/v1/secret/data/${SERVICE_LOWER}" | jq -r ".data.data.${var_name}")
+		if [ "$value" != "null" ] && [ -n "$value" ]; then
 			break
 		fi
+		attempt=$((attempt + 1))
+		if [ $attempt -gt $max_attempts ]; then
+			log_error "❌" "$var_name couldn't be set within a minute, aborting..."
+			exit 1
+		fi
+		log_info "⏳" "Setting up $var_name... (attempt: $attempt)"
+		sleep 2
 	done
-	echo "✅ $var has been successfully set, continuing..."
-done <<EOVARS
-ELASTIC_PASSWORD
-KIBANA_PASSWORD
-EOVARS
-unset VAULT_RTOKEN
-echo "🚀 Environment variables were properly set using Vault, launching $service"
-exec "$@"
+	echo "$value"
+}
+
+fetch_vault_variables() {
+	local service_lower="$1" vault_token="$2"
+	shift 2
+	for var in "$@"; do
+		log_info "⏳" "Setting up $var..."
+		value=$(fetch_vault_variable "$SERVICE_LOWER" "$vault_token" "$var")
+		export "$var"="$value"
+		log_info "✅" "$var has been successfully set, continuing..."
+	done
+}
+
+#######################################
+# Main Execution Flow for Setup_ELK
+#######################################
+main() {
+	wait_for_ip_sync
+	VAULT_RTOKEN=$(wait_for_vault_token)
+	log_info "✅" "Vault token is properly set, continuing..."
+	wait_for_vault_unseal
+	# Fetch required Vault variables.
+	fetch_vault_variables "$SERVICE_LOWER" "$VAULT_RTOKEN" ELASTIC_PASSWORD KIBANA_PASSWORD
+	unset VAULT_RTOKEN
+	log_info "🚀" "Environment variables were properly set using Vault, launching $SERVICE"
+	exec "$@"
+}
+main "$@"

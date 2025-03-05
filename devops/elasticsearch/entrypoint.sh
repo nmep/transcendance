@@ -160,5 +160,4 @@ main() {
 	# Execute the docker-entrypoint.
 	exec /bin/tini -- /usr/local/bin/docker-entrypoint.sh "$@" >>"$LOG_FILE" 2>&1
 }
-
-main
+main "$@"
