@@ -6,8 +6,6 @@ services:
     build:
       context: ../security/vault/
       dockerfile: Dockerfile
-    env_file:
-      - "../security/vault/vault.env"
     ports:
       - "8203:8200"
     volumes:
