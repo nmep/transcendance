@@ -7,13 +7,14 @@ CA_FILE="$CERT_DIR/ca.crt"
 DAYS_VALID=365
 VAULT_HOST="vault.local"
 /logrotate_script.sh &
+rm -f /tmp/rsyslogd.pid
 rsyslogd -i /tmp/rsyslogd.pid -f /syslog/rsyslog.conf
 # Création du dossier si non existant
 mkdir -p $CERT_DIR
 
 # Vérification si le certificat existe déjà
 if [ -f "$CERT_FILE" ] && [ -f "$KEY_FILE" ]; then
-	echo "✅ Certificat SSL already created"
+	echo "✅ SSL Certificate already created"
 else
 	echo "🔐 Generating self-signed certificate for Vault..."
 

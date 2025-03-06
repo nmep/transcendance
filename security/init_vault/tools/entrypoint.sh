@@ -238,3 +238,14 @@ main() {
 
 }
 main "$@"
+
+log_info "🔄" "Starting periodic Vault seal monitoring loop..."
+while true; do
+    if wait_for_seal_status; then
+        log_info "🔄" "Vault is sealed. Attempting to unseal..."
+        unseal_vault
+    else
+        log_info "👍" "Vault is unsealed."
+    fi
+    sleep 30
+done
