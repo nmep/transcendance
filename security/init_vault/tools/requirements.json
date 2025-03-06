@@ -44,6 +44,9 @@
             "POSTGRES_DB",
             "AUTH_USER",
             "AUTH_PASSWORD"
+        ],
+        "prometheus": [
+            "HONEYPOT"
         ]
     }
 }
