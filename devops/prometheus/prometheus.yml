@@ -45,3 +45,17 @@ scrape_configs:
     scrape_interval: "10s"
     static_configs:
       - targets: ["kibana:9684"]
+
+  - job_name: vault
+    metrics_path: /v1/sys/metrics
+    params:
+      format: ['prometheus']
+    scheme: https
+    tls_config:
+      ca_file: /etc/prometheus/ca/ca.crt
+      # Optionally, if using self-signed certificates:
+      insecure_skip_verify: true
+    authorization:
+      credentials_file: /secret/prometheus_token.txt
+    static_configs:
+    - targets: ['vault:8200']

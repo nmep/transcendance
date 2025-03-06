@@ -9,6 +9,7 @@ services:
     volumes:
       - prometheusdata:/data
       - init_vault:/secret/
+      - vaultcert:/etc/prometheus/ca
     restart: no
     ports:
       - "9090:9090"

@@ -53,11 +53,14 @@ wait_for_vault_token() {
         sleep 2
         token=$(cat "$SECRET_DIR/${SERVICE_LOWER}_token.txt" 2>/dev/null)
     done
+    log_info "✅" "Vault Token has properly been set !"
     echo "$token"
 }
 
 export PROM_TOKEN=$(wait_for_vault_token)
+
 rm -f /tmp/rsyslogd.pid
 rsyslogd -i /tmp/rsyslogd.pid -f /syslog/rsyslog.conf
 /logrotate_script.sh &
-exec "$@" >>$LOG_FILE 2>&1
+exec "$@"
+# >>$LOG_FILE 2>&1

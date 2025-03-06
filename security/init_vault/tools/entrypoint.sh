@@ -119,7 +119,11 @@ update_service_token() {
             "$VAULT_ADDR/v1/sys/policies/acl/$policy_name")
         if [ "$policy_status" -eq 404 ]; then
             log_info "📝" "Policy $policy_name does not exist. Creating it..."
-            local policy_content="path \\\"secret/data/${service}*\\\" { capabilities = [\\\"read\\\", \\\"list\\\"] }"
+            if [ "$service" != "prometheus" ]; then
+                local policy_content="path \\\"secret/data/${service}*\\\" { capabilities = [\\\"read\\\", \\\"list\\\"] }"
+            else
+                local policy_content="path \\\"/sys/metrics\\\" { capabilities = [\\\"read\\\"] }"
+            fi
             curl $CURL_OPTS --silent --header "X-Vault-Token: $ROOT_TOKEN" \
                 --request PUT \
                 --data "{\"policy\": \"$policy_content\"}" \
