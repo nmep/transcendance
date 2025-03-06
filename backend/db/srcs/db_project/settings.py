@@ -135,11 +135,11 @@ WSGI_APPLICATION = 'db_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'toto_db',
-        'USER': 'toto',
-        'PASSWORD': 'password',
-        # 'HOST': 'db',
-        'HOST': '127.0.0.1', # test local
+        'NAME': 'your_postgres_db',
+        'USER': 'your_db_api_user',
+        'PASSWORD': 'your_db_api_password',
+        'HOST': 'db',
+        # 'HOST': '127.0.0.1', # test local
         'PORT': '5432',
     }
 }

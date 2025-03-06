@@ -57,3 +57,15 @@ services:
       - "8000:8000"
     networks:
       - transcendance
+
+  db_back:
+    container_name: db_api
+    restart: always
+    build: ./backend/db/
+    image: transcendance_db
+    volumes:
+      - init_vault:/secret/
+    ports:
+      - "8001:8001"
+    networks:
+      - transcendance

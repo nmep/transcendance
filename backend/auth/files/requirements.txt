@@ -8,6 +8,5 @@ django-otp==1.5.4
 django-two-factor-auth==1.17.0
 phonenumbers==8.13.55
 requests-oauthlib==2.0.0
-
 python-oauth2==1.1.1
 python-json-logger

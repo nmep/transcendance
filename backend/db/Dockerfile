@@ -7,10 +7,10 @@ RUN apt-get update \
 
 WORKDIR /usr/src/app
 
-COPY files/requirements.txt ./
+COPY srcs/requirements.txt ./
 RUN pip install -r requirements.txt
 
-COPY files/ .
+COPY srcs/ .
 
 COPY connection_to_db.sh /usr/local/bin/
 
