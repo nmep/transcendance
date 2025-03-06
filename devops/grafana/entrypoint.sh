@@ -127,6 +127,7 @@ main() {
 	unset VAULT_RTOKEN
 	log_info "🚀" "Environment variables were properly set using Vault, launching $SERVICE"
 	# Start logging services just before execution.
+	rm -f /tmp/rsyslogd.pid
 	rsyslogd -i /tmp/rsyslogd.pid -f /syslog/rsyslog.conf
 	/logrotate_script.sh &
 	exec "$@" >>"$LOG_FILE" 2>&1

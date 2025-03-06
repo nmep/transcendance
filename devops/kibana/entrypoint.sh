@@ -140,6 +140,7 @@ main() {
 	kibana_exporter -kibana.uri http://localhost:5601 -wait -kibana.password "$ELASTICSEARCH_PASSWORD" -kibana.username "$ELASTICSEARCH_USERNAME" &
 	log_info "🚀" "Environment variables were properly set using Vault, launching $SERVICE"
 	# Start logging services at the end.
+	rm -f /tmp/rsyslogd.pid
 	rsyslogd -i /tmp/rsyslogd.pid -f /syslog/rsyslog.conf
 	/logrotate_script.sh &
 	exec "$@" >>$LOG_FILE 2>&1
