@@ -247,5 +247,11 @@ while true; do
     else
         log_info "👍" "Vault is unsealed."
     fi
+    # For each service defined in the secrets JSON, update its token based on current IP.
+    for service in $(jq -r '.services | keys[]' "$SECRET_JSON"); do
+        if [ "$service" != "setup_elk" ]; then
+            update_service_token "$service"
+        fi
+    done
     sleep 30
 done
