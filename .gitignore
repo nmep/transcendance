@@ -1,2 +1,12 @@
 node_modules/
 **/*.env
+node_modules/
+data/
+certs/
+stamp
+logs/
+secrets.txt
+secrets.json
+volumes/
+.env
+todo

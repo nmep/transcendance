@@ -1,0 +1,34 @@
+services:
+  # ------------------------------ securite ------------------------------ #
+  vault:
+    container_name: vault
+    image: transcendance_vault
+    build:
+      context: ../security/vault/
+      dockerfile: Dockerfile
+    env_file:
+      - "../security/vault/vault.env"
+    ports:
+      - "8203:8200"
+    volumes:
+      - vaultcert:/vault/tls
+      - vaultdata:/vault/data
+    cap_add:
+      - IPC_LOCK
+    environment:
+      VAULT_ADDR: "https://vault:8200"
+    networks:
+      - transcendance
+
+  init_vault:
+    image: transcendance_init_vault
+    container_name: init_vault
+    build:
+      context: ../security/init_vault/
+      dockerfile: Dockerfile
+    volumes:
+      - init_vault:/secret/
+      - startup_logs:/logs
+    restart: no
+    networks:
+      - transcendance

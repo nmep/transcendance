@@ -1,0 +1,17 @@
+
+VAULT:
+    bon cette partie va necessiter un gros rework, on verra plus tard (ou pas)
+    creer un token par service (droits sur les fichiers?)
+
+ELK:
+    =>LOGSTASH + ELASTICSEARCH
+        - parser les logs de tlm
+        - conf de kibana pour avoir deja les indexages
+
+EXPORTERS:
+    
+MONITORING:
+    =>GRAFANA:
+        - les dashboards
+    =>PROMETHEUS
+        -

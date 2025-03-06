@@ -1,21 +1,41 @@
-FROM grafana/grafana
-
-EXPOSE 3000
+FROM grafana/grafana:latest
 
 USER root
 
-RUN apk add jq
+# Installer rsyslog
+RUN apk update && apk add rsyslog jq logrotate
 
-COPY bashrc /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 
-# COPY datasource.yml /etc/grafana/provisioning/datasources/datasource.yml
+RUN chmod 755 /entrypoint.sh
 
-# COPY grafana.ini /etc/grafana/grafana.ini
+COPY ./syslog /syslog
 
-RUN chmod  755 /entrypoint.sh 
+RUN chown -R 1000:1000 /syslog
 
-ENTRYPOINT [ "/entrypoint.sh" ]
+COPY ./logrotate_script.sh /logrotate_script.sh
 
-USER grafana
+RUN chmod 755 /logrotate_script.sh
 
-CMD ["grafana-server", "--config", "/etc/grafana/grafana.ini"]
+RUN mkdir -p /tmp/log 
+RUN touch /tmp/log/grafana.log
+RUN chown 1000:1000 /tmp/log/grafana.log
+RUN chown 1000:1000 /tmp/log/
+RUN chmod 664 /tmp/log/grafana.log
+
+RUN mkdir -p /var/spool/rsyslog
+RUN chown -R 1000:1000 /var/spool/rsyslog
+RUN chmod -R 775 /var/spool/rsyslog
+
+COPY ./dashboards /var/lib/grafana/dashboards
+COPY ./dashboards.yaml /etc/grafana/provisioning/dashboards/dashboards.yaml
+# Passer à l'utilisateur `grafana`
+USER 1000
+
+# Exposer le port de Grafana
+EXPOSE 3000
+
+# Définir l'entrypoint pour que Grafana soit en PID 1
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["grafana", "server", "--config", "/etc/grafana/grafana.ini"]

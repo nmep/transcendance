@@ -1,3 +1,5 @@
+log_level = "info"
+
 ui            = true
 disable_mlock = true
 
@@ -13,4 +15,10 @@ listener "tcp" {
   tls_disable   = "false"
   tls_cert_file = "/vault/tls/vault.crt"
   tls_key_file  = "/vault/tls/vault.key"
+}
+
+telemetry {
+  # Enables Vault to expose Prometheus‑formatted metrics.
+  prometheus_retention_policy = "10m"
+  disable_hostname = true
 }

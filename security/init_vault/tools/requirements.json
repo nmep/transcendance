@@ -1,0 +1,49 @@
+{
+    "services": {
+        "grafana": [
+            "GF_SECURITY_ADMIN_PASSWORD",
+            "GF_SECURITY_ADMIN_USER"
+        ],
+        "setup_elk": [
+            "ELASTIC_PASSWORD",
+            "KIBANA_PASSWORD"
+        ],
+        "elastic": [
+            "ELASTIC_PASSWORD",
+            "ELASTIC_USER"
+        ],
+        "kibana": [
+            "ELASTICSEARCH_PASSWORD",
+            "ELASTICSEARCH_USERNAME",
+            "ENCRYPTION_KEY"
+        ],
+        "logstash": [
+            "ELASTIC_PASSWORD",
+            "ELASTIC_USER",
+            "POSTGRES_USER",
+            "POSTGRES_PASSWORD",
+            "POSTGRES_DB"
+        ],
+        "postgres_exporter": [
+            "DATA_SOURCE_USER",
+            "DATA_SOURCE_PASSWORD",
+            "POSTGRES_DB"
+        ],
+        "postgres": [
+            "POSTGRES_DB",
+            "POSTGRES_USER",
+            "POSTGRES_PASSWORD",
+            "EXPORTER_USER",
+            "EXPORTER_PASSWORD",
+            "AUTH_USER",
+            "AUTH_PASSWORD",
+            "LOGSTASH_USER",
+            "LOGSTASH_PASSWORD"
+        ],
+        "auth": [
+            "POSTGRES_DB",
+            "AUTH_USER",
+            "AUTH_PASSWORD"
+        ]
+    }
+}

@@ -1,0 +1,55 @@
+volumes:
+  certs:
+    driver: local
+    driver_opts:
+      device: ../volumes/certs
+      type: "none"
+      o: bind
+  elastic_data:
+    driver: local
+    driver_opts:
+      device: ../volumes/elasticsearch/data
+      type: "none"
+      o: bind
+  kibanadata:
+    driver: local
+    driver_opts:
+      device: ../volumes/kibana/data
+      type: "none"
+      o: bind
+  logstashdata01:
+    driver: local
+    driver_opts:
+      device: ../volumes/logstash/data
+      type: "none"
+      o: bind
+  vaultdata:
+    driver: local
+    driver_opts:
+      device: ../volumes/vault/data
+      type: "none"
+      o: bind
+  vaultcert:
+    driver: local
+    driver_opts:
+      device: ../volumes/vault/cert
+      type: "none"
+      o: bind
+  init_vault:
+    driver: local
+    driver_opts:
+      device: ../volumes/vault/secret
+      type: "none"
+      o: bind
+  startup_logs:
+    driver: local
+    driver_opts:
+      device: ../volumes/vault/startup_logs
+      type: "none"
+      o: bind
+  prometheusdata:
+    driver: local
+    driver_opts:
+      device: ../volumes/prometheus/data
+      type: "none"
+      o: bind

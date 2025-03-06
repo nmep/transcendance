@@ -1,0 +1,24 @@
+services:
+  postgres_exporter:
+    container_name: postgres_exporter
+    image: transcendance_postgres_exporter
+    build:
+      context: ../devops/postgres_exporter
+      dockerfile: Dockerfile
+    ports:
+      - "9187:9187"
+    volumes:
+      - init_vault:/secret/
+    networks:
+      - transcendance
+
+  nginx_prometheus_exporter:
+    container_name: nginx_exporter
+    image: transcendance_nginx_exporter
+    build:
+      context: ../devops/nginx_exporter
+      dockerfile: Dockerfile
+    ports:
+      - "9113:9113"
+    networks:
+      - transcendance

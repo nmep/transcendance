@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+import logging
 from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,6 +29,34 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', 'nginx', 'auth']
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'syslog': {
+            'format': '%(asctime)s %(levelname)s %(name)s %(message)s'
+        },
+    },
+    'handlers': {
+        'syslog': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.SysLogHandler',
+            'address': '/dev/log',  # Local, sinon ('logstash', 514) pour un serveur distant
+            'formatter': 'syslog',
+        },
+    },
+    'root': {
+        'handlers': ['syslog'],
+        'level': 'DEBUG',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['syslog'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
 # Application definition
 
 INSTALLED_APPS = [
@@ -144,11 +174,10 @@ WSGI_APPLICATION = 'auth_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'toto_db',
-        'USER': 'toto',
-        'PASSWORD': 'password',
+        'NAME': os.getenv('POSTGRES_DB', 'default_db'),
+        'USER': os.getenv('AUTH_USER', 'default_db'),
+        'PASSWORD': os.getenv('AUTH_PASSWORD', 'default_db'),
         'HOST': 'db',
-        # 'HOST': '127.0.0.1', # test local
         'PORT': '5432',
     }
 }
@@ -188,13 +217,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-LOGIN_URL = 'two_factor:login'
-
-LOGIN_REDIRECT_URL = '/account/two_factor/'
-
-STATIC_URL= "static/"
-
-AUTHENTICATION_BACKENDS=['django.contrib.auth.backends.ModelBackend']
+STATIC_URL="http://localhost:8000/static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

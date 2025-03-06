@@ -1,0 +1,33 @@
+# ------------------------------ monitoring ------------------------------ #
+services:
+  prometheus:
+    container_name: prometheus
+    image: transcendance_prometheus
+    build:
+      context: ../devops/prometheus
+      dockerfile: Dockerfile
+    volumes:
+      - prometheusdata:/data
+    restart: no
+    ports:
+      - "9090:9090"
+    networks:
+      - transcendance
+
+  grafana:
+    build:
+      context: ../devops/grafana
+      dockerfile: Dockerfile
+    image: transcendance_grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    restart: on-failure:5
+    environment:
+      - GF_PATHS_CONFIG=/etc/grafana/grafana.ini
+    volumes:
+      - ../devops/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ../devops/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - init_vault:/secret/
+    networks:
+      - transcendance
