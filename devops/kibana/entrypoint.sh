@@ -142,6 +142,6 @@ main() {
 	# Start logging services at the end.
 	rsyslogd -i /tmp/rsyslogd.pid -f /syslog/rsyslog.conf
 	/logrotate_script.sh &
-	exec /bin/tini -- /usr/local/bin/docker-entrypoint.sh "$@" >>$LOG_FILE 2>&1
+	exec "$@" >>$LOG_FILE 2>&1
 }
 main "$@"
