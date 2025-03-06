@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 # Global configuration
 VAULT_ADDR="https://vault:8200"
@@ -185,7 +184,6 @@ process_services() {
 
 # Main execution flow
 main() {
-    mkdir -p /vault/data "$SECRET_DIR/ips"
 
     # Wait for Vault to respond and determine if it is initialized.
     if wait_for_vault; then
@@ -206,7 +204,7 @@ main() {
         ROOT_TOKEN=$(echo "$init_output" | jq -r '.root_token')
         echo "$unseal_keys" >"$SECRET_DIR/unseal_keys.txt"
         echo "$ROOT_TOKEN" >"$SECRET_DIR/root_token.txt"
-        chmod 400 "$SECRET_DIR/root_token.txt"
+        chmod 440 "$SECRET_DIR/root_token.txt"
         unseal_vault
     fi
 

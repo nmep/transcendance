@@ -10,6 +10,12 @@ RUN chmod 755 /entrypoint.sh
 
 RUN chmod 755 /check_requirements.sh
 
-RUN mkdir -p /logs
+RUN mkdir -p /logs  /vault/data /secret/ips
+
+RUN chmod 755 /logs  /vault/data /secret/ips /secret/
+
+RUN chown -R 1000:4316 /secret /logs /vault
+
+USER 1000
 
 ENTRYPOINT [ "./entrypoint.sh" ]
