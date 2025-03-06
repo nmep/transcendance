@@ -82,4 +82,4 @@ fclean:
 	
 re: fclean up
 
-.PHONY: logs up help restart all rm_logs re fclean down volumes
+.PHONY: logs up help restart all rm_logs re fclean down volumes root_token
