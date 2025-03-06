@@ -34,14 +34,15 @@ all: help
 
 help:
 	@echo "\033[1;32mAvailable targets\033[0m"
-	@echo "\033[1;34mup\033[0m          \t Create volumes and start containers (docker compose up)"
-	@echo "\033[1;34mvolumes\033[0m     \t Create required volumes"
-	@echo "\033[1;34mlogs\033[0m        \t Create and show logs"
-	@echo "\033[1;34mrm_logs\033[0m     \t Remove logs"
-	@echo "\033[1;34mdown\033[0m        \t Stop and remove containers (docker compose down)"
-	@echo "\033[1;34mrestart\033[0m     \t Restart containers (docker compose restart)"
-	@echo "\033[1;34mfclean\033[0m      \t Remove all containers, volumes, and images"
-	@echo "\033[1;34mre\033[0m          \t Rebuild everything (fclean + up)"
+	@echo "\033[1;34mup\033[0m\t\t\t Create volumes and start containers (docker compose up)"
+	@echo "\033[1;34mvolumes\033[0m\t\t\t Create required volumes"
+	@echo "\033[1;34mlogs\033[0m\t\t\t Create and show logs"
+	@echo "\033[1;34mrm_logs\033[0m\t\t\t Remove logs"
+	@echo "\033[1;34mdown\033[0m\t\t\t Stop and remove containers (docker compose down)"
+	@echo "\033[1;34mrestart\033[0m\t\t\t Restart containers (docker compose restart)"
+	@echo "\033[1;34mfclean\033[0m\t\t\t Remove all containers, volumes, and images"
+	@echo "\033[1;34mre\033[0m\t\t\t Rebuild everything (fclean + up)"
+	@echo "\033[1;34mroot_token\033[0m\t\t Shows Vault Root Token (Only for testing purposes)"
 
 
 up: volumes
@@ -52,6 +53,13 @@ volumes: ${VOLUMES_NAMES}
 
 ${VOLUMES_NAMES}:
 	mkdir -p ${VOLUMES_NAMES}
+
+root_token:
+	@if docker ps | grep -q init_vault; then \
+	docker exec init_vault cat /secret/root_token.txt; \
+	else \
+	echo "Init_vault is currently not running"; \
+	fi
 
 logs:
 	mkdir -p logs
