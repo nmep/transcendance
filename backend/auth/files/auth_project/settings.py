@@ -147,8 +147,8 @@ DATABASES = {
         'NAME': 'toto_db',
         'USER': 'toto',
         'PASSWORD': 'password',
-        # 'HOST': 'db',
-        'HOST': '127.0.0.1', # test local
+        'HOST': 'db',
+        # 'HOST': '127.0.0.1', # test local
         'PORT': '5432',
     }
 }
