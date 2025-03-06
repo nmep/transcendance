@@ -163,7 +163,6 @@ main() {
 	/logrotate_script.sh &
 
 	# Execute the docker-entrypoint.
-	sleep infinity
 	exec /bin/tini -- /usr/local/bin/docker-entrypoint.sh "$@" >>"$LOG_FILE" 2>&1
 }
 main "$@"

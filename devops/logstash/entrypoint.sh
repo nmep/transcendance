@@ -140,8 +140,6 @@ main() {
 	/usr/share/logstash/lib/logstash-exporter &
 	log_info "🚀" "Environment variables were properly set using Vault, launching $SERVICE"
 	# Start logging services at the end.
-	rsyslogd -i /tmp/rsyslogd.pid -f /syslog/rsyslog.conf
-	/logrotate_script.sh &
-	exec "$@" >>"$LOG_FILE" 2>&1
+	exec "$@"
 }
 main "$@"
