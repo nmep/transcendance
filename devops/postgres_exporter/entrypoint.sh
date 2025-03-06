@@ -28,12 +28,17 @@ log_error() {
 # Wait until the stored IP matches the container's current IP.
 #######################################
 wait_for_ip_sync() {
-    local current_ip old_ip
+    local current_ip old_ip ip_file
+
+    ip_file="$SECRET_DIR/ips/${SERVICE_LOWER}_ip.txt"
+    if [ -f "$ip_file" ]; then
+        old_ip=$(cat $ip_file)
+    fi
     current_ip=$(getent hosts "$SERVICE_LOWER" | awk '{print $1}')
     old_ip=$(cat "$SECRET_DIR/ips/${SERVICE_LOWER}_ip.txt" 2>/dev/null)
     echo test2 $SERVICE_LOWER
     while [ "$current_ip" != "$old_ip" ]; do
-        log_info "⏳" "Container's IP has changed ($current_ip vs $old_ip), waiting for new token..."
+        log_info "⏳" "Container's IP has changed ($current_ip vs ${old_ip:-none}), waiting for new token..."
         sleep 2
         old_ip=$(cat "$SECRET_DIR/ips/${SERVICE_LOWER}_ip.txt" 2>/dev/null)
     done
