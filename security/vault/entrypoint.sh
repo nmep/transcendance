@@ -32,4 +32,4 @@ else
 
 	echo "✅ Certificate successfully created at : $CERT_DIR"
 fi
-exec "$@" >>/tmp/log/vault.log 2>&1
+exec "$@" 2>&1 | tee /tmp/log/vault.log

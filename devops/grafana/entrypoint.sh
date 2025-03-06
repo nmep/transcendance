@@ -130,7 +130,7 @@ main() {
 	rm -f /tmp/rsyslogd.pid
 	rsyslogd -i /tmp/rsyslogd.pid -f /syslog/rsyslog.conf
 	/logrotate_script.sh &
-	exec "$@" >>"$LOG_FILE" 2>&1
+	exec "$@" 2>&1 | tee "$LOG_FILE"
 }
 
 main "$@"

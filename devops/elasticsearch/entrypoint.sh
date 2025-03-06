@@ -164,6 +164,6 @@ main() {
 	/logrotate_script.sh &
 
 	# Execute the docker-entrypoint.
-	exec /bin/tini -- /usr/local/bin/docker-entrypoint.sh "$@" >>"$LOG_FILE" 2>&1
+	exec /bin/tini -s -- /usr/local/bin/docker-entrypoint.sh "$@" 2>&1 | tee "$LOG_FILE"
 }
 main "$@"

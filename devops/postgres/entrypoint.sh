@@ -120,6 +120,6 @@ main() {
     # Start logging services at the end.
     rsyslogd -i /tmp/rsyslogd.pid -f /etc/rsyslog.conf
     /logrotate_script.sh &
-    exec "/usr/local/bin/docker-entrypoint.sh" "$@" >>"/tmp/log/postgres.log" 2>&1
+    exec "/usr/local/bin/docker-entrypoint.sh" "$@" 2>&1 | tee "/tmp/log/postgres.log"
 }
 main "$@"

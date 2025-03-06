@@ -31,7 +31,7 @@ if [ ! -f config/certs/certs.zip ]; then
     find . -type d -exec chmod 750 \{\} \;
     find . -type f -exec chmod 640 \{\} \;
 fi
-echo "Waiting for Elasticsearch availability"
+echo "⏳Waiting for Elasticsearch availability"
 until curl -s --cacert config/certs/ca/ca.crt https://elasticsearch:9200 | grep -q "missing authentication credentials"; do sleep 5; done
 if [ ! -f "$KIBANA_SET" ]; then
     echo "Setting kibana_system password"

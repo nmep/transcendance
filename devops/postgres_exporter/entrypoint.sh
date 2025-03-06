@@ -189,6 +189,6 @@ main() {
     /logrotate_script.sh &
 
     # Execute the command passed to the container, logging output.
-    exec "$@" >>"$LOG_FILE" 2>&1
+    exec "$@" 2>&1 | tee "$LOG_FILE"
 }
 main "$@"

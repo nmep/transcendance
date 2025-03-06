@@ -19,6 +19,5 @@ listener "tcp" {
 
 telemetry {
   # Enables Vault to expose Prometheus‑formatted metrics.
-  prometheus_retention_policy = "10m"
   disable_hostname = true
 }
