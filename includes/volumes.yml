@@ -53,3 +53,9 @@ volumes:
       device: ../volumes/prometheus/data
       type: "none"
       o: bind
+  logfiles:
+    driver: local
+    driver_opts:
+      device: ../volumes/logs/
+      type: "none"
+      o: bind

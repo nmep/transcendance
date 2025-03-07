@@ -29,6 +29,7 @@ services:
       - certs:/usr/share/elasticsearch/config/certs
       - elastic_data:/usr/share/elasticsearch/data
       - init_vault:/secret/
+      - logfiles:/tmp/log/
     user: "1000"
     ports:
       - 9200:9200
@@ -110,6 +111,7 @@ services:
       - ../devops/logstash/pipelines/:/usr/share/logstash/pipeline/:ro
       - ../devops/logstash/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
       - init_vault:/secret/
+      - logfiles:/tmp/log
     environment:
       - XPACK_MONITORING_ENABLED=false
       - xpack.monitoring.enabled=false
