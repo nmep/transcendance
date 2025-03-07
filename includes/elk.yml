@@ -127,6 +127,7 @@ services:
       - XPACK_MONITORING_ENABLED=false
       - xpack.monitoring.enabled=false
       - ELASTIC_HOSTS=https://elasticsearch:9200
+      - RUBYOPT=-W0
     mem_limit: 1073741824
     networks:
       - transcendance
