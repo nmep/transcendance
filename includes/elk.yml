@@ -74,6 +74,7 @@ services:
       - certs:/usr/share/kibana/config/certs
       - kibanadata:/usr/share/kibana/data
       - init_vault:/secret/
+      - logfiles:/tmp/log/
     ports:
       - 5601:5601
     environment:

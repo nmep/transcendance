@@ -1,0 +1,18 @@
+logging:
+  appenders:
+    json-layout:
+      type: console
+      layout:
+        type: json
+    file:
+      type: file
+      fileName: /tmp/log/kibana.log
+      layout:
+        type: json
+  root:
+    appenders: [file, json-layout]
+
+server.host: "0.0.0.0"
+server.shutdownTimeout: "5s"
+elasticsearch.hosts: [ "https://elasticsearch:9200" ]
+monitoring.ui.container.elasticsearch.enabled: true
