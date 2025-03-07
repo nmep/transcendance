@@ -142,6 +142,8 @@ REST_FRAMEWORK = {
     )
 }
 
+AUTH_USER_MODEL = 'auth_app.CustomUser'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
