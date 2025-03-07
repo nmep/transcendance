@@ -2,5 +2,5 @@
 # path.config: "/usr/share/logstash/pipeline/nginx"
 - pipeline.id: jdbc
   path.config: "/usr/share/logstash/pipeline/jdbc"
-- pipeline.id: syslog
-  path.config: "/usr/share/logstash/pipeline/syslog"
+- pipeline.id: log_files
+  path.config: "/usr/share/logstash/pipeline/log_files"
