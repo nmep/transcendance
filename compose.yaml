@@ -41,6 +41,7 @@ services:
     container_name: postgres
     volumes:
       - init_vault:/secret/
+      - log_postgres:/tmp/log/
     ports:
       - '5432:5432'
     networks:

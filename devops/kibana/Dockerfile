@@ -26,12 +26,6 @@ COPY ./logrotate_script.sh /logrotate_script.sh
 
 RUN chmod 755 /logrotate_script.sh
 
-RUN mkdir -p /tmp/log 
-RUN touch /tmp/log/kibana.log
-RUN chown 1000:1000 /tmp/log/kibana.log
-RUN chown 1000:1000 /tmp/log/
-RUN chmod 664 /tmp/log/kibana.log
-
 RUN mkdir -p /var/spool/rsyslog
 RUN chown -R 1000:1000 /var/spool/rsyslog
 RUN chmod -R 775 /var/spool/rsyslog

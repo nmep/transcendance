@@ -14,17 +14,16 @@ RUN chmod 755 /logrotate_script.sh
 
 COPY ./syslog/rsyslog.conf /etc/rsyslog.conf
 
-RUN mkdir -p /tmp/log 
-RUN touch /tmp/log/postgres_exporter.log
-RUN chown 1000:1000 /tmp/log/postgres_exporter.log
-RUN chown 1000:1000 /tmp/log/
-RUN chmod 664 /tmp/log/postgres_exporter.log
-
 RUN mkdir -p /var/spool/rsyslog
 RUN chown -R 1000:1000 /var/spool/rsyslog
 RUN chmod -R 775 /var/spool/rsyslog
 
 COPY ./syslog/logrotate.conf /etc/logrotate.conf
+
+RUN mkdir -p /tmp/log
+RUN chown 1000:1000 /tmp/log
+
+
 
 EXPOSE 9187
 USER 1000

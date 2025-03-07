@@ -53,9 +53,69 @@ volumes:
       device: ../volumes/prometheus/data
       type: "none"
       o: bind
-  logfiles:
+  log_elastic:
     driver: local
     driver_opts:
-      device: ../volumes/logs/
+      device: ../volumes/logs/elasticsearch
+      type: "none"
+      o: bind
+  log_kibana:
+    driver: local
+    driver_opts:
+      device: ../volumes/logs/kibana
+      type: "none"
+      o: bind
+  log_logstash:
+    driver: local
+    driver_opts:
+      device: ../volumes/logs/logstash
+      type: "none"
+      o: bind
+  log_grafana:
+    driver: local
+    driver_opts:
+      device: ../volumes/logs/grafana
+      type: "none"
+      o: bind
+  log_nginx_exporter:
+    driver: local
+    driver_opts:
+      device: ../volumes/logs/nginx_exporter
+      type: "none"
+      o: bind
+  log_postgres:
+    driver: local
+    driver_opts:
+      device: ../volumes/logs/postgres
+      type: "none"
+      o: bind
+  log_prometheus:
+    driver: local
+    driver_opts:
+      device: ../volumes/logs/prometheus
+      type: "none"
+      o: bind
+  log_vault:
+    driver: local
+    driver_opts:
+      device: ../volumes/logs/vault
+      type: "none"
+      o: bind
+  log_nginx:
+    driver: local
+    driver_opts:
+      device: ../volumes/logs/nginx
+      type: "none"
+      o: bind
+  log_auth:
+    driver: local
+    driver_opts:
+      device: ../volumes/logs/auth
+      type: "none"
+      o: bind
+  log_postgres_exporter:
+    driver: local
+    driver_opts:
+      device: ../volumes/logs/postgres_exporter
       type: "none"
       o: bind

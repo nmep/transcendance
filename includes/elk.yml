@@ -29,7 +29,7 @@ services:
       - certs:/usr/share/elasticsearch/config/certs
       - elastic_data:/usr/share/elasticsearch/data
       - init_vault:/secret/
-      - logfiles:/tmp/log/
+      - log_elastic:/tmp/log/
     user: "1000"
     ports:
       - 9200:9200
@@ -74,7 +74,7 @@ services:
       - certs:/usr/share/kibana/config/certs
       - kibanadata:/usr/share/kibana/data
       - init_vault:/secret/
-      - logfiles:/tmp/log/
+      - log_kibana:/tmp/log/
     ports:
       - 5601:5601
     environment:
@@ -112,7 +112,17 @@ services:
       - ../devops/logstash/pipelines/:/usr/share/logstash/pipeline/:ro
       - ../devops/logstash/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
       - init_vault:/secret/
-      - logfiles:/tmp/log
+      - log_elastic:/tmp/log/elastic/
+      - log_kibana:/tmp/log/kibana/
+      - log_logstash:/tmp/log/logstash/
+      - log_grafana:/tmp/log/grafana/
+      - log_nginx_exporter:/tmp/log/nginx_exporter/
+      - log_postgres:/tmp/log/postgres/
+      - log_postgres_exporter:/tmp/log/postgres_exporter/
+      - log_prometheus:/tmp/log/prometheus/
+      - log_vault:/tmp/log/vault/
+      - log_nginx:/tmp/log/nginx/
+      - log_auth:/tmp/log/auth/
     environment:
       - XPACK_MONITORING_ENABLED=false
       - xpack.monitoring.enabled=false
