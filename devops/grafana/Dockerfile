@@ -23,6 +23,10 @@ RUN chmod -R 775 /var/spool/rsyslog
 
 COPY ./dashboards /var/lib/grafana/dashboards
 COPY ./dashboards.yaml /etc/grafana/provisioning/dashboards/dashboards.yaml
+
+RUN mkdir -p /tmp/log
+RUN chown 1000:1000 /tmp/log
+
 # Passer à l'utilisateur `grafana`
 USER 1000
 

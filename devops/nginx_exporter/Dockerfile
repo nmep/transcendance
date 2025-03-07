@@ -20,6 +20,9 @@ RUN mkdir -p /var/spool/rsyslog
 RUN chown -R 1000:1000 /var/spool/rsyslog
 RUN chmod -R 775 /var/spool/rsyslog
 
+RUN mkdir -p /tmp/log
+RUN chown 1000:1000 /tmp/log
+
 USER 1000
 
 ENTRYPOINT [ "/entrypoint.sh" ]

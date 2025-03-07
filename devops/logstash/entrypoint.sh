@@ -8,7 +8,7 @@ VAULT_ADDR="https://vault:8200"
 SECRET_DIR="/secret"
 SERVICE="Logstash"
 SERVICE_LOWER=$(echo "$SERVICE" | tr 'A-Z' 'a-z')
-LOG_FILE="/tmp/log/logstash.log"
+LOG_FILE="/tmp/log/logstash/logstash.log"
 
 #######################################
 # Logging Functions

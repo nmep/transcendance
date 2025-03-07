@@ -23,10 +23,8 @@ COPY ./syslog/logrotate.conf /etc/logrotate.conf
 RUN mkdir -p /tmp/log
 RUN chown 1000:1000 /tmp/log
 
-
-
 EXPOSE 9187
 USER 1000
 ENTRYPOINT [ "/entrypoint.sh" ]
 
-CMD [ "postgres_exporter","--no-collector.stat_bgwriter" ]
+CMD [ "postgres_exporter","--no-collector.stat_bgwriter", "--log.format=json" ]
