@@ -25,6 +25,7 @@ services:
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       # ModSecurity
       - ./security/mod_security/:/etc/modsecurity.d/
+      - log_nginx:/tmp/log/
     ports:
       - "8080:80"
       - "8443:443"

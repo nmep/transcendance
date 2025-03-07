@@ -26,6 +26,8 @@ RUN chmod -R 775 /var/spool/rsyslog
 
 COPY ./syslog/logrotate.conf /etc/logrotate.conf
 
+
+
 USER 1000
 ENTRYPOINT [ "/entrypoint.sh" ]
 
