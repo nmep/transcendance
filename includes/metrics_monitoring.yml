@@ -10,6 +10,7 @@ services:
       - prometheusdata:/data
       - init_vault:/secret/
       - vaultcert:/etc/prometheus/ca
+      - log_prometheus:/tmp/log
     restart: no
     ports:
       - "9090:9090"

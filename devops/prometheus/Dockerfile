@@ -22,7 +22,6 @@ RUN mkdir -p /tmp/log /data /etc/prometheus/ca
 RUN touch /tmp/log/prometheus.log
 RUN chown 1000:1000 /tmp/log/prometheus.log
 RUN chown 1000:1000 /tmp/log/
-RUN chmod 664 /tmp/log/prometheus.log
 
 RUN mkdir -p /var/spool/rsyslog
 RUN chown -R 1000:1000 /var/spool/rsyslog
@@ -34,4 +33,4 @@ USER 1000
 
 ENTRYPOINT [ "/entrypoint.sh" ]
 
-CMD ["/bin/prometheus","--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus"]
+CMD ["/bin/prometheus","--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus", "--log.format=json"]
