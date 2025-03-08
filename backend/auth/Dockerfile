@@ -2,7 +2,7 @@ FROM python:3.10
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
-		postgresql-client && apt-get install -y jq rsyslog \
+		postgresql-client && apt-get install -y jq rsyslog iputils-ping \
 	&& rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app

@@ -46,6 +46,11 @@
             "POSTGRES_DB",
             "AUTH_USER",
             "AUTH_PASSWORD"
+        ],
+        "db_api": [
+            "POSTGRES_DB",
+            "DB_API_USER",
+            "DB_API_PASSWORD"
         ]
     }
 }

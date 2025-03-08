@@ -47,10 +47,14 @@ services:
       - transcendance
 
   auth:
-    container_name: auth_api
+    container_name: auth
     restart: always
     build: ./backend/auth/
     image: transcendance_auth
+    depends_on:
+      - db
+    links:
+      - db:db
     volumes:
       - init_vault:/secret/
     ports:
@@ -63,6 +67,10 @@ services:
     restart: always
     build: ./backend/db/
     image: transcendance_db
+    depends_on:
+      - db
+    links:
+      - db:db
     volumes:
       - init_vault:/secret/
     ports:

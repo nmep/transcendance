@@ -77,10 +77,13 @@ AUTH_PASSWORD
 EOVARS
 unset VAULT_RTOKEN
 
+
 until pg_isready -d $POSTGRES_DB -h db -p 5432 -U $AUTH_USER >/dev/null; do
 	echo "Connexion to database didn't succeed, retrying..."
 	sleep 2
 done
+
+echo "Connexion to database succeed !!"
 
 wait_for_start() {
 	retries=0
@@ -110,5 +113,7 @@ for container in $containers; do
 	wait_for_start $container
 done
 echo "🚀 Environment variables were properly set using Vault, launching $service"
+
+python manage.py migrate
 
 exec "$@"

@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-qr^cc8b@9r7l7$i7zmf)jx3j)z!sucyymm7^_w(70b7##9s_71
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'nginx', 'auth']
+# ALLOWED_HOSTS = ['localhost', 'nginx', 'auth', 'db']
+ALLOWED_HOSTS = []
 
 LOGGING = {
     'version': 1,
@@ -142,7 +143,7 @@ REST_FRAMEWORK = {
     )
 }
 
-AUTH_USER_MODEL = 'auth_app.CustomUser'
+# AUTH_USER_MODEL = 'auth_app.CustomUser'
 
 TEMPLATES = [
     {
@@ -176,9 +177,12 @@ WSGI_APPLICATION = 'auth_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'default_db'),
-        'USER': os.getenv('AUTH_USER', 'default_db'),
-        'PASSWORD': os.getenv('AUTH_PASSWORD', 'default_db'),
+        # 'NAME': os.getenv('POSTGRES_DB', 'default_db'),
+        # 'USER': os.getenv('AUTH_USER', 'default_db'),
+        # 'PASSWORD': os.getenv('AUTH_PASSWORD', 'default_db'),
+        'NAME': "your_postgres_db",
+        'USER': "your_auth_user",
+        'PASSWORD': "your_auth_password",
         'HOST': 'db',
         'PORT': '5432',
     }
