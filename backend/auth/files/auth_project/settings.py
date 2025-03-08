@@ -134,7 +134,6 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
-
 ROOT_URLCONF = 'auth_project.urls'
 
 REST_FRAMEWORK = {
@@ -177,12 +176,9 @@ WSGI_APPLICATION = 'auth_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': os.getenv('POSTGRES_DB', 'default_db'),
-        # 'USER': os.getenv('AUTH_USER', 'default_db'),
-        # 'PASSWORD': os.getenv('AUTH_PASSWORD', 'default_db'),
-        'NAME': "your_postgres_db",
-        'USER': "your_auth_user",
-        'PASSWORD': "your_auth_password",
+        'NAME': os.getenv('POSTGRES_DB', 'default_db'),
+        'USER': os.getenv('AUTH_USER', 'default_db'),
+        'PASSWORD': os.getenv('AUTH_PASSWORD', 'default_db'),
         'HOST': 'db',
         'PORT': '5432',
     }

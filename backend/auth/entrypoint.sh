@@ -112,6 +112,12 @@ EOF
 for container in $containers; do
 	wait_for_start $container
 done
+
+db_ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' db)
+
+export host="$db_ip"
+echo	"kqlwejrwlqrjlqwjwlrjlwqr l'ip de la db est $host"
+
 echo "🚀 Environment variables were properly set using Vault, launching $service"
 
 python manage.py migrate
