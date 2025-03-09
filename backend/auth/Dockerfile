@@ -15,8 +15,6 @@ COPY files/ .
 
 COPY ./entrypoint.sh /usr/local/bin/
 
-COPY ./rsyslog.conf /rsyslog.conf
-
 EXPOSE 8000
 
 ENTRYPOINT ["entrypoint.sh"]
