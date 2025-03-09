@@ -1,5 +1,5 @@
 log_level = "info"
-
+log_format = "json"
 ui            = true
 disable_mlock = true
 

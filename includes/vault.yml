@@ -11,6 +11,7 @@ services:
     volumes:
       - vaultcert:/vault/tls
       - vaultdata:/vault/data
+      - log_vault:/tmp/log/
     cap_add:
       - IPC_LOCK
     environment:
