@@ -185,7 +185,6 @@ main() {
     log_info "🚀" "Environment variables were properly set using Vault, launching $SERVICE"
 
     # Start system logging and log rotation before executing the main command.
-    rsyslogd -i /tmp/rsyslogd.pid -f /etc/rsyslog.conf
     /logrotate_script.sh &
 
     # Execute the command passed to the container, logging output.

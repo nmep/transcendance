@@ -2,7 +2,7 @@ FROM bitnami/postgres-exporter:0.16.0
 
 USER root
 
-RUN apt-get update && apt-get install -y jq curl postgresql-client rsyslog
+RUN apt-get update && apt-get install -y jq curl postgresql-client
 
 COPY ./entrypoint.sh /entrypoint.sh
 
@@ -11,12 +11,6 @@ RUN chmod 755 /entrypoint.sh
 COPY ./logrotate_script.sh /logrotate_script.sh
 
 RUN chmod 755 /logrotate_script.sh
-
-COPY ./syslog/rsyslog.conf /etc/rsyslog.conf
-
-RUN mkdir -p /var/spool/rsyslog
-RUN chown -R 1000:1000 /var/spool/rsyslog
-RUN chmod -R 775 /var/spool/rsyslog
 
 COPY ./syslog/logrotate.conf /etc/logrotate.conf
 

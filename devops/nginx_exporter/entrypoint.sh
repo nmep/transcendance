@@ -27,7 +27,5 @@ EOF
 for container in $containers; do
     wait_for_start $container
 done
-rm -f /tmp/rsyslogd.pid
-rsyslogd -i /tmp/rsyslogd.pid -f /syslog/rsyslog.conf
 /logrotate_script.sh &
 exec "$@" 2>&1 | tee /tmp/log/nginx_exporter.log

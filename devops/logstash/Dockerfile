@@ -9,7 +9,7 @@ USER root
 
 RUN apt-get update 
 
-RUN apt-get install -y jq wget rsyslog logrotate
+RUN apt-get install -y jq wget logrotate
 
 RUN wget -O /usr/share/logstash/lib/postgresql-42.7.5.jar https://jdbc.postgresql.org/download/postgresql-42.7.5.jar
 
@@ -34,10 +34,6 @@ RUN chown -R 1000:1000 /syslog
 COPY ./logrotate_script.sh /logrotate_script.sh
 
 RUN chmod 755 /logrotate_script.sh
-
-RUN mkdir -p /var/spool/rsyslog
-RUN chown -R 1000:1000 /var/spool/rsyslog
-RUN chmod -R 775 /var/spool/rsyslog
 
 RUN mkdir -p /tmp/log/logstash
 RUN chown 1000:1000 /tmp/log/logstash

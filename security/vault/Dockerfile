@@ -4,7 +4,7 @@ USER root
 
 RUN apk update
 
-RUN apk add openssl rsyslog logrotate
+RUN apk add openssl logrotate
 
 RUN mkdir -p /syslog /vault/tls /vault/data /vault/config
 
@@ -24,11 +24,7 @@ RUN mkdir -p /tmp/log /vault/data
 RUN touch /tmp/log/vault.log
 RUN chown vault:vault /tmp/log/vault.log
 RUN chown vault:vault /tmp/log/
-RUN chmod 664 /tmp/log/vault.log
-
-RUN mkdir -p /var/spool/rsyslog
-RUN chown -R vault:vault /var/spool/rsyslog
-RUN chmod -R 775 /var/spool/rsyslog
+RUN chmod 644 /tmp/log/vault.log
 
 COPY ./entrypoint.sh /entrypoint.sh
 

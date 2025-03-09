@@ -2,7 +2,7 @@ FROM postgres:17.3-alpine3.21
 
 USER root
 
-RUN apk update && apk add jq curl rsyslog logrotate
+RUN apk update && apk add jq curl logrotate
 
 COPY ./db_users.sh /docker-entrypoint-initdb.d/00-db_user.sh
 
@@ -18,11 +18,6 @@ RUN chown postgres:postgres /tmp/log
 
 RUN chmod 755 /logrotate_script.sh
 
-COPY ./syslog/rsyslog.conf /etc/rsyslog.conf
-
-RUN mkdir -p /var/spool/rsyslog
-RUN chown -R postgres:postgres /var/spool/rsyslog
-RUN chmod -R 775 /var/spool/rsyslog
 COPY ./syslog/logrotate.conf /etc/logrotate.conf
 COPY ./postgres.conf /etc/postgresql.conf
 

@@ -7,8 +7,6 @@ CA_FILE="$CERT_DIR/ca.crt"
 DAYS_VALID=365
 VAULT_HOST="vault.local"
 /logrotate_script.sh &
-rm -f /tmp/rsyslogd.pid
-rsyslogd -i /tmp/rsyslogd.pid -f /syslog/rsyslog.conf
 # Création du dossier si non existant
 mkdir -p $CERT_DIR
 

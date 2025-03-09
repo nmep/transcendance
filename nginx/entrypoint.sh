@@ -29,5 +29,4 @@ EOF
 for container in $containers; do
     wait_for_start $container
 done
-rsyslogd -i /tmp/rsyslogd.pid -f /etc/rsyslog.conf
 exec /bin/bash /usr/local/bin/ssl_certificate.sh "$@"

@@ -6,7 +6,7 @@ USER root
 
 RUN apt-get update 
 
-RUN apt-get install -y jq rsyslog logrotate wget
+RUN apt-get install -y jq logrotate wget
 
 RUN wget https://github.com/chamilad/kibana-prometheus-exporter/releases/download/v8.7.x.2/kibana_exporter-v8.7.x.2-linux-amd64
 
@@ -25,10 +25,6 @@ RUN chown -R 1000:1000 /syslog
 COPY ./logrotate_script.sh /logrotate_script.sh
 
 RUN chmod 755 /logrotate_script.sh
-
-RUN mkdir -p /var/spool/rsyslog
-RUN chown -R 1000:1000 /var/spool/rsyslog
-RUN chmod -R 775 /var/spool/rsyslog
 
 RUN mkdir -p /tmp/log
 RUN chown 1000:1000 /tmp/log

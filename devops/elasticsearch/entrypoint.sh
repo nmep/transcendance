@@ -159,8 +159,6 @@ main() {
 	log_info "🚀" "Environment variables were properly set using Vault, launching $SERVICE"
 
 	# Start system logging and log rotation just before executing the main container process.
-	rm -f /tmp/rsyslogd.pid
-	rsyslogd -i /tmp/rsyslogd.pid -f /syslog/rsyslog.conf
 	/logrotate_script.sh &
 
 	# Execute the docker-entrypoint.

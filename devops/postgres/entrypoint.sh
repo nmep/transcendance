@@ -118,7 +118,6 @@ main() {
     unset VAULT_RTOKEN
     log_info "🚀" "Environment variables were properly set using Vault, launching $SERVICE"
     # Start logging services at the end.
-    rsyslogd -i /tmp/rsyslogd.pid -f /etc/rsyslog.conf
     /logrotate_script.sh &
     exec "/usr/local/bin/docker-entrypoint.sh" "$@" 2>&1 | tee "/tmp/log/postgres.log"
 }

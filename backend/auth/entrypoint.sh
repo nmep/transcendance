@@ -9,7 +9,6 @@ until [ "$current_ip" = "$old_ip" ]; do
 	old_ip=$(cat /secret/ips/${service_lower}_ip.txt 2>/dev/null)
 	sleep 2
 done
-rsyslogd -f /rsyslog.conf
 #Checking for vault token
 VAULT_RTOKEN=$(cat /secret/${service_lower}_token.txt 2>/dev/null)
 j=0
