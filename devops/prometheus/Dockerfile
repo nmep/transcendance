@@ -30,4 +30,4 @@ USER 1000
 
 ENTRYPOINT [ "/entrypoint.sh" ]
 
-CMD ["/bin/prometheus","--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus", "--log.format=json"]
+CMD ["/bin/prometheus","--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus", "--log.format=json", "--storage.tsdb.retention.size=10GB", "--storage.tsdb.retention.time=30d"]
