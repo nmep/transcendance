@@ -23,7 +23,7 @@ COPY entrypoint.sh /entrypoint.sh
 
 RUN chmod 755 /entrypoint.sh 
 
-COPY ./logstash.yml config/logstash.yml
+COPY ./log4j2.properties config/log4j2.properties
 
 COPY ./patterns /usr/share/logstash/patterns
 
@@ -44,4 +44,4 @@ USER 1000
 
 ENTRYPOINT [ "/entrypoint.sh" ]
 
-CMD [ "/usr/share/logstash/bin/logstash" ]
+CMD [ "/usr/share/logstash/bin/logstash"]
