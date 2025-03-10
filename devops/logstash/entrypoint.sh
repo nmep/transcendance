@@ -116,11 +116,17 @@ wait_for_es_readiness() {
 
 # Wait for Kibana readiness by checking HTTP response.
 wait_for_kibana() {
+	local KIBANA_CONF_SET="/usr/share/logstash/data/kibana_conf_sent"
 	while ! curl -s -I http://kibana:5601 | grep -q 'HTTP/1.1 302 Found'; do
 		log_info "⏳" "Waiting for Kibana to be ready..."
 		sleep 3
 	done
 	log_info "✅" "Kibana is now ready!"
+	if [ ! -f "$KIBANA_CONF_SET" ]; then
+		log_info "🚀" "Sending pre-existing config !"
+		curl -s -X POST "http://kibana:5601/api/saved_objects/_import?overwrite=true" -H "kbn-xsrf: true" -F file=@/usr/share/logstash/config/kibana_config.ndjson -u $ELASTIC_USER:$ELASTIC_PASSWORD
+		touch $KIBANA_CONF_SET
+	fi
 }
 
 #######################################

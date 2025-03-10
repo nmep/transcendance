@@ -29,6 +29,8 @@ COPY ./patterns /usr/share/logstash/patterns
 
 COPY ./syslog /syslog
 
+COPY ./kibana_config.ndjson /usr/share/logstash/config/kibana_config.ndjson
+
 RUN chown -R 1000:1000 /syslog
 
 COPY ./logrotate_script.sh /logrotate_script.sh
