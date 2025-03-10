@@ -1,5 +1,6 @@
 log_level = "info"
 log_format = "json"
+log_file = "/tmp/log/vault.log"
 ui            = true
 disable_mlock = true
 
