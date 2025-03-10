@@ -1,6 +1,5 @@
-Parsing logs
-    grafana ok
-    
+manque les logs de django, a voir une fois que garfi aura fini
+
 Dashboard kibana
     alerts
 
