@@ -22,4 +22,4 @@ server.ssl.key: /usr/share/kibana/config/certs/kibana/kibana.key
 elasticsearch.hosts: ["https://elastic:9200"]
 elasticsearch.username: "${ELASTICSEARCH_USERNAME}"
 elasticsearch.password: "${ELASTICSEARCH_PASSWORD}"
-elasticsearch.ssl.certificateAuthorities: [ "/usr/share/kibana/config/certs/elasticsearch/elasticsearch.crt" ]
+elasticsearch.ssl.certificateAuthorities: [ "/usr/share/kibana/config/certs/ca/ca.crt" ]
