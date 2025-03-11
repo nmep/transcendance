@@ -141,6 +141,7 @@ main() {
 	log_info "🚀" "Environment variables were properly set using Vault, launching $SERVICE"
 	# Start logging services at the end.
 	/logrotate_script.sh &
+	sleep infinity
 	exec "$@" 2>&1 | tee $LOG_FILE
 }
 main "$@"

@@ -80,7 +80,6 @@ services:
     environment:
       - SERVERNAME=kibana
       - ELASTICSEARCH_HOSTS=https://elasticsearch:9200
-      - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=/usr/share/kibana/config/certs/ca/ca.crt
     mem_limit: 1073741824
     healthcheck:
       test:
