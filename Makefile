@@ -9,6 +9,7 @@ VOLUMES=grafana/data\
 		vault/cert\
 		vault/secret\
 		vault/startup_logs\
+		cert_prom_graf\
 		setup_elk\
 		$(addprefix logs/, ${IMAGES})
 

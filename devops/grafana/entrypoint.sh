@@ -113,6 +113,15 @@ fetch_vault_variables() {
 	done
 }
 
+wait_for_cert() {
+	local PATH_TO_CERT="/etc/grafana/cert/certificate"
+	until [ -f "$PATH_TO_CERT.crt" ] && [ -f "$PATH_TO_CERT.key" ]; do
+		log_info "⏳" "Waiting for certificate creation..."
+		sleep 2
+	done
+	log_info "✅" "Certificate has successfully been created !"
+}
+
 #######################################
 # Main Execution Flow
 #######################################
@@ -126,6 +135,7 @@ main() {
 		GF_SECURITY_ADMIN_PASSWORD GF_SECURITY_ADMIN_USER
 	unset VAULT_RTOKEN
 	log_info "🚀" "Environment variables were properly set using Vault, launching $SERVICE"
+	wait_for_cert
 	# Start logging services just before execution.
 	/logrotate_script.sh &
 	exec "$@"

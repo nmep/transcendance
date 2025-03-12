@@ -119,3 +119,9 @@ volumes:
       device: ../volumes/logs/postgres_exporter
       type: "none"
       o: bind
+  cert_prom_graf:
+    driver: local
+    driver_opts:
+      device: ../volumes/cert_prom_graf
+      type: "none"
+      o: bind

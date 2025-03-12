@@ -11,6 +11,7 @@ services:
       - init_vault:/secret/
       - vaultcert:/etc/prometheus/ca
       - log_prometheus:/tmp/log
+      - cert_prom_graf:/prometheus/cert/
     restart: no
     ports:
       - "9090:9090"
@@ -34,5 +35,6 @@ services:
       - ../devops/grafana/grafana.ini:/etc/grafana/grafana.ini
       - init_vault:/secret/
       - log_grafana:/tmp/log
+      - cert_prom_graf:/etc/grafana/cert/
     networks:
       - transcendance

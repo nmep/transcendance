@@ -57,7 +57,25 @@ wait_for_vault_token() {
     echo "$token"
 }
 
-export PROM_TOKEN=$(wait_for_vault_token)
+create_cert() {
+    local PATH_TO_CERT="/prometheus/cert/certificate"
+    if [ -f "$PATH_TO_CERT.crt" ] && [ -f "$PATH_TO_CERT.key" ]; then
+        echo "Certificate already exists ! Skipping..."
+    else
+        echo "Generating certificate...."
+        rm -f $PATH_TO_CERT.crt $PATH_TO_CERT.key
+        openssl req \
+            -x509 \
+            -nodes \
+            -out $PATH_TO_CERT.crt \
+            -keyout $PATH_TO_CERT.key \
+            -subj "/C=FR/ST=IDF/L=Saint-Denis/O=42/OU=42/CN=localhost/UID=transcendance"
+        echo "Certificate has been successfully generated !"
+        chmod 644 $PATH_TO_CERT.crt $PATH_TO_CERT.key
+    fi
+}
 
+export PROM_TOKEN=$(wait_for_vault_token)
+create_cert
 /logrotate_script.sh &
 exec "$@" 2>&1 | tee $LOG_FILE
