@@ -119,9 +119,15 @@ volumes:
       device: ../volumes/logs/postgres_exporter
       type: "none"
       o: bind
-  cert_prom_graf:
+  cert_prom:
     driver: local
     driver_opts:
-      device: ../volumes/cert_prom_graf
+      device: ../volumes/cert_prom
+      type: "none"
+      o: bind
+  cert_grafana:
+    driver: local
+    driver_opts:
+      device: ../volumes/cert_grafana
       type: "none"
       o: bind
