@@ -2,7 +2,7 @@ FROM bitnami/postgres-exporter:0.16.0
 
 USER root
 
-RUN apt-get update && apt-get install -y jq curl postgresql-client
+RUN apt-get update && apt-get install -y jq curl postgresql-client logrotate
 
 COPY ./entrypoint.sh /entrypoint.sh
 

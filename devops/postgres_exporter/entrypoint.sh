@@ -172,7 +172,6 @@ main() {
     # Construct DATA_SOURCE_NAME from the retrieved variables.
     export DATA_SOURCE_NAME="postgresql://${DATA_SOURCE_USER}:${DATA_SOURCE_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable"
     log_info "✅" "DATA_SOURCE_NAME has been successfully set, continuing..."
-    echo $POSTGRES_DB $DATA_SOURCE_USER
     # Wait for PostgreSQL to be available.
     wait_for_pg_connection "$POSTGRES_DB" "$DATA_SOURCE_USER" "db" "5432"
 
