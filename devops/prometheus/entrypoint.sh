@@ -58,22 +58,35 @@ wait_for_vault_token() {
 }
 
 create_cert() {
+    #!/bin/bash
     local PATH_TO_CERT="/etc/prometheus/cert/prometheus/certificate"
+
     if [ -f "$PATH_TO_CERT.crt" ] && [ -f "$PATH_TO_CERT.key" ]; then
-        echo "Certificate already exists ! Skipping..."
+        echo "Certificate already exists! Skipping..."
     else
-        echo "Generating certificate...."
-        rm -f $PATH_TO_CERT.crt $PATH_TO_CERT.key
-        openssl req \
-            -x509 \
-            -nodes \
-            -out $PATH_TO_CERT.crt \
-            -keyout $PATH_TO_CERT.key \
-            -subj "/C=FR/ST=IDF/L=Saint-Denis/O=42/OU=42/CN=localhost/UID=transcendance"
-        echo "Certificate has been successfully generated !"
-        chmod 644 $PATH_TO_CERT.crt
-        chmod 600 $PATH_TO_CERT.key
+        echo "Generating certificate..."
+        # Remove any existing certificate/key files (if present)
+        rm -f "$PATH_TO_CERT.crt" "$PATH_TO_CERT.key"
+
+        # Create a CSR and a new 2048-bit RSA key using your configuration file.
+        openssl req -new -nodes -out /tmp/prometheus.csr -newkey rsa:2048 -keyout /tmp/prometheus.key -config /etc/prometheus/openssl.cnf
+
+        # Self-sign the certificate using the CSR and key, referencing the correct extension section.
+        openssl x509 -req -in /tmp/prometheus.csr -signkey /tmp/prometheus.key -out "$PATH_TO_CERT.crt" -days 365 -extensions v3_req -extfile /etc/prometheus/openssl.cnf
+
+        # Move the private key to its destination.
+        mv /tmp/prometheus.key "$PATH_TO_CERT.key"
+
+        # Clean up the CSR
+        rm -f /tmp/prometheus.csr
+
+        echo "Certificate has been successfully generated!"
+
+        # Set file permissions
+        chmod 644 "$PATH_TO_CERT.crt"
+        chmod 600 "$PATH_TO_CERT.key"
     fi
+
 }
 
 wait_for_grafana_cert() {

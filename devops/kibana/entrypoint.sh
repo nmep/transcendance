@@ -137,7 +137,7 @@ main() {
 	export XPACK_REPORTING_ENCRYPTIONKEY="$ENCRYPTION_KEY"
 	wait_for_es_readiness
 	# Start kibana_exporter in the background.
-	kibana_exporter -kibana.uri https://localhost:5601 -wait -kibana.password "$ELASTICSEARCH_PASSWORD" -kibana.username "$ELASTICSEARCH_USERNAME" -kibana.ssl.ca /usr/share/kibana/config/certs/ca/ca.crt &
+	kibana_exporter -kibana.uri https://localhost:5601 -wait -kibana.password "$ELASTICSEARCH_PASSWORD" -kibana.username "$ELASTICSEARCH_USERNAME" -kibana.skip-tls &
 	log_info "🚀" "Environment variables were properly set using Vault, launching $SERVICE"
 	# Start logging services at the end.
 	/logrotate_script.sh &

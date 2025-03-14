@@ -12,7 +12,10 @@ scrape_configs:
           - postgres_exporter:9187
 
   - job_name: prometheus
+    scheme: https
     scrape_interval: 5s
+    tls_config:
+      insecure_skip_verify: true
     static_configs:
       - targets:
           - prometheus:9090
@@ -24,7 +27,10 @@ scrape_configs:
           - auth:8000
 
   - job_name: grafana
+    scheme: https
     scrape_interval: 5s
+    tls_config:
+      insecure_skip_verify: true
     static_configs:
       - targets:
           - grafana:3000
@@ -42,9 +48,10 @@ scrape_configs:
           - elastic:9114
 
   - job_name: "kibana"
-    scrape_interval: "10s"
+    scrape_interval: 10s
     static_configs:
-      - targets: ["kibana:9684"]
+      - targets:
+          - kibana:9684
 
   - job_name: vault
     metrics_path: /v1/sys/metrics
@@ -53,9 +60,8 @@ scrape_configs:
     scheme: https
     tls_config:
       ca_file: /etc/prometheus/cert/vault/ca.crt
-      # Optionally, if using self-signed certificates:
       insecure_skip_verify: true
     authorization:
       credentials_file: /secret/prometheus_token.txt
     static_configs:
-    - targets: ['vault:8200']
+      - targets: ['vault:8200']

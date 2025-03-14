@@ -2,7 +2,7 @@ FROM prom/prometheus:v3.1.0 as base
 
 FROM alpine:3.21.3
 
-RUN apk update && apk add bash logrotate openssl
+RUN apk update && apk add bash logrotate openssl curl
 
 COPY ./prometheus.yml /etc/prometheus/prometheus.yml
 RUN chmod 664 /etc/prometheus/prometheus.yml
@@ -25,6 +25,7 @@ RUN chown 1000:1000 /tmp/log/
 
 
 COPY ./web-config.yml /etc/prometheus/web-config.yml
+COPY ./openssl.cnf /etc/prometheus/openssl.cnf
 COPY --from=base /bin/prometheus /bin/prometheus
 RUN mkdir -p /prometheus && chmod 775 /prometheus
 

@@ -31,7 +31,6 @@ services:
     environment:
       - GF_PATHS_CONFIG=/etc/grafana/grafana.ini
       - GF_PATHS_LOGS=/tmp/log/
-      - GF_SECURITY_CA_CERT_FILE=/etc/grafana/cert/prometheus/certificate.crt
       - GF_SERVER_PROTOCOL=https
       - GF_SERVER_CERT_FILE=/etc/grafana/cert/grafana/certificate.crt
       - GF_SERVER_CERT_KEY=/etc/grafana/cert/grafana/certificate.key
