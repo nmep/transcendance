@@ -34,7 +34,7 @@ IMAGES= grafana\
 BUILD_IMAGES=$(addprefix transcendance_, ${IMAGES})
 
 
-all: help
+all: up
 
 help:
 	@echo "\033[1;32mAvailable targets\033[0m"

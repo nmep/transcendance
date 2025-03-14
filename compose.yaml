@@ -49,7 +49,7 @@ services:
       - transcendance
 
   auth:
-    container_name: auth_api
+    container_name: auth
     restart: always
     build: ./backend/auth/
     image: transcendance_auth

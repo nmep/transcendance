@@ -15,6 +15,8 @@ COPY files/ .
 
 COPY ./entrypoint.sh /usr/local/bin/
 
+RUN chmod 755 /usr/local/bin/entrypoint.sh
+
 EXPOSE 8000
 
 ENTRYPOINT ["entrypoint.sh"]
