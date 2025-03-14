@@ -127,7 +127,8 @@ create_cert() {
 			-keyout $PATH_TO_CERT.key \
 			-subj "/C=FR/ST=IDF/L=Saint-Denis/O=42/OU=42/CN=localhost/UID=transcendance"
 		echo "Certificate has been successfully generated !"
-		chmod 644 $PATH_TO_CERT.crt $PATH_TO_CERT.key
+		chmod 644 $PATH_TO_CERT.crt
+		chmod 600 $PATH_TO_CERT.key
 	fi
 }
 
