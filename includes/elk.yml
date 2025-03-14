@@ -18,6 +18,7 @@ services:
       - transcendance
 
   elasticsearch:
+    restart: always
     container_name: elastic
     build:
       context: ../devops/elasticsearch
@@ -63,6 +64,7 @@ services:
       - transcendance
 
   kibana:
+    restart: always
     container_name: kibana
     image: transcendance_kibana
     build:
@@ -93,6 +95,7 @@ services:
       - transcendance
 
   logstash:
+    restart: always
     container_name: logstash
     image: transcendance_logstash
     build:

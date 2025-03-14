@@ -11,12 +11,12 @@ services:
   # ------------------------------ nginx ------------------------------ #
 
   reverseproxy:
+    restart: always
     image: transcendance_nginx
     build:
       context: ./nginx
       dockerfile: Dockerfile
     container_name: nginx
-    # restart: always
     volumes:
       - ./nginx/conf/core.conf:/etc/nginx/conf.d/core.conf
       - ./nginx/conf/reverseproxy.conf:/etc/nginx/conf.d/reverseproxy.conf
@@ -35,6 +35,7 @@ services:
   # ------------------------------ micro service ------------------------------ #
 
   db:
+    restart: always
     image: transcendance_postgres
     build:
       context: ./devops/postgres
@@ -49,8 +50,8 @@ services:
       - transcendance
 
   auth:
-    container_name: auth
     restart: always
+    container_name: auth
     build: ./backend/auth/
     image: transcendance_auth
     volumes:

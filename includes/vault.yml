@@ -1,6 +1,7 @@
 services:
   # ------------------------------ securite ------------------------------ #
   vault:
+    restart: always
     container_name: vault
     image: transcendance_vault
     build:
@@ -20,6 +21,7 @@ services:
       - transcendance
 
   init_vault:
+    restart: always
     image: transcendance_init_vault
     container_name: init_vault
     build:
@@ -28,6 +30,5 @@ services:
     volumes:
       - init_vault:/secret/
       - startup_logs:/logs
-    restart: no
     networks:
       - transcendance

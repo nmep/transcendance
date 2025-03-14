@@ -13,7 +13,7 @@ services:
       - log_prometheus:/tmp/log
       - cert_prom:/etc/prometheus/cert/prometheus
       - cert_grafana:/etc/prometheus/cert/grafana
-    restart: no
+    restart: always
     ports:
       - "9090:9090"
     networks:
@@ -27,7 +27,7 @@ services:
     container_name: grafana
     ports:
       - 3000:3000
-    restart: on-failure:5
+    restart: always
     environment:
       - GF_PATHS_CONFIG=/etc/grafana/grafana.ini
       - GF_PATHS_LOGS=/tmp/log/
