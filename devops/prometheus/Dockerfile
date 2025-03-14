@@ -18,9 +18,9 @@ COPY ./logrotate_script.sh /logrotate_script.sh
 
 RUN chmod 755 /logrotate_script.sh
 
-RUN mkdir -p /tmp/log /data /etc/prometheus/ca
+RUN mkdir -p /tmp/log /data /etc/prometheus/cert/prometheus
 RUN touch /tmp/log/prometheus.log
-RUN chown 1000:1000 /tmp/log/prometheus.log
+RUN chown 1000:1000 /tmp/log/prometheus.log /etc/prometheus/cert/prometheus
 RUN chown 1000:1000 /tmp/log/
 
 COPY --from=base /bin/prometheus /bin/prometheus

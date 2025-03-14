@@ -9,7 +9,7 @@ services:
     volumes:
       - prometheusdata:/data
       - init_vault:/secret/
-      - vaultcert:/etc/prometheus/ca
+      - vaultcert:/etc/prometheus/cert/vault
       - log_prometheus:/tmp/log
       - cert_prom:/etc/prometheus/cert/prometheus
       - cert_grafana:/etc/prometheus/cert/grafana

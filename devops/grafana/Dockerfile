@@ -2,7 +2,7 @@ FROM grafana/grafana:latest
 
 USER root
 
-RUN apk update && apk add jq logrotate
+RUN apk update && apk add jq logrotate openssl
 
 COPY entrypoint.sh /entrypoint.sh
 
@@ -19,8 +19,8 @@ RUN chmod 755 /logrotate_script.sh
 COPY ./dashboards /var/lib/grafana/dashboards
 COPY ./dashboards.yaml /etc/grafana/provisioning/dashboards/dashboards.yaml
 
-RUN mkdir -p /tmp/log
-RUN chown 1000:1000 /tmp/log
+RUN mkdir -p /tmp/log /etc/grafana/cert/grafana
+RUN chown 1000:1000 /tmp/log /etc/grafana/cert/grafana
 
 # Passer à l'utilisateur `grafana`
 USER 1000

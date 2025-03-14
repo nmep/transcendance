@@ -11,4 +11,4 @@ openssl x509 -req -days 365 \
 	-signkey /etc/nginx/ssl/www.Mickeytracendence.com.key \
 	-out /etc/nginx/ssl/www.Mickeytracendence.com.crt
 
-exec "$@"doc
+exec "$@"

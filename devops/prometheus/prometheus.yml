@@ -52,7 +52,7 @@ scrape_configs:
       format: ['prometheus']
     scheme: https
     tls_config:
-      ca_file: /etc/prometheus/ca/ca.crt
+      ca_file: /etc/prometheus/cert/vault/ca.crt
       # Optionally, if using self-signed certificates:
       insecure_skip_verify: true
     authorization:

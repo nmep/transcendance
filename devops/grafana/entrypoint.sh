@@ -113,13 +113,31 @@ fetch_vault_variables() {
 	done
 }
 
-wait_for_cert() {
-	local PATH_TO_CERT="/etc/grafana/cert/certificate"
-	until [ -f "$PATH_TO_CERT.crt" ] && [ -f "$PATH_TO_CERT.key" ]; do
-		log_info "⏳" "Waiting for certificate creation..."
+create_cert() {
+	local PATH_TO_CERT="/etc/grafana/cert/grafana/certificate"
+	if [ -f "$PATH_TO_CERT.crt" ] && [ -f "$PATH_TO_CERT.key" ]; then
+		echo "Certificate already exists ! Skipping..."
+	else
+		echo "Generating certificate...."
+		rm -f $PATH_TO_CERT.crt $PATH_TO_CERT.key
+		openssl req \
+			-x509 \
+			-nodes \
+			-out $PATH_TO_CERT.crt \
+			-keyout $PATH_TO_CERT.key \
+			-subj "/C=FR/ST=IDF/L=Saint-Denis/O=42/OU=42/CN=localhost/UID=transcendance"
+		echo "Certificate has been successfully generated !"
+		chmod 644 $PATH_TO_CERT.crt $PATH_TO_CERT.key
+	fi
+}
+
+wait_for_prometheus_cert() {
+	local PATH_TO_PROMETHEUS_CERT="/etc/grafana/cert/prometheus/certificate"
+	until [ -f "$PATH_TO_PROMETHEUS_CERT.crt" ] && [ -f "$PATH_TO_PROMETHEUS_CERT.key" ]; do
+		log_info "⏳" "Waiting for Prometheus' certificate..."
 		sleep 2
 	done
-	log_info "✅" "Certificate has successfully been created !"
+	log_info "✅" "Prometheus' certificate has properly been created !"
 }
 
 #######################################
@@ -135,7 +153,8 @@ main() {
 		GF_SECURITY_ADMIN_PASSWORD GF_SECURITY_ADMIN_USER
 	unset VAULT_RTOKEN
 	log_info "🚀" "Environment variables were properly set using Vault, launching $SERVICE"
-	wait_for_cert
+	create_cert
+	wait_for_prometheus_cert
 	# Start logging services just before execution.
 	/logrotate_script.sh &
 	exec "$@"
