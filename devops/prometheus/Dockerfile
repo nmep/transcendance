@@ -23,6 +23,8 @@ RUN touch /tmp/log/prometheus.log
 RUN chown 1000:1000 /tmp/log/prometheus.log /etc/prometheus/cert/prometheus
 RUN chown 1000:1000 /tmp/log/
 
+
+COPY ./web-config.yml /etc/prometheus/web-config.yml
 COPY --from=base /bin/prometheus /bin/prometheus
 RUN mkdir -p /prometheus && chmod 775 /prometheus
 
@@ -30,4 +32,4 @@ USER 1000
 
 ENTRYPOINT [ "/entrypoint.sh" ]
 
-CMD ["/bin/prometheus","--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus", "--log.format=json", "--storage.tsdb.retention.size=10GB", "--storage.tsdb.retention.time=30d"]
+CMD ["/bin/prometheus","--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus", "--log.format=json", "--storage.tsdb.retention.size=10GB", "--storage.tsdb.retention.time=30d", "--web.config.file=/etc/prometheus/web-config.yml","--web.external-url=https://localhost/"]
