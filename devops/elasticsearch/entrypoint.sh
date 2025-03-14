@@ -151,7 +151,7 @@ main() {
 	export ES_SSL_SKIP_VERIFY=true
 
 	# Start elasticsearch_exporter in the background.
-	elasticsearch_exporter >/dev/null 2>&1 &
+	elasticsearch_exporter --es.ssl-skip-verify --es.uri=https://localhost:9200 &
 
 	# Wait for the Elasticsearch certificate to be available.
 	wait_for_certificate
