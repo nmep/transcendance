@@ -79,7 +79,10 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'two_factor.plugins.email',  # <- if you want email capability.
     'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
 ]
+
+
 
 MIDDLEWARE = [
     'django_prometheus.middleware.PrometheusBeforeMiddleware',
@@ -92,6 +95,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_prometheus.middleware.PrometheusAfterMiddleware',
+	'corsheaders.middleware.CorsMiddleware',
 ]
 
 SIMPLE_JWT = {
@@ -147,7 +151,11 @@ REST_FRAMEWORK = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'auth/files/api/templates'),
+            os.path.join(BASE_DIR, 'auth/files/auth_app/templates'),
+            os.path.join(BASE_DIR, 'auth/files/auth_project/templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -173,12 +181,23 @@ WSGI_APPLICATION = 'auth_project.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('POSTGRES_DB', 'default_db'),
+#         'USER': os.getenv('AUTH_USER', 'default_db'),
+#         'PASSWORD': os.getenv('AUTH_PASSWORD', 'default_db'),
+#         'HOST': 'db',
+#         'PORT': '5432',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'default_db'),
-        'USER': os.getenv('AUTH_USER', 'default_db'),
-        'PASSWORD': os.getenv('AUTH_PASSWORD', 'default_db'),
+        'NAME': 'your_postgres_db',
+        'USER': "your_auth_user",
+        'PASSWORD': "your_auth_password",
         'HOST': 'db',
         'PORT': '5432',
     }
@@ -233,3 +252,33 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'the.42.transcendance@gmail.com'
 EMAIL_HOST_PASSWORD = 'eruibhbfsyzdlgex'
+
+
+LOGIN_REDIRECT_URL = "/account/two_factor/setup/"
+
+TWO_FACTOR_AUTHENTICATION_REDIRECT = "/"
+
+TWO_FACTOR_SETUP_COMPLETE_REDIRECT = "/"
+
+CORS_ALLOWED_ORIGINS = [
+    "https://localhost:8443",
+    "http://localhost:8000",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = [
+    "authorization",
+    "content-type",
+    "x-csrftoken",
+    "x-requested-with"
+]
+
+CORS_EXPOSE_HEADERS = ["X-CSRFToken"]
+
+
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+SESSION_COOKIE_NAME = "sessionid"
+SESSION_COOKIE_SECURE = False # ⚠️ True en production avec HTTPS
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"

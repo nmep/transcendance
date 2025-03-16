@@ -35,12 +35,14 @@ services:
 
   db:
     image: transcendance_postgres
+    restart: always
     build:
       context: ./devops/postgres
       dockerfile: Dockerfile
     container_name: postgres
     volumes:
       - init_vault:/secret/
+      - ./devops/postgres/data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
     networks:

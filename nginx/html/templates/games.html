@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeux Interactifs</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Jeux Interactifs</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#pong">Pong</a></li>
+            <li><a href="#puissance4">Puissance 4</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section id="pong">
+            <h2>Pong</h2>
+            <canvas id="pongCanvas"></canvas>
+            <script src="pong.js"></script>
+        </section>
+        <section id="puissance4">
+            <h2>Puissance 4</h2>
+            <canvas id="puissance4Canvas"></canvas>
+            <script src="puissance4.js"></script>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Jeux Interactifs</p>
+    </footer>
+</body>
+</html>

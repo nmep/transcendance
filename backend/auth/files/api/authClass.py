@@ -7,11 +7,13 @@ import requests
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+from django.contrib.auth import get_user_model
+from django.contrib.sessions.models import Session
 # faire une classe qui a des fonctions pour lauthentification
 
 # login
 
-client_id = "COUIN"
+client_id = "couin"
 client_secret = "couin"
 
 class authManager:
@@ -52,11 +54,14 @@ class authManager:
 # logout
     @staticmethod
     def logout_user(request):
-        refresh = request.data["refresh"]
-        token = RefreshToken(refresh)
-        token.blacklist()
+        # refresh = request.data["refresh"]
+        # token = RefreshToken(refresh)
+        # token.blacklist()
         logout(request=request)
-        return JsonResponse({"success": True, "message":"User loged out"})
+        response = JsonResponse({"message": "Déconnexion réussie"})
+        response.delete_cookie("sessionid")
+        response.delete_cookie("csrftoken")
+        return response
 
     @staticmethod
     def unregister_user(request):
@@ -122,11 +127,42 @@ class authManager:
         if not code:
             return JsonResponse({"error": "Authorization code missing"}, status=400)
 
+        # token = client.fetch_token(token_url, client_secret=client_secret, code=code)
+        # client = OAuth2Session(client_id, token=token)
+
+        # user_info = client.get(user_info_url).json()
+        # return JsonResponse({"success": True, "user_login": user_info})
+        # Récupérer le token
+        
         token = client.fetch_token(token_url, client_secret=client_secret, code=code)
         client = OAuth2Session(client_id, token=token)
-
+    
+        # Récupérer les infos utilisateur
         user_info = client.get(user_info_url).json()
-        print(f"token = {token}")
-        # print(f"👤 Infos utilisateur: {user_info}")
+    
+        # Stocker les infos utilisateur en session
+        request.session["user_info"] = user_info
+    
+        # Redirection avec les données encodées dans l'URL (temporaire)
+        return redirect(f"https://localhost:8443/profile?user={json.dumps(user_info)}")
 
-        return JsonResponse({"success": True, "user_login": user_info["login"]})
+    def get_user(request):
+    
+        session_key = request.session.session_key
+    
+        if session_key:
+            session = Session.objects.filter(session_key=session_key).first()
+            if session:
+                data = session.get_decoded()
+    
+                if '_auth_user_id' in data:
+                    user_id = data['_auth_user_id']
+                    user = User.objects.filter(id=user_id).first()
+    
+                    if user:
+                        return JsonResponse({
+                            "username": user.username,
+                            "email": user.email,
+                            "id": user.id
+                        })
+        return JsonResponse({"error": "Utilisateur non authentifié"}, status=401)
