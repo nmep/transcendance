@@ -28,8 +28,8 @@ document.addEventListener("click", (e) => {
         title: "Page non trouvée",
         description: "La page que vous recherchez n'existe pas."
     },
-    "/": {
-        template: "/index.html",
+    "/home": {
+        template: "/templates/home.html",
         title: "Accueil",
         description: "Bienvenue sur la page d'accueil."
     },
@@ -48,26 +48,25 @@ document.addEventListener("click", (e) => {
         title: "Connexion",
         description: "Connectez-vous à votre compte Transcendance."
     },
-	"/register": {
-	  template: "/templates/register.html",
-	  title: "Inscription",
-	  description: "Créez un compte pour jouer à Transcendance."
-	},
+    "/register": {
+        template: "/templates/register.html",
+        title: "Inscription",
+        description: "Créez un compte pour jouer à Transcendance."
+    },
     "/profile": {
         template: "/templates/profile.html",
         title: "Profil",
         description: "Détails de votre profil."
     }
-
 };
 
   // Fonction pour gérer la localisation et charger le template approprié
   const urlLocationHandler = async () => {
     let location = window.location.pathname;
 
-    // Ensure '/' is correctly mapped to '/index'
+    // Assure que la page d'accueil soit bien chargée
     if (location === "/") {
-        location = "/";  // 🔥 Fix for root page loading issue
+        location = "/home";  // 🔥 On mappe le chemin root (/) vers la page d'accueil
     }
 
     console.log("🔍 URL demandée :", location); // 🔥 Debugging
@@ -81,7 +80,7 @@ document.addEventListener("click", (e) => {
             throw new Error(`Erreur ${response.status}: ${response.statusText}`);
         }
         const html = await response.text();
-        document.getElementById("content").innerHTML = html;
+        document.getElementById("content").innerHTML = html; // Injection du contenu
     } catch (error) {
         console.error("❌ Erreur lors du chargement du template :", error);
     }

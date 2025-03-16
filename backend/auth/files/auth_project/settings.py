@@ -27,8 +27,8 @@ SECRET_KEY = 'django-insecure-qr^cc8b@9r7l7$i7zmf)jx3j)z!sucyymm7^_w(70b7##9s_71
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['localhost', 'nginx', 'auth', 'db']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'nginx', 'auth', 'db']
+# ALLOWED_HOSTS = []
 
 LOGGING = {
     'version': 1,
@@ -88,6 +88,7 @@ MIDDLEWARE = [
     'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+	'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -95,7 +96,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_prometheus.middleware.PrometheusAfterMiddleware',
-	'corsheaders.middleware.CorsMiddleware',
 ]
 
 SIMPLE_JWT = {
@@ -245,7 +245,6 @@ STATIC_URL="http://localhost:8000/static/"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 EMAIL_BACKED = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -253,32 +252,17 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'the.42.transcendance@gmail.com'
 EMAIL_HOST_PASSWORD = 'eruibhbfsyzdlgex'
 
-
 LOGIN_REDIRECT_URL = "/account/two_factor/setup/"
 
 TWO_FACTOR_AUTHENTICATION_REDIRECT = "/"
 
 TWO_FACTOR_SETUP_COMPLETE_REDIRECT = "/"
 
+CORS_ALLOW_ALL_ORIGINS = True  # 🔥 À désactiver en production
+CORS_ALLOW_CREDENTIALS = True  # 🔥 Nécessaire pour `credentials: include`
 CORS_ALLOWED_ORIGINS = [
-    "https://localhost:8443",
+    "http://localhost:8443",  # 🔥 Remplacez par le bon port si différent
     "http://localhost:8000",
 ]
 
-CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOW_HEADERS = [
-    "authorization",
-    "content-type",
-    "x-csrftoken",
-    "x-requested-with"
-]
-
-CORS_EXPOSE_HEADERS = ["X-CSRFToken"]
-
-
-SESSION_ENGINE = "django.contrib.sessions.backends.db"
-SESSION_COOKIE_NAME = "sessionid"
-SESSION_COOKIE_SECURE = False # ⚠️ True en production avec HTTPS
-SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8443", "http://localhost:8000"]

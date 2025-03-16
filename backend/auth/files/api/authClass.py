@@ -9,12 +9,14 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.contrib.auth import get_user_model
 from django.contrib.sessions.models import Session
+import json
+
 # faire une classe qui a des fonctions pour lauthentification
 
 # login
 
-client_id = "couin"
-client_secret = "couin"
+client_id = "u-s4t2ud-4db2df15929bada32b77ef1c2ec8086e2d7ff1de72baf9d32a9edcb00ab5f8a0"
+client_secret = "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"
 
 class authManager:
     @staticmethod
@@ -126,25 +128,46 @@ class authManager:
         code = request.GET.get("code")
         if not code:
             return JsonResponse({"error": "Authorization code missing"}, status=400)
-
-        # token = client.fetch_token(token_url, client_secret=client_secret, code=code)
-        # client = OAuth2Session(client_id, token=token)
-
-        # user_info = client.get(user_info_url).json()
-        # return JsonResponse({"success": True, "user_login": user_info})
-        # Récupérer le token
         
         token = client.fetch_token(token_url, client_secret=client_secret, code=code)
         client = OAuth2Session(client_id, token=token)
     
-        # Récupérer les infos utilisateur
+        # Récupérer les informations utilisateur
         user_info = client.get(user_info_url).json()
-    
-        # Stocker les infos utilisateur en session
-        request.session["user_info"] = user_info
-    
-        # Redirection avec les données encodées dans l'URL (temporaire)
-        return redirect(f"https://localhost:8443/profile?user={json.dumps(user_info)}")
+        response = JsonResponse(user_info)  # Tu peux aussi retourner une JsonResponse ici
+        response.set_cookie("user_info", json.dumps(user_info), httponly=True, samesite="None", secure=True)
+
+        # Retourner la réponse avec le cookie
+        return response
+
+    # @staticmethod
+    # def callback(request):
+    #     redirect_uri = "http://localhost:8000/api/auth/callback"
+    #     authorization_base_url = "https://api.intra.42.fr/oauth/authorize"
+    #     token_url = "https://api.intra.42.fr/oauth/token"
+    #     user_info_url = "https://api.intra.42.fr/v2/me"
+
+    #     client = OAuth2Session(client_id, redirect_uri=redirect_uri)
+
+    #     # Récupérer le code de l'URL
+    #     code = request.GET.get("code")
+    #     if not code:
+    #         return JsonResponse({"error": "Authorization code missing"}, status=400)
+        
+    #     # Échanger le code contre un token
+    #     token = client.fetch_token(token_url, client_secret=client_secret, code=code)
+    #     client = OAuth2Session(client_id, token=token)
+
+    #     # Récupérer les informations de l'utilisateur
+    #     user_info = client.get(user_info_url).json()
+
+    #     # Créer la réponse et définir les cookies
+    #     response = JsonResponse(user_info)
+        
+    #     # Enregistrer les données utilisateur dans un cookie sécurisé
+    #     response.set_cookie("user_info", json.dumps(user_info), httponly=True, samesite="None", secure=True)
+
+    #     return response
 
     def get_user(request):
     
@@ -166,3 +189,4 @@ class authManager:
                             "id": user.id
                         })
         return JsonResponse({"error": "Utilisateur non authentifié"}, status=401)
+

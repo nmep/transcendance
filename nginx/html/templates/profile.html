@@ -18,39 +18,30 @@
     </div>
 
     <script>
-        function getUserInfo() {
-            // 🔥 Récupérer les données de l'utilisateur stockées en session
-            fetch("http://localhost:8000/api/auth/user/", {
-                method: "GET",
-                credentials: "include"  // 🔥 Envoie les cookies de session
-            })
-            .then(response => response.json())
-            .then(user => {
-                console.log("✅ Infos utilisateur :", user);
-                if (user.username) {
-                    document.getElementById("username").textContent = user.username;
-                    document.getElementById("user-avatar").src = user.image_url;
-                    document.getElementById("user-id").textContent = user.id;
-                    document.getElementById("user-email").textContent = user.email;
-                    document.getElementById("user-campus").textContent = user.campus;
-                }
-            })
-            .catch(error => console.error("❌ Erreur récupération utilisateur :", error));
-        }
+        document.addEventListener("DOMContentLoaded", () => {
+            // Récupérer les informations utilisateur depuis le localStorage
+            const userInfo = JSON.parse(localStorage.getItem('user_info'));
 
+            if (userInfo) {
+                // Afficher les informations utilisateur sur la page
+                document.getElementById("username").textContent = userInfo.login;
+                document.getElementById("user-id").textContent = userInfo.id;
+                document.getElementById("user-email").textContent = userInfo.email;
+                document.getElementById("user-campus").textContent = userInfo.campus ? userInfo.campus.name : "N/A";
+                document.getElementById("user-avatar").src = userInfo.image_url; // L'URL de l'avatar de l'utilisateur
+            } else {
+                // Si l'utilisateur n'est pas connecté ou que les informations ne sont pas présentes
+                window.location.href = "/login"; // Rediriger vers la page de login
+            }
+        });
+
+        // Fonction de déconnexion
         function logout() {
-            fetch("http://localhost:8000/api/auth/logout", {
-                method: "POST",
-                credentials: "include"
-            })
-            .then(() => {
-                document.cookie = "sessionid=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-                window.location.href = "/";
-            });
+            // Supprimer les informations du localStorage
+            localStorage.removeItem('user_info');
+            // Rediriger vers la page d'accueil
+            window.location.href = "/";
         }
-
-        // Exécuter dès que la page est chargée
-        document.addEventListener("DOMContentLoaded", getUserInfo);
     </script>
 
 </body>

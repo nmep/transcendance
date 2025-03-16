@@ -9,6 +9,7 @@
 <body>
   <div class="container">
     <div id="main">
+      <!-- Navbar statique -->
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/">Transcendance</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -25,51 +26,46 @@
                 Account
               </a>
               <ul class="dropdown-menu" id="auth-buttons">
-                <!-- Login -->
-                <li><a class="dropdown-item" href="/login">Login</a></li>
-                <!-- Register -->
-                <li><a class="dropdown-item" href="/register">Register</a></li>
+                <!-- Login / Register buttons or user info -->
               </ul>
             </li>
           </ul>
         </div>
       </nav>
 
-      <!-- 🔥 Contenu de la page -->
+      <!-- Contenu dynamique de la page -->
       <div id="content">
         <div class="container text-center mt-5">
-          <h1>Bienvenue sur Transcendance</h1>
-          <p class="lead">Un jeu de Pong revisité avec des fonctionnalités modernes.</p>
+            <h1>Bienvenue sur Transcendance</h1>
+            <p class="lead">Un jeu de Pong revisité avec des fonctionnalités modernes.</p>
 
-          <div class="row mt-4">
-            <div class="col-md-4">
-              <h3>Jouer</h3>
-              <p>Plonge dans l'action et affronte tes adversaires.</p>
-              <a href="/games" class="btn btn-primary">Commencer</a>
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <h3>Jouer</h3>
+                    <p>Plonge dans l'action et affronte tes adversaires.</p>
+                    <a href="/games" class="btn btn-primary">Commencer</a>
+                </div>
+                <div class="col-md-4">
+                    <h3>Classement</h3>
+                    <p>Consulte les meilleurs joueurs et améliore ton score.</p>
+                    <a href="/leaderboard" class="btn btn-success">Voir le classement</a>
+                </div>
+                <div class="col-md-4">
+                    <h3>Mon Compte</h3>
+                    <p>Gère ton profil et retrouve tes statistiques.</p>
+                    <a href="/profile" class="btn btn-warning" id="profile-btn">Accéder au profil</a>
+                </div>
             </div>
-            <div class="col-md-4">
-              <h3>Classement</h3>
-              <p>Consulte les meilleurs joueurs et améliore ton score.</p>
-              <a href="/leaderboard" class="btn btn-success">Voir le classement</a>
-            </div>
-            <div class="col-md-4">
-              <h3>Mon Compte</h3>
-              <p>Gère ton profil et retrouve tes statistiques.</p>
-              <a href="/profile" class="btn btn-warning">Accéder au profil azer</a>
-            </div>
-          </div>
 
-          <div class="mt-5">
-            <h2>Pourquoi jouer à Transcendance ?</h2>
-            <p>
-              Transcendance est une version améliorée du jeu Pong, avec des graphismes modernes, un gameplay revisité 
-              et des fonctionnalités interactives pour offrir la meilleure expérience aux joueurs.
-            </p>
-          </div>
+            <div class="mt-5">
+                <h2>Pourquoi jouer à Transcendance ?</h2>
+                <p>
+                    Transcendance est une version améliorée du jeu Pong, avec des graphismes modernes, un gameplay revisité 
+                    et des fonctionnalités interactives pour offrir la meilleure expérience aux joueurs.
+                </p>
+            </div>
         </div>
       </div>
-      <!-- 🔥 Fin du contenu -->
-
     </div>
   </div>
 
@@ -79,6 +75,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/js/url-router.js"></script>
-  <script src="/js/auth.js"></script> <!-- Script de gestion de l'authentification -->
+  <script src="/js/auth.js"></script>
 </body>
 </html>

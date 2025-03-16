@@ -47,6 +47,7 @@ services:
       - '5432:5432'
     networks:
       - transcendance
+    user: "root"
 
   auth:
     container_name: auth
