@@ -29,26 +29,44 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch(error => console.error("❌ Erreur lors de la récupération de l'utilisateur :", error));
 });
 
+// function loginWith42() {
+//     console.log("📡 Vérification de l'authentification via 42...");
 
-
-// document.addEventListener("DOMContentLoaded", () => {
-//     console.log("📡 auth.js : Début du script, vérification de l'utilisateur...");
-
-//     fetch("http://localhost:8000/api/auth/user", { 
-//         method: "GET", 
-//         credentials: "include"  // 🔥 Envoie les cookies
+//     fetch("http://localhost:8000/api/auth/remote", {
+//         method: "GET",
+//         credentials: "include"  // 🔥 Nécessaire pour envoyer les cookies
 //     })
 //     .then(response => {
-//         console.log("📌 Requête envoyée, statut de la réponse :", response.status);
+//         if (!response.ok) {
+//             throw new Error("Erreur lors de la récupération des informations utilisateur");
+//         }
 //         return response.json();
 //     })
-//     .then(data => {
-//         console.log("✅ Réponse de l'API reçue :", data);
+//     .then(userInfo => {
+//         console.log("✅ Informations utilisateur reçues :", userInfo);
+
+//         if (userInfo) {  // Vérification que les données existent
+//             // 🔥 Stocker **toutes** les infos utilisateur dans localStorage
+//             localStorage.setItem("user_info", JSON.stringify(userInfo));
+
+//             // 🔄 Redirection vers la page d'accueil ou le dashboard
+//             window.location.href = "/dashboard";
+//         } else {
+//             console.error("❌ Échec de la connexion via 42");
+//             alert("Échec de la connexion via 42. Veuillez réessayer.");
+//         }
 //     })
-//     .catch(error => console.error("❌ Erreur de requête :", error));
-    
-//     console.log("📡 auth.js : Fin du script, après fetch.");
-// });
+//     .catch(error => {
+//         console.error("❌ Erreur lors de la connexion :", error);
+//         alert("Une erreur est survenue lors de la connexion.");
+//     });
+// }
+
+function loginWith42() {
+    console.log("🔄 Redirection vers l'authentification 42...");
+    window.location.href = "http://localhost:8000/api/auth/remote";
+}
+
 
 function login() {
     fetch("http://localhost:8000/api/auth/login", {
