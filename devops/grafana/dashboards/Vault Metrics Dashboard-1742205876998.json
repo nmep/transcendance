@@ -207,7 +207,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "vault_token_count",
+          "expr": "vault_token_create_count",
           "legendFormat": "Token Count",
           "refId": "A"
         }
