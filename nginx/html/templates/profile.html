@@ -17,32 +17,5 @@
         <button class="btn btn-danger" onclick="logout()">Se déconnecter</button>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // Récupérer les informations utilisateur depuis le localStorage
-            const userInfo = JSON.parse(localStorage.getItem('user_info'));
-
-            if (userInfo) {
-                // Afficher les informations utilisateur sur la page
-                document.getElementById("username").textContent = userInfo.login;
-                document.getElementById("user-id").textContent = userInfo.id;
-                document.getElementById("user-email").textContent = userInfo.email;
-                document.getElementById("user-campus").textContent = userInfo.campus ? userInfo.campus.name : "N/A";
-                document.getElementById("user-avatar").src = userInfo.image_url; // L'URL de l'avatar de l'utilisateur
-            } else {
-                // Si l'utilisateur n'est pas connecté ou que les informations ne sont pas présentes
-                window.location.href = "/login"; // Rediriger vers la page de login
-            }
-        });
-
-        // Fonction de déconnexion
-        function logout() {
-            // Supprimer les informations du localStorage
-            localStorage.removeItem('user_info');
-            // Rediriger vers la page d'accueil
-            window.location.href = "/";
-        }
-    </script>
-
 </body>
 </html>

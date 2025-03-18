@@ -60,6 +60,19 @@ document.addEventListener("click", (e) => {
     }
 };
 
+// AJOUTER LA FONCTION GETUSER INFO DANS UN JS OU TESTER DIRECT SUR HTML
+
+function getUserInfo() {
+    fetch("http://localhost:8000/api/auth/whoami", { credentials: "include" })
+    .then(response => response.json())
+    .then(data => {
+        console.log("✅ Infos utilisateur :", data);
+        if (data && !data.error) {
+            document.getElementById("username").textContent = data.login;
+        }
+    });
+}
+
   // Fonction pour gérer la localisation et charger le template approprié
   const urlLocationHandler = async () => {
     let location = window.location.pathname;
@@ -81,13 +94,19 @@ document.addEventListener("click", (e) => {
         }
         const html = await response.text();
         document.getElementById("content").innerHTML = html; // Injection du contenu
+
+		  // 📌 Si tu veux exécuter du code quand "/profile" est chargé :
+	    if (location === "/profile") {
+			console.log("PAGE PROFIL DETECTE REQUETE SUR WHOAMI")
+		    getUserInfo(); // Appel direct
+		}
     } catch (error) {
         console.error("❌ Erreur lors du chargement du template :", error);
     }
 };
   // Appelle urlLocationHandler au chargement de la page pour charger le bon contenu
   window.addEventListener("load", urlLocationHandler);
-  
+
   // Permet de gérer le retour en arrière ou l'avant dans l'historique du navigateur
   window.addEventListener("popstate", urlLocationHandler);
   

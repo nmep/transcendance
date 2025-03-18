@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .authClass import authManager
+from django.http import JsonResponse
 
 person = {'name':'Denis', 'age':28}
 
@@ -31,4 +32,8 @@ class authAPI(APIView):
             return authManager.get_user(request)
         elif action == "remote":
             return authManager.remote_connection(request)
-        return authManager.callback(request)
+        elif action == "whoami":
+            return authManager.whoami(request)
+        elif action == "callback":
+            return authManager.callback(request)
+        return JsonResponse({"error": "Page Not Found"}, status=404)

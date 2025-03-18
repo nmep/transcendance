@@ -115,6 +115,31 @@ class authManager:
         print(f"authorization url = {authorization_url}")
         return redirect(authorization_url)
 
+    # @staticmethod
+    # def callback(request):
+    #     print(f"ICI CLIENT ID = {client_id}")
+    #     redirect_uri = "http://localhost:8000/api/auth/callback"
+    #     authorization_base_url = "https://api.intra.42.fr/oauth/authorize"
+    #     token_url = "https://api.intra.42.fr/oauth/token"
+    #     user_info_url = "https://api.intra.42.fr/v2/me"
+
+    #     client = OAuth2Session(client_id, redirect_uri=redirect_uri)
+
+    #     code = request.GET.get("code")
+    #     if not code:
+    #         return JsonResponse({"error": "Authorization code missing"}, status=400)
+        
+    #     token = client.fetch_token(token_url, client_secret=client_secret, code=code)
+    #     client = OAuth2Session(client_id, token=token)
+    
+    #     # Récupérer les informations utilisateur
+    #     user_info = client.get(user_info_url).json()
+    #     response = JsonResponse(user_info)  # Tu peux aussi retourner une JsonResponse ici
+    #     response.set_cookie("user_info", json.dumps(user_info), httponly=True, samesite="None", secure=True)
+
+    #     # Retourner la réponse avec le cookie
+    #     return response
+
     @staticmethod
     def callback(request):
         print(f"ICI CLIENT ID = {client_id}")
@@ -122,23 +147,25 @@ class authManager:
         authorization_base_url = "https://api.intra.42.fr/oauth/authorize"
         token_url = "https://api.intra.42.fr/oauth/token"
         user_info_url = "https://api.intra.42.fr/v2/me"
-
+    
         client = OAuth2Session(client_id, redirect_uri=redirect_uri)
-
+    
         code = request.GET.get("code")
         if not code:
             return JsonResponse({"error": "Authorization code missing"}, status=400)
         
         token = client.fetch_token(token_url, client_secret=client_secret, code=code)
         client = OAuth2Session(client_id, token=token)
-    
+
         # Récupérer les informations utilisateur
         user_info = client.get(user_info_url).json()
-        response = JsonResponse(user_info)  # Tu peux aussi retourner une JsonResponse ici
-        response.set_cookie("user_info", json.dumps(user_info), httponly=True, samesite="None", secure=True)
+    
+        # ⬇️ Stockage en session Django
+        request.session["user_info"] = user_info
+    
+        # ⬇️ Redirection vers /profile (adapté à ton domaine + HTTPS si nécessaire)
+        return redirect("https://localhost:8443/profile")
 
-        # Retourner la réponse avec le cookie
-        return response
 
     # @staticmethod
     # def callback(request):
@@ -189,4 +216,14 @@ class authManager:
                             "id": user.id
                         })
         return JsonResponse({"error": "Utilisateur non authentifié"}, status=401)
+
+    @staticmethod
+    def whoami(request):
+        # Récupère user_info dans la session
+        user_info = request.session.get("user_info")
+        if not user_info:
+            return JsonResponse({"error": "Not authenticated"}, status=401)
+     
+        # On renvoie les infos
+        return JsonResponse(user_info)
 

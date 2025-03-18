@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const authButtons = document.getElementById("auth-buttons");
 
     console.log("📡 Vérification de l'utilisateur...");
-    
+
     fetch("http://localhost:8000/api/auth/user", {
         method: "GET",
         credentials: "include"  // 🔥 Important pour envoyer les cookies
@@ -66,7 +66,6 @@ function loginWith42() {
     console.log("🔄 Redirection vers l'authentification 42...");
     window.location.href = "http://localhost:8000/api/auth/remote";
 }
-
 
 function login() {
     fetch("http://localhost:8000/api/auth/login", {
