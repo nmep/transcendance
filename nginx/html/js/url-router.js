@@ -60,7 +60,6 @@ document.addEventListener("click", (e) => {
     }
 };
 
-// AJOUTER LA FONCTION GETUSER INFO DANS UN JS OU TESTER DIRECT SUR HTML
 
 function getUserInfo() {
     fetch("http://localhost:8000/api/auth/whoami", { credentials: "include" })
@@ -68,42 +67,54 @@ function getUserInfo() {
     .then(data => {
         console.log("✅ Infos utilisateur :", data);
         if (data && !data.error) {
-            document.getElementById("username").textContent = data.login;
+            localStorage.setItem("user_info", JSON.stringify(data));
+            displayUserInfo(data);
         }
-    });
+    })
+    .catch(error => console.error("❌ Erreur récupération utilisateur :", error));
 }
 
-  // Fonction pour gérer la localisation et charger le template approprié
-  const urlLocationHandler = async () => {
-    let location = window.location.pathname;
+function displayUserInfo(user) {
+    document.getElementById("user-login").textContent = user.login;
+    document.getElementById("full-name").textContent = user.usual_full_name;
+    document.getElementById("location").textContent = user.location;
+    document.getElementById("user-id").textContent = user.id;
+    document.getElementById("user-email").textContent = user.email;
 
-    // Assure que la page d'accueil soit bien chargée
-    if (location === "/") {
-        location = "/home";  // 🔥 On mappe le chemin root (/) vers la page d'accueil
+    if (user.campus && user.campus.length > 0) {
+        document.getElementById("user-campus").textContent = user.campus[0].name;
     }
 
-    console.log("🔍 URL demandée :", location); // 🔥 Debugging
+    // Pour l'avatar : user.image.link
+    if (user.image && user.image.link) {
+        console.log("l'imqge a bien ete trouve !")
+        document.getElementById("user-avatar").src = user.image.link;
+    }
+}
+
+
+async function urlLocationHandler() {
+    let location = window.location.pathname;
+    if (location === "/") {
+        location = "/home";
+    }
 
     const route = urlRoutes[location] || urlRoutes[404];
-    console.log("📂 Tentative de chargement :", route.template);
+    const response = await fetch(route.template);
+    const html = await response.text();
+    document.getElementById("content").innerHTML = html;
 
-    try {
-        const response = await fetch(route.template);
-        if (!response.ok) {
-            throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+    // 📌 Maintenant que le HTML est injecté, on gère l'utilisateur
+    if (location === "/profile") {
+        console.log("Profil détecté ! Affichage user...");
+        const savedUser = localStorage.getItem("user_info");
+        if (savedUser) {
+            displayUserInfo(JSON.parse(savedUser));
+        } else {
+            getUserInfo();  // fera displayUserInfo() quand il a la réponse
         }
-        const html = await response.text();
-        document.getElementById("content").innerHTML = html; // Injection du contenu
-
-		  // 📌 Si tu veux exécuter du code quand "/profile" est chargé :
-	    if (location === "/profile") {
-			console.log("PAGE PROFIL DETECTE REQUETE SUR WHOAMI")
-		    getUserInfo(); // Appel direct
-		}
-    } catch (error) {
-        console.error("❌ Erreur lors du chargement du template :", error);
     }
-};
+}
   // Appelle urlLocationHandler au chargement de la page pour charger le bon contenu
   window.addEventListener("load", urlLocationHandler);
 
