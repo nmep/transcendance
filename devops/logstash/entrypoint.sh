@@ -122,11 +122,11 @@ wait_for_kibana() {
 		sleep 3
 	done
 	log_info "✅" "Kibana is now ready!"
-	if [ ! -f "$KIBANA_CONF_SET" ]; then
-		log_info "🚀" "Sending pre-existing config !"
-		curl -s -X POST --cacert /usr/share/logstash/certs/ca/ca.crt "https://kibana:5601/api/saved_objects/_import?overwrite=true" -H "kbn-xsrf: true" -F file=@/usr/share/logstash/config/kibana_config.ndjson -u $ELASTIC_USER:$ELASTIC_PASSWORD
-		touch $KIBANA_CONF_SET
-	fi
+	# if [ ! -f "$KIBANA_CONF_SET" ]; then
+	# 	log_info "🚀" "Sending pre-existing config !"
+	# 	curl -s -X POST --cacert /usr/share/logstash/certs/ca/ca.crt "https://kibana:5601/api/saved_objects/_import?overwrite=true" -H "kbn-xsrf: true" -F file=@/usr/share/logstash/config/kibana_config.ndjson -u $ELASTIC_USER:$ELASTIC_PASSWORD
+	# 	touch $KIBANA_CONF_SET
+	# fi
 }
 
 #######################################

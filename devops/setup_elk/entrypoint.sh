@@ -113,7 +113,7 @@ main() {
 	log_info "✅" "Vault token is properly set, continuing..."
 	wait_for_vault_unseal
 	# Fetch required Vault variables.
-	fetch_vault_variables "$SERVICE_LOWER" "$VAULT_RTOKEN" ELASTIC_PASSWORD KIBANA_PASSWORD
+	fetch_vault_variables "$SERVICE_LOWER" "$VAULT_RTOKEN" ELASTIC_PASSWORD KIBANA_PASSWORD ELASTIC_USER KIBANA_USER
 	unset VAULT_RTOKEN
 	log_info "🚀" "Environment variables were properly set using Vault, launching $SERVICE"
 	exec "$@"
