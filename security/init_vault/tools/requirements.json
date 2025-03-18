@@ -6,7 +6,9 @@
         ],
         "setup_elk": [
             "ELASTIC_PASSWORD",
-            "KIBANA_PASSWORD"
+            "KIBANA_PASSWORD",
+            "KIBANA_USER",
+            "ELASTIC_USER"
         ],
         "elastic": [
             "ELASTIC_PASSWORD",
