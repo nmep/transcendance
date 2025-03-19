@@ -34,7 +34,7 @@ wait_for_ip_sync() {
     if [ -f "$ip_file" ]; then
         old_ip=$(cat $ip_file)
     fi
-    current_ip=$(getent hosts "$SERVICE_LOWER" | awk '{print $1}')
+    current_ip=$(getent hosts "$(hostname)" | awk '{print $1}')
     old_ip=$(cat "$SECRET_DIR/ips/${SERVICE_LOWER}_ip.txt" 2>/dev/null)
     while [ "$current_ip" != "$old_ip" ]; do
         log_info "⏳" "Container's IP has changed ($current_ip vs ${old_ip:-none}), waiting for new token..."
