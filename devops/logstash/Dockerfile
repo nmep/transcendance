@@ -37,8 +37,7 @@ RUN chmod 755 /logrotate_script.sh
 
 RUN mkdir -p /tmp/log/logstash
 RUN chown 1000:1000 /tmp/log/logstash
-RUN echo 'xpack.monitoring.elasticsearch.ssl.certificate_authority: "/usr/share/logstash/config/certs/ca/ca.crt"' >>  /usr/share/logstash/config/logstash.yml 
-RUN sed -i 's/http:/https:/g' /usr/share/logstash/config/logstash.yml 
+COPY ./logstash.yml config/logstash.yml
 USER 1000
 
 ENTRYPOINT [ "/entrypoint.sh" ]
