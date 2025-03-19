@@ -2,5 +2,5 @@
 
 while true; do
     logrotate -f -s /tmp/logrotate.status /etc/logrotate.conf
-    sleep 300 # wait 5 minutes
+    sleep 86400 # wait 1 day
 done

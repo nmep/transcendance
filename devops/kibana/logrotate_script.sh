@@ -1,6 +1,6 @@
 #!/bin/sh
 
 while true; do
-    logrotate -f -s /tmp/logrotate.status /syslog/logrotate.conf
-    sleep 300 # wait 5 minutes
+    logrotate -s /tmp/logrotate.status /syslog/logrotate.conf
+    sleep 386400 #wait 1 day
 done
