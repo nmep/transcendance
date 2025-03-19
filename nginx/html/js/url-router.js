@@ -103,6 +103,7 @@ async function urlLocationHandler() {
     const response = await fetch(route.template);
     const html = await response.text();
     document.getElementById("content").innerHTML = html;
+    const authButtons = document.getElementById("auth-buttons");
 
     // 📌 Maintenant que le HTML est injecté, on gère l'utilisateur
     if (location === "/profile") {
@@ -110,6 +111,8 @@ async function urlLocationHandler() {
         const savedUser = localStorage.getItem("user_info");
         if (savedUser) {
             displayUserInfo(JSON.parse(savedUser));
+            const userObj = JSON.parse(savedUser);
+            showAuthenticated(authButtons, userObj);
         } else {
             getUserInfo();  // fera displayUserInfo() quand il a la réponse
         }
