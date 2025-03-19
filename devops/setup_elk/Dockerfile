@@ -10,6 +10,8 @@ RUN mkdir -p /kibana_set
 
 COPY ./entrypoint.sh /entrypoint.sh
 
+COPY ./kibana_config.ndjson /kibana_config.ndjson
+
 RUN chmod 755  /entrypoint.sh
 
 COPY ./setup.sh /setup.sh
