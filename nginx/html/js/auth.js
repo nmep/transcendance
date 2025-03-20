@@ -1,14 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
     const authButtons = document.getElementById("auth-buttons");
 
-    console.log("📡 Vérification de l'utilisateur...");
-
     const localUser = localStorage.getItem("user_info");
     if (localUser) {
         // ✅ On a déjà un user stocké, on l'affiche
-        console.log("🎯 user_info trouvé dans localStorage");
         const userObj = JSON.parse(localUser);
-        console.log("local storage a ete detecte, userObj = ", userObj)
         showAuthenticated(authButtons, userObj);
     } else {
         
@@ -18,17 +14,16 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log("✅ Réponse de l'API:", data);
-
             if (data.username) {
                 authButtons.innerHTML = `
                     <li><span class="dropdown-item">Hello, ${data.username}</span></li>
                     <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/settings">Settings</a></li>
                     <li><button class="dropdown-item text-danger" id="logout-btn">Logout</button></li>
+
                 `;
                 document.getElementById("logout-btn").addEventListener("click", logout);
             } else {
-                console.log("🚨 Utilisateur non connecté, affichage de Login/Register");
                 authButtons.innerHTML = `
                     <li><a class="dropdown-item" href="/login">Login</a></li>
                     <li><a class="dropdown-item" href="/register">Register</a></li>
@@ -41,8 +36,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // 🔥 Afficher le menu quand on est connecté
 function showAuthenticated(authButtons, user) {
+    console.log("user info = ", user)
     authButtons.innerHTML = `
-        <li><span class="dropdown-item">Hello, ${user.username}</span></li>
+        <li><span class="dropdown-item">Hello, ${user.first_name}</span></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="/profile">Profile</a></li>
         <li><button class="dropdown-item text-danger" id="logout-btn">Logout</button></li>
@@ -52,7 +48,6 @@ function showAuthenticated(authButtons, user) {
 }
 
 function loginWith42() {
-    console.log("🔄 Redirection vers l'authentification 42...");
     window.location.href = "http://localhost:8000/api/auth/remote";
 }
 
@@ -85,16 +80,33 @@ function register() {
     });
 }
 
+function unregister() {
+    if (confirm("Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible.")) {
+        // Appel d'API pour supprimer le compte
+        fetch("http://localhost:8000/api/auth/unsubscribe", {
+          method: "DELETE",
+          credentials: "include"
+        })
+        .then(resp => {
+          if (resp.ok) {
+            alert("Votre compte a été supprimé avec succès.");
+            // Redirection ou logout
+            window.location.href = "/";
+          } else {
+            alert("Erreur lors de la suppression du compte.");
+          }
+        });
+      }
+}
+
 // 🔥 Fonction de logout qui supprime la session côté serveur
 function logout() {
-    console.log("fonction de deconnexion")
     fetch("http://localhost:8000/api/auth/logout", { 
         method: "POST",
         credentials: "include" // 🔥 Envoie les cookies pour permettre Django de supprimer la session
     })
     .then(response => {
         if (response.ok) {
-            console.log("✅ Déconnexion réussie !");
             
             // 🔥 Supprimer manuellement les cookies
             localStorage.removeItem("user_info");
@@ -108,4 +120,8 @@ function logout() {
         }
     })
     .catch(error => console.error("❌ Erreur de requête :", error));
+}
+
+function disable_2fa() {
+    window.location.href = "http://localhost:8000/account/two_factor/disable/"
 }

@@ -252,7 +252,9 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'the.42.transcendance@gmail.com'
 EMAIL_HOST_PASSWORD = 'eruibhbfsyzdlgex'
 
-LOGIN_REDIRECT_URL = "/account/two_factor/setup/"
+LOGIN_URL = "/account/login/"
+
+LOGIN_REDIRECT_URL = "https://localhost:8443/"
 
 TWO_FACTOR_AUTHENTICATION_REDIRECT = "/"
 

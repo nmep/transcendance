@@ -57,6 +57,11 @@ document.addEventListener("click", (e) => {
         template: "/templates/profile.html",
         title: "Profil",
         description: "Détails de votre profil."
+    },
+    "/settings": {
+        template: "/templates/settings.html",
+        title: "settings",
+        description: "Parametre de votre profil."
     }
 };
 
@@ -65,7 +70,6 @@ function getUserInfo() {
     fetch("http://localhost:8000/api/auth/whoami", { credentials: "include" })
     .then(response => response.json())
     .then(data => {
-        console.log("✅ Infos utilisateur :", data);
         if (data && !data.error) {
             localStorage.setItem("user_info", JSON.stringify(data));
             displayUserInfo(data);
@@ -87,7 +91,6 @@ function displayUserInfo(user) {
 
     // Pour l'avatar : user.image.link
     if (user.image && user.image.link) {
-        console.log("l'imqge a bien ete trouve !")
         document.getElementById("user-avatar").src = user.image.link;
     }
 }
@@ -107,7 +110,6 @@ async function urlLocationHandler() {
 
     // 📌 Maintenant que le HTML est injecté, on gère l'utilisateur
     if (location === "/profile") {
-        console.log("Profil détecté ! Affichage user...");
         const savedUser = localStorage.getItem("user_info");
         if (savedUser) {
             displayUserInfo(JSON.parse(savedUser));
@@ -116,6 +118,18 @@ async function urlLocationHandler() {
         } else {
             getUserInfo();  // fera displayUserInfo() quand il a la réponse
         }
+    }
+    else if (location === "/settings") {
+        fetch("http://localhost:8000/account/two_factor/disable/", { credentials: "include" })
+        .then(response => {
+            if (response.ok) {      
+                // si la reponse est ok, alors l'user peut activer la 2fa
+                console.log("l'user en arrivant sur profile peut activer la 2fa")         
+            } else {
+                // si la reponse est pas ok, alors l'user peut desactiver la 2fa
+                console.log("l'user en arrivant sur profile peut desactiver la 2fa")         
+            }
+        })
     }
 }
   // Appelle urlLocationHandler au chargement de la page pour charger le bon contenu
