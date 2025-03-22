@@ -67,7 +67,7 @@ document.addEventListener("click", (e) => {
 
 
 function getUserInfo() {
-    fetch("http://localhost:8000/api/auth/whoami", { credentials: "include" })
+    fetch("/api/auth/whoami", { credentials: "include" })
     .then(response => response.json())
     .then(data => {
         if (data && !data.error) {
@@ -118,28 +118,6 @@ async function urlLocationHandler() {
         } else {
             getUserInfo();  // fera displayUserInfo() quand il a la réponse
         }
-    }
-    else if (location === "/settings") {
-		fetch("http://localhost:8000/api/auth/tfa_status", {
-			credentials: "include"
-		  })
-		  .then(response => {
-			  if (!response.ok) {
-				  throw new Error(`HTTP error ${response.status}`);
-			  }
-			  return response.json();
-		  })
-		  .then(data => {
-			  console.log("Statut 2FA :", data);
-			  if (data.enabled) {
-				  console.log("L'utilisateur a déjà la 2FA activée → bouton 'Désactiver'");
-				  // Afficher un bouton "Désactiver la 2FA"
-			  } else {
-				  console.log("L'utilisateur n'a pas la 2FA → bouton 'Activer'");
-				  // Afficher un bouton "Activer la 2FA"
-			  }
-		  })
-		  .catch(error => console.error("Erreur statut TFA :", error));
     }
 }
   // Appelle urlLocationHandler au chargement de la page pour charger le bon contenu

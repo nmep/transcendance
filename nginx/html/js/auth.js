@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showAuthenticated(authButtons, userObj);
     } else {
         
-        fetch("http://localhost:8000/api/auth/user", {
+        fetch("/api/auth/user", {
             method: "GET",
             credentials: "include"  // 🔥 Important pour envoyer les cookies
         })
@@ -52,7 +52,7 @@ function loginWith42() {
 }
 
 function login() {
-    fetch("http://localhost:8000/api/auth/login", {
+    fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: "testUser", password: "password123" })
@@ -67,7 +67,7 @@ function login() {
 }
 
 function register() {
-    fetch("http://localhost:8000/api/auth/register", {
+    fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: "newUser", password: "password123" })
@@ -80,30 +80,11 @@ function register() {
     });
 }
 
-function unregister() {
-    if (confirm("Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible.")) {
-        // Appel d'API pour supprimer le compte
-        fetch("http://localhost:8000/api/auth/unsubscribe", {
-          method: "DELETE",
-          credentials: "include"
-        })
-        .then(resp => {
-          if (resp.ok) {
-            alert("Votre compte a été supprimé avec succès.");
-            // Redirection ou logout
-            window.location.href = "/";
-          } else {
-            alert("Erreur lors de la suppression du compte.");
-          }
-        });
-      }
-}
-
 // 🔥 Fonction de logout qui supprime la session côté serveur
 function logout() {
-    fetch("http://localhost:8000/api/auth/logout", { 
+    fetch("/api/auth/logout", { 
         method: "POST",
-        credentials: "include" // 🔥 Envoie les cookies pour permettre Django de supprimer la session
+        credentials: "include"
     })
     .then(response => {
         if (response.ok) {
@@ -122,6 +103,37 @@ function logout() {
     .catch(error => console.error("❌ Erreur de requête :", error));
 }
 
-function disable_2fa() {
-    window.location.href = "http://localhost:8000/account/two_factor/disable/"
+// 1) Fonction pour récupérer un cookie par nom
+function getCookie(name) {
+    const value = `; ${document.cookie}`; 
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+// 2) Appel fetch en incluant le token
+function unregisterAccount() {
+    if (!confirm("Voulez-vous vraiment supprimer votre compte ?")) {
+        return;
+    }
+
+    // Récupérer le token dans le cookie nommé "csrftoken"
+    const csrftoken = getCookie("csrftoken");
+
+    fetch("/api/auth/unregister", { 
+        method: "POST", // ou "POST", selon ce que ta vue attend
+        credentials: "include",
+        headers: {
+            "X-CSRFToken": getCookie("csrftoken"),
+            "Content-Type": "application/json"
+        }
+    })
+    
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Erreur lors de la suppression du compte");
+        }
+        alert("Compte supprimé avec succès !");
+        window.location.href = "/";
+    })
+    .catch(error => alert(error));
 }

@@ -27,8 +27,8 @@ SECRET_KEY = 'django-insecure-qr^cc8b@9r7l7$i7zmf)jx3j)z!sucyymm7^_w(70b7##9s_71
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['localhost', 'nginx', 'auth', 'db']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'nginx', 'auth', 'db']
+# ALLOWED_HOSTS = []
 
 LOGGING = {
     'version': 1,
@@ -253,25 +253,18 @@ EMAIL_HOST_USER = 'the.42.transcendance@gmail.com'
 EMAIL_HOST_PASSWORD = 'eruibhbfsyzdlgex'
 
 LOGIN_URL = "/account/login/"
-
 LOGIN_REDIRECT_URL = "https://localhost:8443/"
 
 TWO_FACTOR_AUTHENTICATION_REDIRECT = "/"
-
 TWO_FACTOR_SETUP_COMPLETE_REDIRECT = "/"
 
-CORS_ALLOW_ALL_ORIGINS = True  # 🔥 À désactiver en production
-CORS_ALLOW_CREDENTIALS = True  # 🔥 Nécessaire pour `credentials: include`
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8443",  # 🔥 Remplacez par le bon port si différent
-    "http://localhost:8000",
-]
+CORS_ALLOW_ALL_ORIGINS = True  
+CORS_ALLOW_CREDENTIALS = True
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8443", "http://localhost:8000"]
+CSRF_TRUSTED_ORIGINS = ["https://localhost:8443", "http://localhost:8000"]
 
 SESSION_COOKIE_SAMESITE = "None"
-SESSION_COOKIE_SECURE = True  # Car tu es en HTTPS
+SESSION_COOKIE_SECURE = True
+
 CSRF_COOKIE_SAMESITE = "None"
-CSRF_COOKIE_SECURE = True
-
-
+CSRF_COOKIE_SECURE = False
