@@ -11,6 +11,9 @@ from django.contrib.auth import get_user_model
 from django.contrib.sessions.models import Session
 import json
 
+from django_otp import devices_for_user
+from django.contrib.auth.decorators import login_required
+
 # faire une classe qui a des fonctions pour lauthentification
 
 # login
@@ -227,3 +230,15 @@ class authManager:
         # On renvoie les infos
         return JsonResponse(user_info)
 
+    @login_required
+    def tfa_status(request):
+        """
+        Renvoie un JSON indiquant si l'utilisateur a un device 2FA.
+        """
+        # Parcourt tous les devices OTP pour l'utilisateur
+        # (EmailDevice, TOTPDevice, etc.)
+        user_devices = list(devices_for_user(request.user))
+        # Vérifie s'il en existe au moins un
+        twofa_enabled = any(d.confirmed for d in user_devices)
+    
+        return JsonResponse({"enabled": twofa_enabled})

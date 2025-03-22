@@ -36,4 +36,6 @@ class authAPI(APIView):
             return authManager.whoami(request)
         elif action == "callback":
             return authManager.callback(request)
+        elif action == "tfa_status":
+            return authManager.tfa_status(request)
         return JsonResponse({"error": "Page Not Found"}, status=404)

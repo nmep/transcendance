@@ -120,16 +120,26 @@ async function urlLocationHandler() {
         }
     }
     else if (location === "/settings") {
-        fetch("http://localhost:8000/account/two_factor/disable/", { credentials: "include" })
-        .then(response => {
-            if (response.ok) {      
-                // si la reponse est ok, alors l'user peut activer la 2fa
-                console.log("l'user en arrivant sur profile peut activer la 2fa")         
-            } else {
-                // si la reponse est pas ok, alors l'user peut desactiver la 2fa
-                console.log("l'user en arrivant sur profile peut desactiver la 2fa")         
-            }
-        })
+		fetch("http://localhost:8000/api/auth/tfa_status", {
+			credentials: "include"
+		  })
+		  .then(response => {
+			  if (!response.ok) {
+				  throw new Error(`HTTP error ${response.status}`);
+			  }
+			  return response.json();
+		  })
+		  .then(data => {
+			  console.log("Statut 2FA :", data);
+			  if (data.enabled) {
+				  console.log("L'utilisateur a déjà la 2FA activée → bouton 'Désactiver'");
+				  // Afficher un bouton "Désactiver la 2FA"
+			  } else {
+				  console.log("L'utilisateur n'a pas la 2FA → bouton 'Activer'");
+				  // Afficher un bouton "Activer la 2FA"
+			  }
+		  })
+		  .catch(error => console.error("Erreur statut TFA :", error));
     }
 }
   // Appelle urlLocationHandler au chargement de la page pour charger le bon contenu
