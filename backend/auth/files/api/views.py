@@ -14,7 +14,7 @@ class authAPI(APIView):
         if extract_kwargs_action == "login":
             return authManager.login_user(request, request.POST.get('username'), request.POST.get('password'))
         elif extract_kwargs_action == "register":
-            return authManager.register_user(request, request.POST.get('username'), request.POST.get('password'))
+            return authManager.register_user(request)
         elif extract_kwargs_action == "logout":
             return authManager.logout_user(request)
         elif extract_kwargs_action == "unregister":

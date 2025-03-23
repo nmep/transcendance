@@ -27,8 +27,8 @@ SECRET_KEY = 'django-insecure-qr^cc8b@9r7l7$i7zmf)jx3j)z!sucyymm7^_w(70b7##9s_71
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'nginx', 'auth', 'db']
-# ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['localhost', 'nginx', 'auth', 'db']
+ALLOWED_HOSTS = []
 
 LOGGING = {
     'version': 1,
@@ -255,16 +255,22 @@ EMAIL_HOST_PASSWORD = 'eruibhbfsyzdlgex'
 LOGIN_URL = "/account/login/"
 LOGIN_REDIRECT_URL = "https://localhost:8443/"
 
-TWO_FACTOR_AUTHENTICATION_REDIRECT = "/"
-TWO_FACTOR_SETUP_COMPLETE_REDIRECT = "/"
+
+# TWO_FACTOR_AUTHENTICATION_REDIRECT = "/"
+# TWO_FACTOR_SETUP_COMPLETE_REDIRECT = "/"
 
 CORS_ALLOW_ALL_ORIGINS = True  
 CORS_ALLOW_CREDENTIALS = True
 
-CSRF_TRUSTED_ORIGINS = ["https://localhost:8443", "http://localhost:8000"]
+# Indispensable pour HTTPS derrière proxy :
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+# Corriger impérativement le cookie CSRF :
 SESSION_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SECURE = True
 
 CSRF_COOKIE_SAMESITE = "None"
-CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = True  # <<<<< OBLIGATOIREMENT TRUE !
+
+# Ajoute explicitement ton domaine frontend HTTPS ici :
+CSRF_TRUSTED_ORIGINS = ["https://localhost:8443", "https://localhost", "https://127.0.0.1"]

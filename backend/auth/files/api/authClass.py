@@ -43,19 +43,27 @@ class authManager:
         else:
             return JsonResponse({"success": False, "message":"login or password is not recognize"})
 
-# inscription
     @staticmethod
-    def register_user(request, username, password):
-        if username == None:
-            return JsonResponse({"success": False, "message":"Username is not defined"})
-        elif password == None:
-            return JsonResponse({"success": False, "message":"Password is not defined"})
-        if User.objects.filter(username=username):
-            return JsonResponse({"success": False, "message":"username already exist"})
-        else:
-            user = User.objects.create_user(username, None, password)
-            user.save()
-            return JsonResponse({"success": True, "message":"Register successed"})
+    def register_user(request):
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({"success": False, "message": "Invalid JSON"}, status=400)
+
+        username = data.get("username")
+        email = data.get("email")
+        password = data.get("password")
+
+        if not username:
+            return JsonResponse({"success": False, "message": "Username is not defined"})
+        if not password:
+            return JsonResponse({"success": False, "message": "Password is not defined"})
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({"success": False, "message": "Username already exists"})
+
+        user = User.objects.create_user(username=username, email=email, password=password)
+        user.save()
+        return JsonResponse({"success": True, "message": "Register succeeded"})
 
 # logout
     @staticmethod

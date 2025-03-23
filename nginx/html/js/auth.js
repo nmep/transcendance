@@ -90,7 +90,7 @@ function logout() {
         if (response.ok) {
             
             // 🔥 Supprimer manuellement les cookies
-            localStorage.removeItem("user_info");
+            localStorage.removeItem("user_i");
             document.cookie = "sessionid=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC;";
             document.cookie = "csrftoken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC;";
             
@@ -127,7 +127,7 @@ function unregisterAccount() {
             "Content-Type": "application/json"
         }
     })
-    
+
     .then(response => {
         if (!response.ok) {
             throw new Error("Erreur lors de la suppression du compte");
@@ -137,3 +137,27 @@ function unregisterAccount() {
     })
     .catch(error => alert(error));
 }
+
+function registerUser() {
+	// Récupérer les valeurs des champs
+	const username = document.getElementById("username").value;
+	const email = document.getElementById("email").value;
+	const password = document.getElementById("password").value;
+
+	// Envoyer les données via fetch en POST
+	fetch('http://localhost:8000/api/auth/register', {
+	  method: 'POST',
+	  headers: { 'Content-Type': 'application/json' },
+	  body: JSON.stringify({ username, email, password })
+	})
+	.then(response => response.json())
+	.then(data => {
+	  if (data.success) {
+		// Redirection vers la page de login en cas de succès
+		window.location.href = "/login";
+	  } else {
+		alert("Erreur d'inscription : " + data.message);
+	  }
+	})
+	.catch(error => console.error("Erreur lors de l'inscription :", error));
+  }
