@@ -1,7 +1,5 @@
-from django.db import models
+# from django.contrib.auth.models import AbstractUser
+# from django.db import models
 
-# Create your models here.
-
-class authConf(models.Model):
-    name = models.CharField(max_length=202)
-    password = models.CharField(max_length=202)
+# class CustomUser(AbstractUser):
+#     parties_gagnees = models.PositiveIntegerField(default=0)

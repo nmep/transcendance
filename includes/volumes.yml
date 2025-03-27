@@ -53,3 +53,4 @@ volumes:
       device: ../volumes/prometheus/data
       type: "none"
       o: bind
+

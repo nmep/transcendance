@@ -35,25 +35,48 @@ services:
 
   db:
     image: transcendance_postgres
+    restart: always
     build:
       context: ./devops/postgres
       dockerfile: Dockerfile
     container_name: postgres
     volumes:
       - init_vault:/secret/
+      - ./devops/postgres/data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
     networks:
       - transcendance
+    user: "root"
 
   auth:
-    container_name: auth_api
+    container_name: auth
     restart: always
     build: ./backend/auth/
     image: transcendance_auth
+    depends_on:
+      - db
+    links:
+      - db:db
     volumes:
       - init_vault:/secret/
     ports:
       - "8000:8000"
+    networks:
+      - transcendance
+
+  db_back:
+    container_name: db_api
+    restart: always
+    build: ./backend/db/
+    image: transcendance_db
+    depends_on:
+      - db
+    links:
+      - db:db
+    volumes:
+      - init_vault:/secret/
+    ports:
+      - "8001:8001"
     networks:
       - transcendance

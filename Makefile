@@ -25,14 +25,16 @@ IMAGES= grafana\
 		postgres\
 		nginx_exporter\
 		prometheus\
-		nginx
+		nginx \
+		db_api \
+		db \
 	
 BUILD_IMAGES=$(addprefix transcendance_, ${IMAGES})
 
 
 all: volumes
 	mkdir -p ${VOLUMES_NAMES}
-	docker compose up
+	docker compose up --build
 
 volumes: ${VOLUMES_NAMES}
 

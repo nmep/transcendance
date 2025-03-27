@@ -2,5 +2,12 @@ Django==5.1.4
 djangorestframework==3.15.2
 psycopg2-binary==2.9.10
 django-prometheus==2.3.1
+djangorestframework_simplejwt==5.4.0
+djangorestframework-simplejwt[crypto]==5.4.0
+django-otp==1.5.4
+django-two-factor-auth==1.17.0
+phonenumbers==8.13.55
+requests-oauthlib==2.0.0
 python-oauth2==1.1.1
 python-json-logger
+django-cors-headers==4.7.0
