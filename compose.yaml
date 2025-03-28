@@ -37,7 +37,6 @@ services:
   db:
     restart: always
     image: transcendance_postgres
-    restart: always
     build:
       context: ./devops/postgres
       dockerfile: Dockerfile
@@ -55,7 +54,6 @@ services:
   auth:
     container_name: auth
     restart: always
-    container_name: auth
     build: ./backend/auth/
     image: transcendance_auth
     depends_on:
