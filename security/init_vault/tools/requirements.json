@@ -40,12 +40,19 @@
             "AUTH_USER",
             "AUTH_PASSWORD",
             "LOGSTASH_USER",
-            "LOGSTASH_PASSWORD"
+            "LOGSTASH_PASSWORD",
+            "DB_API_USER",
+            "DB_API_PASSWORD"
         ],
         "auth": [
             "POSTGRES_DB",
             "AUTH_USER",
             "AUTH_PASSWORD"
+        ],
+        "db_api": [
+            "POSTGRES_DB",
+            "DB_API_USER",
+            "DB_API_PASSWORD"
         ],
         "prometheus": [
             "HONEYPOT"

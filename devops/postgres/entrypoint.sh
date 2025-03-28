@@ -114,11 +114,11 @@ main() {
     log_info "✅" "Vault token is properly set, continuing..."
     wait_for_vault_unseal
     # Fetch required Vault variables.
-    fetch_vault_variables "$SERVICE_LOWER" "$VAULT_RTOKEN" POSTGRES_DB EXPORTER_USER EXPORTER_PASSWORD AUTH_USER AUTH_PASSWORD POSTGRES_PASSWORD POSTGRES_USER LOGSTASH_USER LOGSTASH_PASSWORD
+    fetch_vault_variables "$SERVICE_LOWER" "$VAULT_RTOKEN" POSTGRES_DB EXPORTER_USER EXPORTER_PASSWORD AUTH_USER AUTH_PASSWORD POSTGRES_PASSWORD POSTGRES_USER LOGSTASH_USER LOGSTASH_PASSWORD DB_API_USER DB_API_PASSWORD
     unset VAULT_RTOKEN
     log_info "🚀" "Environment variables were properly set using Vault, launching $SERVICE"
     # Start logging services at the end.
     /logrotate_script.sh &
-    exec "/usr/local/bin/docker-entrypoint.sh" "$@" 2>&1 | tee "/tmp/log/postgres.log"
+    exec "/usr/local/bin/docker-entrypoint.sh" "$@"
 }
 main "$@"

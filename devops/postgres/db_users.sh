@@ -1,6 +1,25 @@
 #!/bin/bash
 set -e
 
+echo "🛠 Création de l'utilisateur db_api..."
+
+psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" <<EOF
+CREATE USER $DB_API_USER WITH PASSWORD '$DB_API_PASSWORD';
+
+CREATE SCHEMA DB_API_schema AUTHORIZATION $DB_API_USER;
+
+GRANT CREATE ON SCHEMA db_api_schema TO $DB_API_USER;
+
+ALTER ROLE $DB_API_USER SET search_path TO db_api_schema;
+
+REVOKE ALL ON SCHEMA public FROM $DB_API_USER;
+
+ALTER DEFAULT PRIVILEGES FOR ROLE $DB_API_USER IN SCHEMA db_api_schema
+GRANT ALL ON TABLES TO $DB_API_USER;
+EOF
+
+echo "✅ Utilisateur db_api créé avec succès."
+
 echo "🛠 Création de l'utilisateur pour PostgreSQL Exporter..."
 
 psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" <<EOF
