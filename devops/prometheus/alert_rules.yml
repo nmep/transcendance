@@ -1,0 +1,63 @@
+groups:
+  - name: latency-alerts
+    rules:
+      - alert: HighRequestLatency
+        expr: (rate(django_http_requests_latency_including_middlewares_seconds_sum[5m])
+              /
+              rate(django_http_requests_latency_including_middlewares_seconds_count[5m])) > 1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High HTTP request latency detected"
+          description: "Average latency over the past 5 minutes is above 1 second. This may indicate performance degradation or resource issues."
+
+  - name: composite-health
+    rules:
+      - alert: CompositeProjectHealthAlert
+        expr: |
+          (
+            up{job="django"} == 0
+          )
+          or
+          (
+            rate(django_http_requests_latency_including_middlewares_seconds_sum[5m])
+            /
+            rate(django_http_requests_latency_including_middlewares_seconds_count[5m]) > 1
+          )
+          or
+          (
+            elasticsearch_cluster_health_status != 1
+          )
+          
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Composite project health alert"
+          description: >
+            At least one critical component is experiencing issues:
+            - A Django instance is down.
+            - The average HTTP request latency (including middleware) has exceeded 1 second.
+            - The Elasticsearch cluster health is not optimal.        
+  - name: basic-alerts
+    rules:
+      # Alert when any instance is down.
+      - alert: InstanceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Instance {{ $labels.instance }} down"
+          description: "Instance {{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minute."
+      
+      # (Optional) Alert when error rates exceed a threshold.
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.05
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate on {{ $labels.job }}"
+          description: "More than 5% errors detected over the last 5 minutes on job {{ $labels.job }}."
