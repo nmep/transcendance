@@ -20,7 +20,7 @@ from django.views.decorators.csrf import csrf_exempt
 # login
 
 client_id = "u-s4t2ud-4db2df15929bada32b77ef1c2ec8086e2d7ff1de72baf9d32a9edcb00ab5f8a0"
-client_secret = "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"
+client_secret = "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"
 
 class authManager:
     @staticmethod
