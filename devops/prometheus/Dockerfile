@@ -5,9 +5,9 @@ FROM alpine:3.21.3
 RUN apk update && apk add bash logrotate openssl curl
 
 COPY ./prometheus.yml /etc/prometheus/prometheus.yml
-RUN chmod 664 /etc/prometheus/prometheus.yml
+RUN chmod 644 /etc/prometheus/prometheus.yml
 COPY ./alert_rules.yml /etc/prometheus/alert_rules.yml
-RUN chmod 664 /etc/prometheus/alert_rules.yml
+RUN chmod 644 /etc/prometheus/alert_rules.yml
 
 COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh

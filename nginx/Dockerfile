@@ -18,7 +18,7 @@ RUN mkdir -p /tmp/log
 RUN touch /tmp/log/nginx.log
 RUN chown 1000:1000 /tmp/log/nginx.log
 RUN chown 1000:1000 /tmp/log/
-RUN chmod 664 /tmp/log/nginx.log
+RUN chmod 644 /tmp/log/nginx.log
 
 COPY ./syslog/logrotate.conf /etc/logrotate.conf
 

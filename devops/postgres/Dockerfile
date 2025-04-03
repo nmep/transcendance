@@ -19,6 +19,7 @@ RUN chown postgres:postgres /tmp/log
 RUN chmod 755 /logrotate_script.sh
 
 COPY ./syslog/logrotate.conf /etc/logrotate.conf
+RUN chmod 644 /etc/logrotate.conf
 COPY ./postgres.conf /etc/postgresql.conf
 
 USER postgres
