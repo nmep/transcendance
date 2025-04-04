@@ -90,7 +90,7 @@ function logout() {
         if (response.ok) {
             
             // 🔥 Supprimer manuellement les cookies
-            localStorage.removeItem("user_i");
+            localStorage.removeItem("user_info");
             document.cookie = "sessionid=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC;";
             document.cookie = "csrftoken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC;";
             
