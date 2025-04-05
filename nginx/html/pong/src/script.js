@@ -13,12 +13,12 @@ document.body.appendChild(renderer.domElement);
 // Set up environment map
 const cubeTextureLoader = new THREE.CubeTextureLoader();
 const envMap = cubeTextureLoader.load([
-    'images/posx.jpg',
-    'images/negx.jpg',
-    'images/posy.jpg',
-    'images/negy.jpg',
-    'images/posz.jpg',
-    'images/negz.jpg'
+    'textures/environmentMaps/4/px.png1',
+    'textures/environmentMaps/4/nx.png1',
+    'textures/environmentMaps/4/py.png1',
+    'textures/environmentMaps/4/ny.png1',
+    'textures/environmentMaps/4/pz.png1',
+    'textures/environmentMaps/4/nz.png1'
 ]);
 scene.background = envMap;
 scene.environment = envMap;
@@ -108,7 +108,7 @@ const extrudeSettings = {
 };
 
 const cornerGeometry = new THREE.ExtrudeGeometry(cornerShape, extrudeSettings)
-const cornerMaterial = new THREE.MeshBasicMaterial({ color: 0x4C4C4C, wireframe: true })
+const cornerMaterial = new THREE.MeshBasicMaterial({ color: 0x4C4C4C })
 const corner = [
     new THREE.Mesh(cornerGeometry, cornerMaterial),
     new THREE.Mesh(cornerGeometry, cornerMaterial),
@@ -132,18 +132,18 @@ corner.forEach(c => arena.add(c))
 const bord = [
     new THREE.Mesh(new THREE.BoxGeometry(10, 1, 1), neonMaterial),
     new THREE.Mesh(new THREE.BoxGeometry(10, 1, 1), neonMaterial),
-    new THREE.Mesh(new THREE.BoxGeometry(6, 1, 1), neonMaterial),
-    new THREE.Mesh(new THREE.BoxGeometry(6, 1, 1), neonMaterial)
+    // new THREE.Mesh(new THREE.BoxGeometry(6, 1, 1), neonMaterial)
+    // new THREE.Mesh(new THREE.BoxGeometry(6, 1, 1), neonMaterial)
 ];
 
 bord[0].position.set(0, -0.5, -4.5)
 bord[1].position.set(0, -0.5, 4.5)
 
-bord[2].rotation.y = Math.PI / 2
-bord[3].rotation.y = Math.PI / 2
+// bord[2].rotation.y = Math.PI / 2
+// bord[3].rotation.y = Math.PI / 2
 
-bord[2].position.set(-6.5, 0, 0)
-bord[3].position.set(6.5, 0, 0)
+// bord[2].position.set(-6.5, 0, 0)
+// bord[3].position.set(6.5, 0, 0)
 
 bord.forEach(b => arena.add(b))
 
@@ -336,7 +336,7 @@ function checkCollisionBallRaquette(cx, cz, rx, rz, mode, checkfromball) {
     return false;
 }
 
-const maxScore = 2
+const maxScore = 20
 
 // ==============================
 // Ball and Paddle Movement
