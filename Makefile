@@ -51,8 +51,7 @@ help:
 
 
 up: volumes
-	mkdir -p ${VOLUMES_NAMES}
-	docker compose up --build
+	docker compose up -d
 
 volumes: ${VOLUMES_NAMES}
 
