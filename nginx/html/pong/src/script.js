@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 
+let id;
 // Initialisation de la scène
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -199,7 +200,7 @@ function updateScoreDisplay() {
     const newGeometry = new TextGeometry(scoreText, {
         font: font,
         size: 1,
-        height: 0.2,
+        depth: 0.2,
         curveSegments: 12,
         bevelEnabled: true,
         bevelThickness: 0.03,
@@ -360,6 +361,7 @@ function moveTheBall() {
         console.log('collision droite', ball.angle);
         return;
     }
+    const maxScore = 5
     // Check collision with top and bottom boundaries
     if (checkCollision(5, -4, -5, -4, futurX, futurZ - 0.35) === true ||
         checkCollision(-5, 4, 5, 4, futurX, futurZ + 0.35) === true) {
@@ -377,6 +379,11 @@ function moveTheBall() {
             // Ball hit the left boundary, right player scores
             scoreData.right++;
         }
+        if (scoreData.right >= maxScore || scoreData.left >= maxScore) {
+            cancelAnimationFrame(id);
+            console.log(scoreData.left >= maxScore ? "Left" : "Right")
+        }
+
         updateScoreDisplay();
         // Reset ball
         ball.angle = -10;
@@ -477,7 +484,7 @@ function moveThePad() {
 // ==============================
 
 function animate() {
-    requestAnimationFrame(animate);
+    id = requestAnimationFrame(animate);
     moveTheBall();
     moveThePad();
     controls.update();
