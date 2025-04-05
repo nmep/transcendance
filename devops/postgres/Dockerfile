@@ -26,4 +26,4 @@ USER postgres
 
 ENTRYPOINT [ "/entrypoint.sh" ]
 
-CMD [ "postgres","-c","config_file=/etc/postgresql.conf" ]
+CMD [ "postgres", "-c", "config_file=/etc/postgresql.conf" ]

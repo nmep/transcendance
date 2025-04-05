@@ -43,7 +43,6 @@ services:
     container_name: postgres
     volumes:
       - init_vault:/secret/
-      - ./devops/postgres/data:/var/lib/postgresql/data
       - log_postgres:/tmp/log/
     ports:
       - '5432:5432'

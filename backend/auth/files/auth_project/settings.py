@@ -27,37 +27,37 @@ SECRET_KEY = 'django-insecure-qr^cc8b@9r7l7$i7zmf)jx3j)z!sucyymm7^_w(70b7##9s_71
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['localhost', 'nginx', 'auth', 'db']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'nginx', 'auth', 'db']
+# ALLOWED_HOSTS = []
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'syslog': {
-            'format': '%(asctime)s %(levelname)s %(name)s %(message)s'
-        },
-    },
-    'handlers': {
-        'syslog': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.SysLogHandler',
-            'address': '/dev/log',  # Local, sinon ('logstash', 514) pour un serveur distant
-            'formatter': 'syslog',
-        },
-    },
-    'root': {
-        'handlers': ['syslog'],
-        'level': 'DEBUG',
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['syslog'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-    },
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'syslog': {
+#             'format': '%(asctime)s %(levelname)s %(name)s %(message)s'
+#         },
+#     },
+#     'handlers': {
+#         'syslog': {
+#             'level': 'DEBUG',
+#             'class': 'logging.handlers.SysLogHandler',
+#             'address': '/dev/log',  # Local, sinon ('logstash', 514) pour un serveur distant
+#             'formatter': 'syslog',
+#         },
+#     },
+#     'root': {
+#         'handlers': ['syslog'],
+#         'level': 'DEBUG',
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['syslog'],
+#             'level': 'DEBUG',
+#             'propagate': False,
+#         },
+#     },
+# }
 # Application definition
 
 INSTALLED_APPS = [
