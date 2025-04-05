@@ -15,14 +15,14 @@ document.addEventListener("click", (e) => {
 
     // Met à jour l'URL sans recharger la page
     window.history.pushState({}, target.href, target.href);
-  
+
     // Appelle la fonction pour gérer la localisation
     urlLocationHandler();
 });
 
 
-  // L'objet des routes avec les templates associés
-  const urlRoutes = {
+// L'objet des routes avec les templates associés
+const urlRoutes = {
     404: {
         template: "/templates/404.html",
         title: "Page non trouvée",
@@ -62,20 +62,35 @@ document.addEventListener("click", (e) => {
         template: "/templates/settings.html",
         title: "settings",
         description: "Parametre de votre profil."
+    },
+    "/pong": {
+        template: "/templates/pong.html",
+        title: "pong",
+        description: "Petite partie de pong en toute detente."
+    },
+    "/puissance4": {
+        template: "/templates/puissance4.html",
+        title: "puissance4",
+        description: "Petite partie de puisance4 oklm."
+    },
+    "/tournament": {
+        template: "/templates/tournament.html",
+        title: "tournament",
+        description: "Tournoi de pong."
     }
 };
 
 
 function getUserInfo() {
     fetch("/api/auth/whoami", { credentials: "include" })
-    .then(response => response.json())
-    .then(data => {
-        if (data && !data.error) {
-            localStorage.setItem("user_info", JSON.stringify(data));
-            displayUserInfo(data);
-        }
-    })
-    .catch(error => console.error("❌ Erreur récupération utilisateur :", error));
+        .then(response => response.json())
+        .then(data => {
+            if (data && !data.error) {
+                localStorage.setItem("user_info", JSON.stringify(data));
+                displayUserInfo(data);
+            }
+        })
+        .catch(error => console.error("❌ Erreur récupération utilisateur :", error));
 }
 
 function displayUserInfo(user) {
@@ -120,9 +135,8 @@ async function urlLocationHandler() {
         }
     }
 }
-  // Appelle urlLocationHandler au chargement de la page pour charger le bon contenu
-  window.addEventListener("load", urlLocationHandler);
+// Appelle urlLocationHandler au chargement de la page pour charger le bon contenu
+window.addEventListener("load", urlLocationHandler);
 
-  // Permet de gérer le retour en arrière ou l'avant dans l'historique du navigateur
-  window.addEventListener("popstate", urlLocationHandler);
-  
+// Permet de gérer le retour en arrière ou l'avant dans l'historique du navigateur
+window.addEventListener("popstate", urlLocationHandler);

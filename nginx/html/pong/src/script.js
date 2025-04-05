@@ -192,13 +192,11 @@ fontLoader.load('helvetiker_regular.typeface.json', function (loadedFont) {
     font = loadedFont;
     updateScoreDisplay(); // create initial score display
 });
+const textMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
 
 function updateScoreDisplay() {
-    if (scoreMesh) {
-        scene.remove(scoreMesh);
-    }
-    const scoreText = `${scoreData.left} - ${scoreData.right}`;
-    const textGeometry = new TextGeometry(scoreText, {
+    const scoreText = `${scoreData.left}   -   ${scoreData.right}`;
+    const newGeometry = new TextGeometry(scoreText, {
         font: font,
         size: 1,
         height: 0.2,
@@ -209,11 +207,18 @@ function updateScoreDisplay() {
         bevelOffset: 0,
         bevelSegments: 5
     });
-    const textMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
-    scoreMesh = new THREE.Mesh(textGeometry, textMaterial);
-    scoreMesh.position.set(-1, 5, 0);
-    scoreMesh.name = 'scoreDisplay';
-    scene.add(scoreMesh);
+    // newGeometry.center(); // Optional: centers the text
+
+    if (scoreMesh) {
+        // Dispose the old geometry and update the mesh's geometry
+        scoreMesh.geometry.dispose();
+        scoreMesh.geometry = newGeometry;
+    } else {
+        scoreMesh = new THREE.Mesh(newGeometry, textMaterial);
+        scoreMesh.position.set(-2, 5, 0);
+        scoreMesh.name = 'scoreDisplay';
+        scene.add(scoreMesh);
+    }
 }
 
 // ==============================
