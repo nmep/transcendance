@@ -3,14 +3,13 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 
-let id;
+
 // Initialisation de la scène
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
-
 // Set up environment map
 const cubeTextureLoader = new THREE.CubeTextureLoader();
 const envMap = cubeTextureLoader.load([
@@ -337,6 +336,8 @@ function checkCollisionBallRaquette(cx, cz, rx, rz, mode, checkfromball) {
     return false;
 }
 
+const maxScore = 2
+
 // ==============================
 // Ball and Paddle Movement
 // ==============================
@@ -361,7 +362,6 @@ function moveTheBall() {
         console.log('collision droite', ball.angle);
         return;
     }
-    const maxScore = 5
     // Check collision with top and bottom boundaries
     if (checkCollision(5, -4, -5, -4, futurX, futurZ - 0.35) === true ||
         checkCollision(-5, 4, 5, 4, futurX, futurZ + 0.35) === true) {
@@ -380,8 +380,7 @@ function moveTheBall() {
             scoreData.right++;
         }
         if (scoreData.right >= maxScore || scoreData.left >= maxScore) {
-            cancelAnimationFrame(id);
-            console.log(scoreData.left >= maxScore ? "Left" : "Right")
+            endGame();
         }
 
         updateScoreDisplay();
@@ -410,6 +409,7 @@ function moveTheBall() {
 
 const speed = 0.08;
 let already_change_angle = false;
+
 
 function moveThePad() {
     already_change_angle = false;
@@ -482,6 +482,7 @@ function moveThePad() {
 // ==============================
 // Animation Loop
 // ==============================
+let id;
 
 function animate() {
     id = requestAnimationFrame(animate);
@@ -489,6 +490,22 @@ function animate() {
     moveThePad();
     controls.update();
     renderer.render(scene, camera);
+}
+
+let winner;
+
+function endGame() {
+    cancelAnimationFrame(id);
+    winner = scoreData.left >= maxScore ? "Left" : "Right";
+    console.log(`winner is ${winner}`);
+    renderer.domElement.remove();
+    const title = document.createElement('h1');
+    title.textContent = `Winner: ${winner} Player`;
+    title.style.textAlign = "center";
+    title.style.marginTop = "20px";
+
+    // Append the title to the body (or any other container)
+    document.body.appendChild(title);
 }
 
 animate();
