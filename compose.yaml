@@ -20,7 +20,6 @@ services:
     volumes:
       - ./nginx/conf/core.conf:/etc/nginx/conf.d/core.conf
       - ./nginx/conf/reverseproxy.conf:/etc/nginx/conf.d/reverseproxy.conf
-      - ./nginx/html:/var/www/html
       - ./nginx/conf/ssl_certificate.sh:/usr/local/bin/ssl_certificate.sh
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       # ModSecurity

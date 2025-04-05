@@ -1,9 +1,5 @@
 pierre
     jeux + systeme de tournoi
 
-garfi
-    verification de la partie django
-
 david
     adapter logs et alerts pour django
-    -d sur le docker compose
