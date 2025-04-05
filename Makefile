@@ -30,7 +30,6 @@ IMAGES= grafana\
 		nginx_exporter\
 		prometheus\
 		nginx \
-		db_api \
 		db \
 	
 BUILD_IMAGES=$(addprefix transcendance_, ${IMAGES})
