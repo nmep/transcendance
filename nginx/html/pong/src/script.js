@@ -240,27 +240,27 @@ let rightPadMove = {
 };
 
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'w') leftPadMove.up = true;
-    if (event.key === 'a') leftPadMove.left = true;
-    if (event.key === 's') leftPadMove.down = true;
-    if (event.key === 'd') leftPadMove.right = true;
+    if (event.key === 'd') leftPadMove.up = true;
+    if (event.key === 'w') leftPadMove.left = true;
+    if (event.key === 'a') leftPadMove.down = true;
+    if (event.key === 's') leftPadMove.right = true;
 
-    if (event.key === 'ArrowUp') rightPadMove.up = true;
-    if (event.key === 'ArrowLeft') rightPadMove.left = true;
-    if (event.key === 'ArrowDown') rightPadMove.down = true;
-    if (event.key === 'ArrowRight') rightPadMove.right = true;
+    if (event.key === 'ArrowLeft') rightPadMove.up = true;
+    if (event.key === 'ArrowDown') rightPadMove.left = true;
+    if (event.key === 'ArrowRight') rightPadMove.down = true;
+    if (event.key === 'ArrowUp') rightPadMove.right = true;
 });
 
 document.addEventListener('keyup', (event) => {
-    if (event.key === 'w') leftPadMove.up = false;
-    if (event.key === 'a') leftPadMove.left = false;
-    if (event.key === 's') leftPadMove.down = false;
-    if (event.key === 'd') leftPadMove.right = false;
+    if (event.key === 'd') leftPadMove.up = false;
+    if (event.key === 'w') leftPadMove.left = false;
+    if (event.key === 'a') leftPadMove.down = false;
+    if (event.key === 's') leftPadMove.right = false;
 
-    if (event.key === 'ArrowUp') rightPadMove.up = false;
-    if (event.key === 'ArrowLeft') rightPadMove.left = false;
-    if (event.key === 'ArrowDown') rightPadMove.down = false;
-    if (event.key === 'ArrowRight') rightPadMove.right = false;
+    if (event.key === 'ArrowLeft') rightPadMove.up = false;
+    if (event.key === 'ArrowDown') rightPadMove.left = false;
+    if (event.key === 'ArrowRight') rightPadMove.down = false;
+    if (event.key === 'ArrowUp') rightPadMove.right = false;
 });
 
 // ==============================
