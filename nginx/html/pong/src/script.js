@@ -9,7 +9,6 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
 // Set up environment map
 const cubeTextureLoader = new THREE.CubeTextureLoader();
 const envMap = cubeTextureLoader.load([
@@ -507,5 +506,7 @@ function endGame() {
     // Append the title to the body (or any other container)
     document.body.appendChild(title);
 }
+
+document.body.appendChild(renderer.domElement);
 
 animate();
