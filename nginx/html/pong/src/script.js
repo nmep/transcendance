@@ -3,21 +3,22 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 
-
+let isAnimated = false;
 // Initialisation de la scène
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: document.getElementById('webgl') });
 renderer.setSize(window.innerWidth, window.innerHeight);
+
 // Set up environment map
 const cubeTextureLoader = new THREE.CubeTextureLoader();
 const envMap = cubeTextureLoader.load([
-    'textures/environmentMaps/4/px.png1',
-    'textures/environmentMaps/4/nx.png1',
-    'textures/environmentMaps/4/py.png1',
-    'textures/environmentMaps/4/ny.png1',
-    'textures/environmentMaps/4/pz.png1',
-    'textures/environmentMaps/4/nz.png1'
+    'textures/environmentMaps/4/px.png',
+    'textures/environmentMaps/4/nx.png',
+    'textures/environmentMaps/4/py.png',
+    'textures/environmentMaps/4/ny.png',
+    'textures/environmentMaps/4/pz.png',
+    'textures/environmentMaps/4/nz.png'
 ]);
 scene.background = envMap;
 scene.environment = envMap;
@@ -484,6 +485,7 @@ function moveThePad() {
 let id;
 
 function animate() {
+    if (!isAnimated) return;
     id = requestAnimationFrame(animate);
     moveTheBall();
     moveThePad();
@@ -495,18 +497,37 @@ let winner;
 
 function endGame() {
     cancelAnimationFrame(id);
-    winner = scoreData.left >= maxScore ? "Left" : "Right";
+    winner = scoreData.left >= scoreData.right ? "Left" : "Right";
     console.log(`winner is ${winner}`);
-    renderer.domElement.remove();
+    // renderer.domElement.remove();
     const title = document.createElement('h1');
     title.textContent = `Winner: ${winner} Player`;
     title.style.textAlign = "center";
     title.style.marginTop = "20px";
-
+    isAnimated = false;
     // Append the title to the body (or any other container)
     document.body.appendChild(title);
 }
 
 document.body.appendChild(renderer.domElement);
 
-animate();
+function startAnimation() {
+    if (!isAnimated) {
+        isAnimated = true;
+        animate();
+    }
+}
+document.getElementById('toggleCanvasBtn').addEventListener('click', () => {
+    const container = document.getElementById('webgl');
+    const isVisible = container.style.display !== 'none';
+  
+    if (isVisible) {
+        container.style.display = 'none';
+        endGame();
+        document.getElementById('toggleCanvasBtn').innerText = 'Show Canvas';
+    } else {
+      container.style.display = 'block';
+      startAnimation();
+      document.getElementById('toggleCanvasBtn').innerText = 'Hide Canvas';
+    }
+  });
