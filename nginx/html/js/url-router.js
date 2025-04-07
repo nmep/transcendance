@@ -64,7 +64,7 @@ const urlRoutes = {
         description: "Parametre de votre profil."
     },
     "/pong": {
-        template: "/templates/pong.html",
+        template: "/pong/dist/index.html",
         title: "pong",
         description: "Petite partie de pong en toute detente."
     },
@@ -134,7 +134,28 @@ async function urlLocationHandler() {
             getUserInfo();  // fera displayUserInfo() quand il a la réponse
         }
     }
+    function loadScript(scriptUrl) {
+        const script = document.createElement('script');
+        script.type = 'module'; // if you're using ES modules
+        script.src = scriptUrl;
+        document.body.appendChild(script);
+    }
+
+    // Inside your URL handler, after setting the innerHTML:
+    document.getElementById("content").innerHTML = html;
+    // Then load the game script if necessary:
+    console.log(location);
+    if (location === '/pong') {
+        console.log("prout loader");
+        loadScript('/pong/dist/assets/index-Bo2Hig2X.js');
+    } else if (location === '/puissance4') {
+        loadScript('/puissance4/assets/your-built-script.js');
+    } else if (location === '/tournament') {
+        loadScript('/tournament/assets/your-built-script.js');
+    }
 }
+
+
 // Appelle urlLocationHandler au chargement de la page pour charger le bon contenu
 window.addEventListener("load", urlLocationHandler);
 
