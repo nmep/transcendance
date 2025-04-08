@@ -10,12 +10,26 @@ export default {
     },
     build:
     {
-        outDir: '../dist', // Output in the dist/ folder
-        emptyOutDir: true, // Empty the folder first
-        sourcemap: true // Add sourcemap
+        rollupOptions: {
+            output: {
+                // Use a specific pattern for asset filenames
+                assetFileNames: ({ name }) => {
+                    // You can customize the pattern based on the asset name or extension.
+                    // For instance, here we remove the hash for assets in the images folder.
+                    // Default pattern including a hash
+                    return 'pong/name[extname]';
+                },
+                // Optionally customize JavaScript chunk and entry filenames
+                entryFileNames: 'pong/[name].js',
+                chunkFileNames: 'pong/[name].js',
+            }
+        },
+        outDir: '../../templates/', // Output in the dist/ folder
+        emptyOutDir: false, // Empty the folder first
+        sourcemap: false, // Add sourcemap
     },
     plugins:
-    [
-        restart({ restart: [ '../static/**', ] }) // Restart server on static file change
-    ],
+        [
+            restart({ restart: ['../static/**',] }) // Restart server on static file change
+        ],
 }

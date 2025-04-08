@@ -64,7 +64,7 @@ const urlRoutes = {
         description: "Parametre de votre profil."
     },
     "/pong": {
-        template: "/pong/dist/index.html",
+        template: "/templates/pong.html",
         title: "pong",
         description: "Petite partie de pong en toute detente."
     },
@@ -147,7 +147,7 @@ async function urlLocationHandler() {
     console.log(location);
     if (location === '/pong') {
         console.log("prout loader");
-        loadScript('/pong/dist/assets/index-Bo2Hig2X.js');
+        loadScript('/templates/pong/index.js');
     } else if (location === '/puissance4') {
         loadScript('/puissance4/assets/your-built-script.js');
     } else if (location === '/tournament') {

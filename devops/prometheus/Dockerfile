@@ -1,4 +1,4 @@
-FROM prom/prometheus:v3.1.0 as base
+FROM prom/prometheus:v3.1.0 AS base
 
 FROM alpine:3.21.3
 
