@@ -610,14 +610,15 @@ export function resetGameState() {
 
 export function onGameOver() {
     // Called when maxScore is reached.
-    stopGame();
     winner = scoreData.left >= scoreData.right ? "Left" : "Right";
+    console.log(winner, scoreData.left, scoreData.right)
+    stopGame();
     // Display winner in your UI (create a DOM element or update a modal)
     const winnerMessage = document.createElement('h1');
     winnerMessage.textContent = `Winner: ${winner} Player`;
     winnerMessage.style.textAlign = "center";
     winnerMessage.style.marginTop = "20px";
-    document.body.appendChild(winnerMessage);
+    document.getElementById('content').appendChild(winnerMessage);
 
     // Optionally add a "New Game" button:
     const newGameBtn = document.createElement('button');
@@ -628,5 +629,5 @@ export function onGameOver() {
         newGameBtn.remove();
         startGame();
     });
-    document.body.appendChild(newGameBtn);
+    document.getElementById('content').appendChild(newGameBtn);
 }
