@@ -2,7 +2,7 @@
 // Imports and Global Variables
 // ==============================
 import * as THREE from '/threejs/three.js';
-import { OrbitControls } from '/threejs/orbitcontrols.js';
+// import { OrbitControls } from '/threejs/orbitcontrols.js';
 import { FontLoader } from '/threejs/fontloader.js';
 import { TextGeometry } from '/threejs/textgeometry.js';
 
@@ -12,7 +12,6 @@ let scoreMesh = null;
 let font; // For 3D text; loaded asynchronously later
 let winner;
 let animationId; // for requestAnimationFrame later
-
 // ==============================
 // Scene, Camera, Renderer, and Controls Setup
 // ==============================
@@ -49,14 +48,14 @@ function setupEnvironment() {
 setupEnvironment();
 
 // Orbit Controls
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.dampingFactor = 0.05;
-controls.screenSpacePanning = false;
-controls.maxDistance = 15;
-controls.minDistance = 5;
-controls.maxPolarAngle = Math.PI / 2.5;
-controls.update();
+// const controls = new OrbitControls(camera, renderer.domElement);
+// controls.enableDamping = true;
+// controls.dampingFactor = 0.05;
+// controls.screenSpacePanning = false;
+// controls.maxDistance = 15;
+// controls.minDistance = 5;
+// controls.maxPolarAngle = Math.PI / 2.5;
+// controls.update();
 
 // ==============================
 // Arena Construction
@@ -571,7 +570,7 @@ function animate() {
     // Move ball and paddles, update controls, render scene
     moveTheBall();
     moveThePad();
-    controls.update();
+    // controls.update();
     renderer.render(scene, camera);
 }
 
