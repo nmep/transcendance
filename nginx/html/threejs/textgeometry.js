@@ -35,7 +35,7 @@ class TextGeometry extends ExtrudeGeometry {
 
 			// translate parameters to ExtrudeGeometry API
 
-			parameters.depth = parameters.height !== undefined ? parameters.height : 50;
+			// parameters.depth = parameters.height !== undefined ? parameters.height : 50;
 
 			// defaults
 
