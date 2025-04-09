@@ -24,15 +24,15 @@ RUN chmod 644 /tmp/log/nginx.log
 
 COPY ./syslog/logrotate.conf /etc/logrotate.conf
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-ENV BASH_ENV /.bash_env
-RUN touch "${BASH_ENV}"
-RUN echo '. "${BASH_ENV}"' >> /.bashrc
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | PROFILE="${BASH_ENV}" bash
-RUN echo node > /.nvmrc
-RUN nvm install
-RUN mkdir -p /.npm
-RUN chown -R 1000:1000 /var/www/html /.npm
+# SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# ENV BASH_ENV /.bash_env
+# RUN touch "${BASH_ENV}"
+# RUN echo '. "${BASH_ENV}"' >> /.bashrc
+# RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | PROFILE="${BASH_ENV}" bash
+# RUN echo node > /.nvmrc
+# RUN nvm install
+# RUN mkdir -p /.npm
+# RUN chown -R 1000:1000 /var/www/html /.npm
 
 USER 1000
 

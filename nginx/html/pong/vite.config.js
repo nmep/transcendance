@@ -26,7 +26,7 @@ export default {
         },
         outDir: '../../templates/', // Output in the dist/ folder
         emptyOutDir: false, // Empty the folder first
-        sourcemap: false, // Add sourcemap
+        sourcemap: true, // Add sourcemap
     },
     plugins:
         [

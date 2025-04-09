@@ -1,10 +1,10 @@
 // ==============================
 // Imports and Global Variables
 // ==============================
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.150.0/build/three.module.js';
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.150.0/examples/jsm/controls/OrbitControls.js';
-import { FontLoader } from 'https://cdn.jsdelivr.net/npm/three@0.150.0/examples/jsm/loaders/FontLoader.js';
-import { TextGeometry } from 'https://cdn.jsdelivr.net/npm/three@0.150.0/examples/jsm/geometries/TextGeometry.js';
+import * as THREE from '/threejs/three.js';
+import { OrbitControls } from '/threejs/orbitcontrols.js';
+import { FontLoader } from '/threejs/fontloader.js';
+import { TextGeometry } from '/threejs/textgeometry.js';
 
 let isGameRunning = false;
 let scoreData = { left: 0, right: 0 };

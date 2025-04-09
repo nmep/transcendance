@@ -1,27 +1,8 @@
-document.addEventListener("click", (e) => {
-    const { target } = e;
+import { startGame, stopGame, resetGameState } from '/script.js';
 
-    console.log("🖱 Click détecté sur :", target); // 🔥 Debugging
-
-    // Vérifie que l'élément cliqué est un lien de la navigation
-    if (!target.matches("nav a")) {
-        return;
-    }
-
-    // Empêche le comportement par défaut du lien
-    e.preventDefault();
-
-    console.log("📌 Lien intercepté :", target.href); // 🔥 Debugging
-
-    // Met à jour l'URL sans recharger la page
-    window.history.pushState({}, target.href, target.href);
-
-    // Appelle la fonction pour gérer la localisation
-    urlLocationHandler();
-});
-
-
-// L'objet des routes avec les templates associés
+/*******************************
+ * URL Routes Mapping
+ *******************************/
 const urlRoutes = {
     404: {
         template: "/templates/404.html",
@@ -61,17 +42,17 @@ const urlRoutes = {
     "/settings": {
         template: "/templates/settings.html",
         title: "settings",
-        description: "Parametre de votre profil."
+        description: "Paramètre de votre profil."
     },
     "/pong": {
         template: "/templates/pong.html",
         title: "pong",
-        description: "Petite partie de pong en toute detente."
+        description: "Petite partie de pong en toute détente."
     },
     "/puissance4": {
         template: "/templates/puissance4.html",
         title: "puissance4",
-        description: "Petite partie de puisance4 oklm."
+        description: "Petite partie de puissance4 oklm."
     },
     "/tournament": {
         template: "/templates/tournament.html",
@@ -80,7 +61,33 @@ const urlRoutes = {
     }
 };
 
+/*******************************
+ * Navigation Click Handler
+ *******************************/
+document.addEventListener("click", handleDocumentClick);
 
+function handleDocumentClick(e) {
+    const clickedElement = e.target;
+    console.log("🖱 Click détecté sur :", clickedElement); // Debugging
+
+    // Only act on navigation links or the toggle button
+    if (!clickedElement.matches("nav a") && !clickedElement.matches("toggleCanvasBtn")) {
+        return;
+    }
+
+    // For navigation links (ignoring the toggle button)
+    if (!clickedElement.matches("toggleCanvasBtn")) {
+        e.preventDefault();
+        console.log("📌 Lien intercepté :", clickedElement.href);
+        window.history.pushState({}, clickedElement.href, clickedElement.href);
+        urlLocationHandler();
+    }
+}
+
+
+/*******************************
+ * User Information Handlers
+ *******************************/
 function getUserInfo() {
     fetch("/api/auth/whoami", { credentials: "include" })
         .then(response => response.json())
@@ -104,60 +111,123 @@ function displayUserInfo(user) {
         document.getElementById("user-campus").textContent = user.campus[0].name;
     }
 
-    // Pour l'avatar : user.image.link
+    // Pour l'avatar (si défini)
     if (user.image && user.image.link) {
         document.getElementById("user-avatar").src = user.image.link;
     }
 }
 
-
+/*******************************
+ * URL Location Handler
+ *******************************/
 async function urlLocationHandler() {
+    // Determine current location, defaulting "/" to "/home"
     let location = window.location.pathname;
     if (location === "/") {
         location = "/home";
     }
-
+    // Fetch and inject the template HTML
     const route = urlRoutes[location] || urlRoutes[404];
     const response = await fetch(route.template);
     const html = await response.text();
     document.getElementById("content").innerHTML = html;
-    const authButtons = document.getElementById("auth-buttons");
 
-    // 📌 Maintenant que le HTML est injecté, on gère l'utilisateur
+    if (location === "/pong") {
+        // Add a "Launch Game" button if not already present
+        const launchBtn = document.getElementById('launchGameBtn') || createLaunchButton();
+        console.log('ajout bouton ', launchBtn);
+        // Optionally bind the button event
+        launchBtn.addEventListener('click', () => {
+            startGame();
+            launchBtn.style.display = 'none'; // Hide once game is running
+        });
+    } else {
+        // When leaving the pong page, ensure the game is stopped, canvas hidden, and state reset
+        stopGame();
+        resetGameState();
+    }
+
+    // Additional behavior based on route
     if (location === "/profile") {
-        const savedUser = localStorage.getItem("user_info");
-        if (savedUser) {
-            displayUserInfo(JSON.parse(savedUser));
-            const userObj = JSON.parse(savedUser);
-            showAuthenticated(authButtons, userObj);
-        } else {
-            getUserInfo();  // fera displayUserInfo() quand il a la réponse
-        }
-    }
-    function loadScript(scriptUrl) {
-        const script = document.createElement('script');
-        script.type = 'module'; // if you're using ES modules
-        script.src = scriptUrl;
-        document.body.appendChild(script);
-    }
-
-    // Inside your URL handler, after setting the innerHTML:
-    document.getElementById("content").innerHTML = html;
-    // Then load the game script if necessary:
-    console.log(location);
-    if (location === '/pong') {
-        console.log("prout loader");
-        loadScript('/templates/pong/index.js');
-    } else if (location === '/puissance4') {
-        loadScript('/puissance4/assets/your-built-script.js');
-    } else if (location === '/tournament') {
-        loadScript('/tournament/assets/your-built-script.js');
+        handleProfileAuthentication();
+    } else if (location === "/pong") {
+        initializePongButton();
+    } else if (location === "/puissance4") {
+        loadScript("/puissance4/assets/your-built-script.js");
+    } else if (location === "/tournament") {
+        loadScript("/tournament/assets/your-built-script.js");
     }
 }
 
+function createLaunchButton() {
+    const btn = document.createElement('button');
+    btn.id = 'launchGameBtn';
+    btn.textContent = 'Launch Game';
+    console.log('niiiiiiii')
+    // Append to a known container (for example, in your pong.html there can be a placeholder div)
+    console.log(document.getElementById('content'))
+    document.getElementById('content').appendChild(btn);
+    console.log(btn);
+    return btn;
+}
 
-// Appelle urlLocationHandler au chargement de la page pour charger le bon contenu
+/**
+ * Loads an external script into the #content container.
+ * @param {string} scriptUrl - The URL of the script to load.
+ */
+function loadScript(scriptUrl) {
+    const script = document.createElement("script");
+    script.type = "module"; // for ES modules
+    script.src = scriptUrl;
+    document.getElementById("content").appendChild(script);
+    console.log(document.getElementById("content"));
+}
+
+/**
+ * Initialize the toggle event for the pong canvas.
+ */
+function initializePongButton() {
+    const toggleBtn = document.getElementById("toggleCanvasBtn");
+    if (!toggleBtn) return;
+
+    console.log("Ajout de l'event listener sur le bouton de toggle du canvas.");
+
+    toggleBtn.addEventListener("click", () => {
+        const container = document.getElementById("webgl");
+        if (!container) return;
+        const isVisible = container.style.display !== "none";
+
+        if (isVisible) {
+            container.style.display = "none";
+            // Uncomment if defined: endGame();
+            toggleBtn.innerText = "Show Canvas";
+        } else {
+            container.style.display = "block";
+            // Uncomment if defined: startAnimation();
+            toggleBtn.innerText = "Hide Canvas";
+        }
+    });
+}
+
+/**
+ * Handle profile page authentication: display user information and adjust UI.
+ */
+function handleProfileAuthentication() {
+    const authButtons = document.getElementById("auth-buttons");
+    const savedUser = localStorage.getItem("user_info");
+
+    if (savedUser) {
+        const userObj = JSON.parse(savedUser);
+        displayUserInfo(userObj);
+        // Ensure showAuthenticated is defined elsewhere
+        showAuthenticated(authButtons, userObj);
+    } else {
+        getUserInfo();
+    }
+}
+
+/*******************************
+ * Window Event Listeners
+ *******************************/
 window.addEventListener("load", urlLocationHandler);
-
-// Permet de gérer le retour en arrière ou l'avant dans l'historique du navigateur
 window.addEventListener("popstate", urlLocationHandler);
