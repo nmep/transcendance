@@ -18,7 +18,7 @@ let animationId; // for requestAnimationFrame later
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
     75,
-    window.innerWidth / window.innerHeight,
+    1296 / window.innerHeight * 2,
     0.1,
     1000
 );
@@ -30,7 +30,7 @@ function buildRenderer() {
         antialias: true,
         canvas: document.getElementById('webgl')
     });
-    renderer.setSize(document.getElementById('content').offsetWidth, document.getElementById('content').offsetHeight);
+    renderer.setSize(document.getElementById('content').offsetWidth, window.innerHeight * 0.5);
     return renderer;
 }
 // Set up environment map (cube map for reflections/background)
