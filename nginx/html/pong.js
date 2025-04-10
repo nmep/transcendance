@@ -9,6 +9,7 @@ import { TextGeometry } from '/threejs/textgeometry.js';
 let isGameRunning = false;
 let scoreData = { left: 0, right: 0 };
 let scoreMesh = null;
+let countDownMesh = null;
 let font; // For 3D text; loaded asynchronously later
 let winner;
 let animationId; // for requestAnimationFrame later
@@ -18,17 +19,17 @@ let controlsInstance = null;
 // ==============================
 // eventListener on resize
 // ==============================
-window.addEventListener('resize', () => {
-    // Update camera
-    if (cameraInstance) {
-        cameraInstance.aspect = window.innerWidth / window.innerHeight;
-        cameraInstance.updateProjectionMatrix();
-    }
-    // Update renderer
-    if (rendererInstance) {
-        rendererInstance.setSize(window.innerWidth, window.innerHeight);
-    }
-});
+// window.addEventListener('resize', () => {
+//     // Update camera
+//     if (cameraInstance) {
+//         cameraInstance.aspect = window.innerWidth / window.innerHeight;
+//         cameraInstance.updateProjectionMatrix();
+//     }
+//     // Update renderer
+//     if (rendererInstance) {
+//         rendererInstance.setSize(window.innerWidth, window.innerHeight);
+//     }
+// });
 
 // ==============================
 // Scene, Camera, Renderer, and Controls Setup
@@ -392,6 +393,55 @@ const maxScore = 5;
 // ==============================
 // Ball and Paddle Movement Functions
 // ==============================
+
+function startCountdown(time) {
+    let currentTime = time;
+
+    showCountDown(currentTime); // Initial display
+
+    const interval = setInterval(() => {
+        currentTime--;
+
+        if (currentTime > 0) {
+            showCountDown(currentTime);
+        } else {
+            clearInterval(interval);
+            scene.remove(countDownMesh);
+            countDownMesh.geometry.dispose();
+            countDownMesh = null;
+            countDownDone = true;
+            return;
+        }
+    }, 500);
+}
+
+function showCountDown(time) {
+    const toStart = time;
+    const scoreText = `${toStart}`;
+    const textGeometry = new TextGeometry(scoreText, {
+        font: font,
+        size: 1,
+        depth: 0.2,
+        curveSegments: 12,
+        bevelEnabled: true,
+        bevelThickness: 0.03,
+        bevelSize: 0.05,
+        bevelOffset: 0,
+        bevelSegments: 5
+    });
+
+    if (countDownMesh) {
+        countDownMesh.geometry.dispose();
+        countDownMesh.geometry = textGeometry;
+    } else {
+        const textMaterial = new THREE.MeshNormalMaterial();
+        countDownMesh = new THREE.Mesh(textGeometry, textMaterial);
+        countDownMesh.position.set(-2, 5, 0);
+        countDownMesh.name = 'countdown';
+        scene.add(countDownMesh);
+    }
+}
+
 function moveTheBall() {
     // Launch ball if uninitialized
     if (ball.angle === -10) {
@@ -432,6 +482,8 @@ function moveTheBall() {
             onGameOver();
         }
         updateScoreDisplay();
+        countDownStarted = false;
+        countDownDone = false;
         // Reset the ball
         ball.angle = -10;
         ball.mesh.position.set(0, 0.05, 0);
@@ -598,12 +650,29 @@ function moveThePad() {
 // ==============================
 // Main Animation Loop and Game State Functions
 // ==============================
+function resizeCanvas(render, camera) {
+    if (!render || !camera) { return; }
+    console.log('height => ', document.getElementById('content').offsetHeight, 'width => ', document.getElementById('content').offsetWidth);
+    render.setSize(document.getElementById('content').offsetWidth, document.getElementById('content').offsetHeight);
+    camera.aspect = document.getElementById('content').offsetWidth / document.getElementById('content').offsetHeight
+    camera.updateProjectionMatrix();
+}
+let countDownStarted = false;
+let countDownDone = false;
+let countDownCount = 5
+
 function animate() {
     if (!isGameRunning) return;
     animationId = requestAnimationFrame(animate);
     // Move ball and paddles, update controls, render scene
-    moveTheBall();
-    moveThePad();
+    if (!countDownStarted) {
+        startCountdown(countDownCount);
+        countDownStarted = true
+    }
+    if (countDownDone) {
+        moveTheBall();
+        moveThePad();
+    }
     if (!rendererInstance) {
         rendererInstance = buildRenderer();
     }
@@ -613,6 +682,7 @@ function animate() {
     if (!controlsInstance) {
         controlsInstance = buildControls(rendererInstance, cameraInstance);
     }
+    resizeCanvas(rendererInstance, cameraInstance);
     cameraInstance.lookAt(arena.position)
     controlsInstance.update();
     rendererInstance.render(scene, cameraInstance);
