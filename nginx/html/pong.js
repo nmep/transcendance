@@ -20,9 +20,9 @@ let controlsInstance = null;
 // ==============================
 window.addEventListener('resize', () => {
     // Update camera
-    if (camera) {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
+    if (cameraInstance) {
+        cameraInstance.aspect = window.innerWidth / window.innerHeight;
+        cameraInstance.updateProjectionMatrix();
     }
     // Update renderer
     if (rendererInstance) {
@@ -36,6 +36,7 @@ window.addEventListener('resize', () => {
 const scene = new THREE.Scene();
 
 function buildCamera() {
+
     const camera = new THREE.PerspectiveCamera(
         75,
         1296 / window.innerHeight * 2,
@@ -44,7 +45,14 @@ function buildCamera() {
     );
     camera.position.set(0, 6, 10);
     camera.lookAt(arena.position);
+    camera.updateProjectionMatrix();
     return camera;
+}
+
+function resetCamera(camera) {
+    camera.position.set(0, 6, 10);
+    camera.lookAt(arena.position);
+    camera.updateProjectionMatrix();
 }
 
 function buildRenderer() {
@@ -73,7 +81,7 @@ function setupEnvironment() {
 setupEnvironment();
 
 // Orbit Controls
-function buildControls(renderer) {
+function buildControls(renderer, camera) {
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
@@ -379,7 +387,7 @@ function checkCollisionBallRaquette(cx, cz, rx, rz, mode, checkFromBall) {
 }
 
 // Maximum score to end the game
-const maxScore = 20;
+const maxScore = 5;
 
 // ==============================
 // Ball and Paddle Movement Functions
@@ -569,11 +577,11 @@ function moveThePad() {
         rightPaddle.position.x = Math.min(rightPaddle.position.x + padSpeed, 5.75);
     }
     if (rightPadMove.right &&
-        !checkCollision(let controlsInstance = null;
+        !checkCollision(
 
-    6, -3, 5, -4,
-        rightPaddle.position.x + 0.25,
-        rightPaddle.position.z - 0.6 - padSpeed
+            6, -3, 5, -4,
+            rightPaddle.position.x + 0.25,
+            rightPaddle.position.z - 0.6 - padSpeed
         ) &&
         !checkCollisionBallRaquette(
             ball.mesh.position.x,
@@ -599,11 +607,11 @@ function animate() {
     if (!rendererInstance) {
         rendererInstance = buildRenderer();
     }
-    if (!controlsInstance) {
-        controlsInstance = buildControls(rendererInstance);
-    }
     if (!cameraInstance) {
         cameraInstance = buildCamera();
+    }
+    if (!controlsInstance) {
+        controlsInstance = buildControls(rendererInstance, cameraInstance);
     }
     cameraInstance.lookAt(arena.position)
     controlsInstance.update();
@@ -645,6 +653,9 @@ export function resetGameState() {
     // Reset paddle positions
     leftPaddle.position.set(-4, leftPaddle.position.y, 0);
     rightPaddle.position.set(4, rightPaddle.position.y, 0);
+    if (cameraInstance) {
+        resetCamera(cameraInstance);
+    }
 }
 
 export function onGameOver() {
@@ -657,6 +668,7 @@ export function onGameOver() {
     winnerMessage.style.textAlign = "center";
     winnerMessage.style.marginTop = "20px";
     document.getElementById('content').appendChild(winnerMessage);
+    document.getElementById('webgl').style.display = 'none';
 
     // Optionally add a "New Game" button:
     const newGameBtn = document.createElement('button');
