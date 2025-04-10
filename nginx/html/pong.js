@@ -16,7 +16,6 @@ let animationId; // for requestAnimationFrame later
 // Scene, Camera, Renderer, and Controls Setup
 // ==============================
 const scene = new THREE.Scene();
-
 const camera = new THREE.PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
@@ -26,12 +25,12 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.set(0, 6, 10);
 
 function buildRenderer() {
-    console.log('prout');
+    console.log(document.getElementById('content').offsetWidth)
     const renderer = new THREE.WebGLRenderer({
         antialias: true,
         canvas: document.getElementById('webgl')
     });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(document.getElementById('content').offsetWidth, document.getElementById('content').offsetHeight);
     return renderer;
 }
 // Set up environment map (cube map for reflections/background)
@@ -163,7 +162,7 @@ function buildArena() {
     scene.add(arena);
 }
 buildArena();
-// camera.lookAt(arena.position);
+camera.lookAt(arena.position);
 
 // ==============================
 // Game Elements: Paddles and Ball
@@ -343,7 +342,6 @@ function checkCollisionBallRaquette(cx, cz, rx, rz, mode, checkFromBall) {
         if (cx >= leftBound && cx <= rightBound && cz >= rz + 0.35 && cz <= frontBound) hitFront = true;
         if (cx >= leftBound && cx <= rightBound && cz >= backBound && cz <= rz - 0.35) hitBack = true;
 
-        console.log('Before collision adjustment, ball.angle:', ball.angle);
 
         if ((hitLeft && simplifiedAngle(ball.angle) <= Math.PI) ||
             (hitRight && simplifiedAngle(ball.angle) >= Math.PI)) {
@@ -377,14 +375,12 @@ function moveTheBall() {
     if (checkCollisionBallRaquette(futureX, futureZ, leftPaddle.position.x, leftPaddle.position.z, false, true)) {
         ball.mesh.position.x = futureX;
         ball.mesh.position.z = futureZ;
-        console.log('Collision with left paddle. New angle:', ball.angle);
         return;
     }
     // Check collisions with right paddle
     else if (checkCollisionBallRaquette(futureX, futureZ, rightPaddle.position.x, rightPaddle.position.z, false, true)) {
         ball.mesh.position.x = futureX;
         ball.mesh.position.z = futureZ;
-        console.log('Collision with right paddle. New angle:', ball.angle);
         return;
     }
     // Check collision with top and bottom boundaries
@@ -579,13 +575,13 @@ function animate() {
     // Move ball and paddles, update controls, render scene
     moveTheBall();
     moveThePad();
-    console.log(camera);
     if (!rendererInstance) {
         rendererInstance = buildRenderer();
     }
     if (!controlsInstance) {
         controlsInstance = buildControls(rendererInstance);
     }
+    camera.lookAt(arena.position)
     controlsInstance.update();
     rendererInstance.render(scene, camera);
 }
@@ -630,7 +626,6 @@ export function resetGameState() {
 export function onGameOver() {
     // Called when maxScore is reached.
     winner = scoreData.left >= scoreData.right ? "Left" : "Right";
-    console.log(winner, scoreData.left, scoreData.right)
     stopGame();
     // Display winner in your UI (create a DOM element or update a modal)
     const winnerMessage = document.createElement('h1');
