@@ -6,6 +6,15 @@ import { OrbitControls } from '/threejs/orbitcontrols.js';
 import { FontLoader } from '/threejs/fontloader.js';
 import { TextGeometry } from '/threejs/textgeometry.js';
 
+
+window.addEventListener("keydown", function (e) {
+    const keysToPrevent = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "]; // space is optional
+
+    if (keysToPrevent.includes(e.key) && document.getElementById('webgl') && document.getElementById('webgl').style.display !== 'none') {
+        e.preventDefault();
+    }
+}, false);
+
 let isGameRunning = false;
 let scoreData = { left: 0, right: 0 };
 let scoreMesh = null;
