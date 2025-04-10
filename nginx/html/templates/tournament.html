@@ -2,14 +2,40 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>-- Pong --</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>-- Pong Tournament --</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<body>
-  <button class="btn btn-primary" id="launchGameBtn">Launch Game</button>
-  <canvas id="webgl" style="display: none;"></canvas>
+<body class="bg-light text-center p-4">
+
+  <div class="container">
+    <h1 class="mb-4">Pong Tournament</h1>
+
+    <!-- Player Name Form -->
+    <form id="playerForm" class="mb-4">
+      <div class="mb-3">
+        <label for="playerNames" class="form-label">Enter player names (one per line):</label>
+        <textarea class="form-control" id="playerNames" rows="5"
+          placeholder="e.g. Alice&#10;Bob&#10;Charlie"></textarea>
+      </div>
+      <button type="submit" class="btn btn-success">Submit Players</button>
+    </form>
+
+    <!-- Launch Tournament -->
+    <button class="btn btn-primary mb-4" id="launchTournament" disabled>Launch Tournament</button>
+
+    <!-- Match Info -->
+    <div id="matchInfo" class="mb-4" style="display: none;">
+      <h4>Upcoming Match</h4>
+      <p id="matchDetails" class="fw-bold"></p>
+    </div>
+
+    <!-- Game Canvas -->
+    <canvas id="webgl" width="800" height="600" style="display: none; border: 1px solid #ccc;"></canvas>
+  </div>
+
 </body>
 
 </html>
