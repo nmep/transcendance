@@ -436,7 +436,7 @@ function showCountDown(time) {
     } else {
         const textMaterial = new THREE.MeshNormalMaterial();
         countDownMesh = new THREE.Mesh(textGeometry, textMaterial);
-        countDownMesh.position.set(-2, 5, 0);
+        countDownMesh.position.set(0, 5, 3);
         countDownMesh.name = 'countdown';
         scene.add(countDownMesh);
     }
@@ -482,6 +482,8 @@ function moveTheBall() {
             onGameOver();
         }
         updateScoreDisplay();
+        leftPaddle.position.set(-4, 0.1, 0);
+        rightPaddle.position.set(4, 0.1, 0);
         countDownStarted = false;
         countDownDone = false;
         // Reset the ball
