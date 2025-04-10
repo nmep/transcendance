@@ -151,11 +151,9 @@ async function urlLocationHandler() {
         handleProfileAuthentication();
     } else if (location === "/pong") {
         initializePongButton();
-    } else if (location === "/puissance4") {
-        loadScript("/puissance4/assets/your-built-script.js");
     } else if (location === "/tournament") {
         loadScript("/tournament/assets/your-built-script.js");
-    }
+    } //partie à modifier (initialize tournament button ?)
 }
 
 function createLaunchButton() {

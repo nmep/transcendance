@@ -3,7 +3,7 @@ import { startGame, stopGame, resetGameState } from '/pong.js';
 
 
 function startPongGame() {
-
+    return "left";
 }
 
 
