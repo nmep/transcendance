@@ -1,4 +1,4 @@
-import { startGame, stopGame, resetGameState } from '/script.js';
+import { startGame, stopGame, resetGameState } from '/pong.js';
 
 /*******************************
  * URL Routes Mapping
@@ -135,7 +135,6 @@ async function urlLocationHandler() {
     if (location === "/pong") {
         // Add a "Launch Game" button if not already present
         const launchBtn = document.getElementById('launchGameBtn') || createLaunchButton();
-        console.log('ajout bouton ', launchBtn);
         // Optionally bind the button event
         launchBtn.addEventListener('click', () => {
             startGame();
@@ -160,14 +159,12 @@ async function urlLocationHandler() {
 }
 
 function createLaunchButton() {
-    const btn = document.createElement('button');
+    const btn = document.createElement('a');
     btn.id = 'launchGameBtn';
     btn.textContent = 'Launch Game';
-    console.log('niiiiiiii')
+    btn.className = 'btn btn-primary'
     // Append to a known container (for example, in your pong.html there can be a placeholder div)
-    console.log(document.getElementById('content'))
     document.getElementById('content').appendChild(btn);
-    console.log(btn);
     return btn;
 }
 

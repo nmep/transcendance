@@ -25,12 +25,14 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.set(0, 6, 10);
 
-const renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    canvas: document.getElementById('webgl')
-});
-renderer.setSize(window.innerWidth, window.innerHeight);
-
+function buildRenderer() {
+    const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        canvas: document.getElementById('webgl')
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    return renderer;
+}
 // Set up environment map (cube map for reflections/background)
 function setupEnvironment() {
     const cubeTextureLoader = new THREE.CubeTextureLoader();
@@ -564,6 +566,7 @@ function moveThePad() {
 // ==============================
 // Main Animation Loop and Game State Functions
 // ==============================
+let rendererInstance = null;
 function animate() {
     if (!isGameRunning) return;
     animationId = requestAnimationFrame(animate);
@@ -571,7 +574,10 @@ function animate() {
     moveTheBall();
     moveThePad();
     // controls.update();
-    renderer.render(scene, camera);
+    if (!rendererInstance) {
+        rendererInstance = buildRenderer();
+    }
+    rendererInstance.render(scene, camera);
 }
 
 // Public API (functions called by your SPA)
@@ -593,6 +599,8 @@ export function stopGame() {
     cancelAnimationFrame(animationId);
     // Hide the canvas when leaving pong page
     document.getElementById('webgl').style.display = 'none';
+    rendererInstance.dispose();
+    rendererInstance = null;
     // Optionally reset game to initial state
     resetGameState();
 }
@@ -622,6 +630,7 @@ export function onGameOver() {
     // Optionally add a "New Game" button:
     const newGameBtn = document.createElement('button');
     newGameBtn.textContent = 'Start New Game';
+    newGameBtn.className = 'btn btn-primary';
     newGameBtn.addEventListener('click', () => {
         // Remove winner announcement and new game button, then reset state and launch game
         winnerMessage.remove();
