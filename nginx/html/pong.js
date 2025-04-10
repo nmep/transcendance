@@ -12,17 +12,40 @@ let scoreMesh = null;
 let font; // For 3D text; loaded asynchronously later
 let winner;
 let animationId; // for requestAnimationFrame later
+let cameraInstance = null;
+let rendererInstance = null;
+let controlsInstance = null;
+// ==============================
+// eventListener on resize
+// ==============================
+window.addEventListener('resize', () => {
+    // Update camera
+    if (camera) {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+    }
+    // Update renderer
+    if (rendererInstance) {
+        rendererInstance.setSize(window.innerWidth, window.innerHeight);
+    }
+});
+
 // ==============================
 // Scene, Camera, Renderer, and Controls Setup
 // ==============================
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(
-    75,
-    1296 / window.innerHeight * 2,
-    0.1,
-    1000
-);
-camera.position.set(0, 6, 10);
+
+function buildCamera() {
+    const camera = new THREE.PerspectiveCamera(
+        75,
+        1296 / window.innerHeight * 2,
+        0.1,
+        1000
+    );
+    camera.position.set(0, 6, 10);
+    camera.lookAt(arena.position);
+    return camera;
+}
 
 function buildRenderer() {
     console.log(document.getElementById('content').offsetWidth)
@@ -162,7 +185,6 @@ function buildArena() {
     scene.add(arena);
 }
 buildArena();
-camera.lookAt(arena.position);
 
 // ==============================
 // Game Elements: Paddles and Ball
@@ -547,10 +569,11 @@ function moveThePad() {
         rightPaddle.position.x = Math.min(rightPaddle.position.x + padSpeed, 5.75);
     }
     if (rightPadMove.right &&
-        !checkCollision(
-            6, -3, 5, -4,
-            rightPaddle.position.x + 0.25,
-            rightPaddle.position.z - 0.6 - padSpeed
+        !checkCollision(let controlsInstance = null;
+
+    6, -3, 5, -4,
+        rightPaddle.position.x + 0.25,
+        rightPaddle.position.z - 0.6 - padSpeed
         ) &&
         !checkCollisionBallRaquette(
             ball.mesh.position.x,
@@ -567,8 +590,6 @@ function moveThePad() {
 // ==============================
 // Main Animation Loop and Game State Functions
 // ==============================
-let rendererInstance = null;
-let controlsInstance = null;
 function animate() {
     if (!isGameRunning) return;
     animationId = requestAnimationFrame(animate);
@@ -581,9 +602,12 @@ function animate() {
     if (!controlsInstance) {
         controlsInstance = buildControls(rendererInstance);
     }
-    camera.lookAt(arena.position)
+    if (!cameraInstance) {
+        cameraInstance = buildCamera();
+    }
+    cameraInstance.lookAt(arena.position)
     controlsInstance.update();
-    rendererInstance.render(scene, camera);
+    rendererInstance.render(scene, cameraInstance);
 }
 
 // Public API (functions called by your SPA)
