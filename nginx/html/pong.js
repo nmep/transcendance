@@ -2,7 +2,7 @@
 // Imports and Global Variables
 // ==============================
 import * as THREE from '/threejs/three.js';
-// import { OrbitControls } from '/threejs/orbitcontrols.js';
+import { OrbitControls } from '/threejs/orbitcontrols.js';
 import { FontLoader } from '/threejs/fontloader.js';
 import { TextGeometry } from '/threejs/textgeometry.js';
 
@@ -26,6 +26,7 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.set(0, 6, 10);
 
 function buildRenderer() {
+    console.log('prout');
     const renderer = new THREE.WebGLRenderer({
         antialias: true,
         canvas: document.getElementById('webgl')
@@ -50,20 +51,23 @@ function setupEnvironment() {
 setupEnvironment();
 
 // Orbit Controls
-// const controls = new OrbitControls(camera, renderer.domElement);
-// controls.enableDamping = true;
-// controls.dampingFactor = 0.05;
-// controls.screenSpacePanning = false;
-// controls.maxDistance = 15;
-// controls.minDistance = 5;
-// controls.maxPolarAngle = Math.PI / 2.5;
-// controls.update();
-
+function buildControls(renderer) {
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.screenSpacePanning = false;
+    controls.maxDistance = 15;
+    controls.minDistance = 5;
+    controls.maxPolarAngle = Math.PI / 2.5;
+    controls.update();
+    return controls;
+}
 // ==============================
 // Arena Construction
 // ==============================
+let arena;
 function buildArena() {
-    const arena = new THREE.Group();
+    arena = new THREE.Group();
     const neonMaterial = new THREE.MeshNormalMaterial();
 
     // ----- Floor Shapes and Extrusion Settings
@@ -159,6 +163,7 @@ function buildArena() {
     scene.add(arena);
 }
 buildArena();
+// camera.lookAt(arena.position);
 
 // ==============================
 // Game Elements: Paddles and Ball
@@ -354,7 +359,7 @@ function checkCollisionBallRaquette(cx, cz, rx, rz, mode, checkFromBall) {
 }
 
 // Maximum score to end the game
-const maxScore = 2;
+const maxScore = 20;
 
 // ==============================
 // Ball and Paddle Movement Functions
@@ -567,16 +572,21 @@ function moveThePad() {
 // Main Animation Loop and Game State Functions
 // ==============================
 let rendererInstance = null;
+let controlsInstance = null;
 function animate() {
     if (!isGameRunning) return;
     animationId = requestAnimationFrame(animate);
     // Move ball and paddles, update controls, render scene
     moveTheBall();
     moveThePad();
-    // controls.update();
+    console.log(camera);
     if (!rendererInstance) {
         rendererInstance = buildRenderer();
     }
+    if (!controlsInstance) {
+        controlsInstance = buildControls(rendererInstance);
+    }
+    controlsInstance.update();
     rendererInstance.render(scene, camera);
 }
 
@@ -598,9 +608,11 @@ export function stopGame() {
     isGameRunning = false;
     cancelAnimationFrame(animationId);
     // Hide the canvas when leaving pong page
-    document.getElementById('webgl').style.display = 'none';
-    rendererInstance.dispose();
+    // document.getElementById('webgl').style.display = 'none';
+    if (rendererInstance) { rendererInstance.dispose(); }
     rendererInstance = null;
+    if (controlsInstance) { controlsInstance.dispose(); }
+    controlsInstance = null;
     // Optionally reset game to initial state
     resetGameState();
 }
