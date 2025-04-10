@@ -1,12 +1,3 @@
-// pong-tournament.js
-import { startGame, stopGame, resetGameState } from '/pong.js';
-
-
-function startPongGame() {
-    return "left";
-}
-
-
 
 export class PongTournament {
     constructor(formSelector, launchBtnSelector, matchInfoSelector, matchDetailsSelector, canvasSelector) {
@@ -28,7 +19,10 @@ export class PongTournament {
 
     bindEvents() {
         this.form.addEventListener('submit', (e) => this.handleFormSubmit(e));
-        this.launchBtn.addEventListener('click', () => this.startTournament());
+        this.launchBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.startTournament();
+        });
     }
 
     handleFormSubmit(e) {
@@ -38,10 +32,10 @@ export class PongTournament {
 
         if (this.players.length < 2) {
             alert('Please enter at least 2 player names.');
-            this.launchBtn.disabled = true;
+            this.launchBtn.classList.add('disabled');
         } else {
             alert(`${this.players.length} players ready. Launch the tournament!`);
-            this.launchBtn.disabled = false;
+            this.launchBtn.classList.remove('disabled');
         }
     }
 
@@ -49,6 +43,7 @@ export class PongTournament {
         this.currentRound = [...this.players];
         this.winners = [];
         this.finalists = [];
+        this.currentMatchIndex = 0;
         this.nextMatch();
     }
 
@@ -77,19 +72,21 @@ export class PongTournament {
         this.canvas.style.display = 'block';
         this.matchDetails.innerHTML = `${player1} (left) vs ${player2} (right)`;
 
-        const startBtn = document.createElement('button');
-        startBtn.textContent = 'Start Game';
-        startBtn.className = 'btn btn-warning mt-3';
-        startBtn.onclick = async () => {
-            const winnerSide = await window.startPongGame(); // Must return 'left' or 'right'
+        const startLink = document.createElement('a');
+        startLink.textContent = 'Start Game';
+        startLink.href = '#';
+        startLink.className = 'btn btn-warning mt-3';
+        startLink.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const winnerSide = 'left'; // Must return 'left' or 'right'
             const winner = winnerSide === 'left' ? player1 : player2;
             this.winners.push(winner);
             this.matchDetails.innerHTML = `${player1} vs ${player2} — <strong>${winner} wins</strong>`;
-            startBtn.remove();
+            startLink.remove();
             setTimeout(() => this.nextMatch(), 1500);
-        };
+        });
 
-        this.matchInfo.appendChild(startBtn);
+        this.matchInfo.appendChild(startLink);
     }
 
     endRound() {
@@ -111,19 +108,19 @@ export class PongTournament {
         if (finalists.length === 2) {
             this.showMatch(finalists[0], finalists[1]);
             window.startPongGame = async () => {
-                const side = await window.realStartGame();
+                const side = 'left';
                 this.showPodium(side === 'left' ? [finalists[0], finalists[1]] : [finalists[1], finalists[0]], []);
                 return side;
             };
         } else if (finalists.length === 3) {
             this.showMatch(finalists[0], finalists[1]);
             window.startPongGame = async () => {
-                const side1 = await window.realStartGame();
+                const side1 = 'left';
                 const winner1 = side1 === 'left' ? finalists[0] : finalists[1];
                 const loser1 = side1 === 'left' ? finalists[1] : finalists[0];
                 this.showMatch(winner1, finalists[2]);
                 window.startPongGame = async () => {
-                    const side2 = await window.realStartGame();
+                    const side2 = 'left';
                     const winner2 = side2 === 'left' ? winner1 : finalists[2];
                     const second = side2 === 'left' ? finalists[2] : winner1;
                     this.showPodium([winner2, second, loser1]);

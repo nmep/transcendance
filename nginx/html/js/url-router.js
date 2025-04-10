@@ -1,5 +1,5 @@
 import { startGame, stopGame, resetGameState } from '/pong.js';
-
+import { PongTournament } from '/tournament.js'; // Adjust path as needed
 /*******************************
  * URL Routes Mapping
  *******************************/
@@ -147,13 +147,28 @@ async function urlLocationHandler() {
     }
 
     // Additional behavior based on route
-    if (location === "/profile") {
-        handleProfileAuthentication();
-    } else if (location === "/pong") {
-        initializePongButton();
-    } else if (location === "/tournament") {
-        loadScript("/tournament/assets/your-built-script.js");
-    } //partie à modifier (initialize tournament button ?)
+    switch (location) {
+        case "/profile":
+            handleProfileAuthentication();
+            break;
+        case "/pong":
+            initializePongButton();
+            break;
+        case "/tournament":
+            setupTournamentPage();
+            break;
+    }
+}
+
+function setupTournamentPage() {
+    console.log(document.querySelector('#launchTournament').classList)
+    const tournament = new PongTournament(
+        '#playerForm',
+        '#launchTournament',
+        '#matchInfo',
+        '#matchDetails',
+        '#webgl'
+    );
 }
 
 function createLaunchButton() {
