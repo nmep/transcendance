@@ -29,7 +29,7 @@ RUN chown 1000:1000 /tmp/log/
 COPY ./web-config.yml /etc/prometheus/web-config.yml
 COPY ./openssl.cnf /etc/prometheus/openssl.cnf
 COPY --from=base /bin/prometheus /bin/prometheus
-RUN mkdir -p /prometheus && chmod 775 /prometheus
+RUN mkdir -p /prometheus && chmod 755 /prometheus
 
 USER 1000
 
