@@ -173,7 +173,7 @@ function setupTournamentPage() {
         '#roundDetails',
         '#matchDetails',
         '#tournamentResult',
-        '#webgl'
+        '#lastWinnerDetails'
     );
 }
 

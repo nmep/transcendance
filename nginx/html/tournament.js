@@ -1,16 +1,18 @@
 import { startGame } from '/pong.js';
 
 export class PongTournament {
-    constructor(formSelector, launchBtnSelector, resetTournamentBtnSelector, matchInfoSelector, roundDetailsSelector, matchDetailsSelector, tournamentResultSelector) {
+    constructor(formSelector, launchBtnSelector, resetTournamentBtnSelector, matchInfoSelector, roundDetailsSelector, matchDetailsSelector, tournamentResultSelector, lastWinnerDetailsSelector) {
         this.form = document.querySelector(formSelector);
         this.textarea = this.form.querySelector('textarea');
         this.launchBtn = document.querySelector(launchBtnSelector);
         this.resetTournamentBtn = document.querySelector(resetTournamentBtnSelector)
         this.matchInfo = document.querySelector(matchInfoSelector);
         this.roundDetails = document.querySelector(roundDetailsSelector);
+        this.lastWinnerDetails = document.querySelector(lastWinnerDetailsSelector);
         this.matchDetails = document.querySelector(matchDetailsSelector);
         this.tournamentResult = document.querySelector(tournamentResultSelector);
         this.canvas = document.getElementById('webgl');
+
 
         this.bindEvents();
         this.resetTournamentPage();
@@ -47,6 +49,7 @@ export class PongTournament {
         this.winners = [];
         this.currentRound = [];
         this.currentMatchIndex = 0;
+        this.lastWinner = null;
         this.finalists = [];
         this.resetTournamentBtn.style.display = 'none';
         this.tournamentResult.style.display = 'none';
@@ -88,6 +91,12 @@ export class PongTournament {
     }
 
     nextMatch() {
+        if (this.lastWinner) {
+            this.lastWinnerDetails.innerHTML = `<strong>${this.lastWinner}</strong> wins ! <br \>`;
+        }
+        else {
+            this.lastWinnerDetails.innerHTML = '';
+        }
         if (this.currentMatchIndex >= this.currentRound.length) {
             this.endRound();
             return;
@@ -104,7 +113,10 @@ export class PongTournament {
     }
 
     showMatch(player1, player2) {
+        console.log(this.lastWinnerDetails);
+
         this.matchInfo.style.display = 'block';
+
         const startLink = document.createElement('a');
         startLink.href = '#';
         startLink.className = 'btn btn-warning mt-3';
@@ -114,13 +126,15 @@ export class PongTournament {
                 const winnerSide = startGame(true); // Must return 'left' or 'right'
                 const winner = winnerSide === 'left' ? player1 : player2;
                 this.winners.push(winner);
-                this.matchDetails.innerHTML = `${player1} vs ${player2} — <strong>${winner} wins</strong>`;
+                this.matchDetails.innerHTML += `${player1} vs ${player2}`;
+                this.lastWinner = winner;
             }
             startLink.remove();
             if (player2) {
                 setTimeout(() => this.nextMatch(), 1500);
             }
             else {
+                this.lastWinner = null;
                 this.nextMatch();
             }
         });
@@ -131,6 +145,7 @@ export class PongTournament {
         else {
             this.matchDetails.innerHTML = `Odd number of players on this round <strong>${player1} advances !</strong>`;
             this.winners.push(player1);
+            this.lastWinner = null;
             startLink.textContent = 'Next Round';
         }
         this.matchInfo.appendChild(startLink);

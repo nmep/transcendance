@@ -396,7 +396,7 @@ function checkCollisionBallRaquette(cx, cz, rx, rz, mode, checkFromBall) {
 }
 
 // Maximum score to end the game
-const maxScore = 2;
+const maxScore = 1;
 
 // ==============================
 // Ball and Paddle Movement Functions
