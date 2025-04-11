@@ -121,6 +121,8 @@ function displayUserInfo(user) {
  * URL Location Handler
  *******************************/
 async function urlLocationHandler() {
+    // Remove game
+    document.getElementById('webgl').style.display = 'none';
     // Determine current location, defaulting "/" to "/home"
     let location = window.location.pathname;
     if (location === "/") {
@@ -147,6 +149,7 @@ async function urlLocationHandler() {
     }
 
     // Additional behavior based on route
+    console.log(location);
     switch (location) {
         case "/profile":
             handleProfileAuthentication();

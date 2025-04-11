@@ -1,6 +1,7 @@
+import { startGame } from '/pong.js';
 
 export class PongTournament {
-    constructor(formSelector, launchBtnSelector, resetTournamentBtnSelector, matchInfoSelector, roundDetailsSelector, matchDetailsSelector, tournamentResultSelector, canvasSelector) {
+    constructor(formSelector, launchBtnSelector, resetTournamentBtnSelector, matchInfoSelector, roundDetailsSelector, matchDetailsSelector, tournamentResultSelector) {
         this.form = document.querySelector(formSelector);
         this.textarea = this.form.querySelector('textarea');
         this.launchBtn = document.querySelector(launchBtnSelector);
@@ -9,7 +10,7 @@ export class PongTournament {
         this.roundDetails = document.querySelector(roundDetailsSelector);
         this.matchDetails = document.querySelector(matchDetailsSelector);
         this.tournamentResult = document.querySelector(tournamentResultSelector);
-        this.canvas = document.querySelector(canvasSelector);
+        this.canvas = document.getElementById('webgl');
 
         this.bindEvents();
         this.resetTournamentPage();
@@ -110,13 +111,18 @@ export class PongTournament {
         startLink.addEventListener('click', async (e) => {
             e.preventDefault();
             if (player2) {
-                const winnerSide = 'left'; // Must return 'left' or 'right'
+                const winnerSide = startGame(true); // Must return 'left' or 'right'
                 const winner = winnerSide === 'left' ? player1 : player2;
                 this.winners.push(winner);
                 this.matchDetails.innerHTML = `${player1} vs ${player2} — <strong>${winner} wins</strong>`;
             }
             startLink.remove();
-            setTimeout(() => this.nextMatch(), 1500);
+            if (player2) {
+                setTimeout(() => this.nextMatch(), 1500);
+            }
+            else {
+                this.nextMatch();
+            }
         });
         if (player2) {
             this.matchDetails.innerHTML = `${player1} (left) vs ${player2} (right)`;
@@ -156,7 +162,6 @@ export class PongTournament {
     resolveFinal() {
         this.roundDetails.style.display = 'none';
         const finalists = [...this.finalists];
-        console.log('resolving final with finalists => ', finalists);
         this.matchInfo.style.display = 'block';
         const startLink = document.createElement('a');
         startLink.href = '#';
@@ -164,7 +169,7 @@ export class PongTournament {
         startLink.addEventListener('click', async (e) => {
             e.preventDefault();
             this.matchInfo.style.display = 'none';
-            const winnerSide = 'left'; // Must return 'left' or 'right' this is the launch game
+            const winnerSide = startGame(true); // Must return 'left' or 'right' this is the launch game
             this.showPodium(winnerSide === 'left' ? [finalists[0], finalists[1]] : [finalists[1], finalists[0]], []);
             startLink.remove();
             // setTimeout(() => this.nextMatch(), 1500);

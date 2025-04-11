@@ -49,7 +49,7 @@ function buildCamera() {
 
     const camera = new THREE.PerspectiveCamera(
         75,
-        1296 / window.innerHeight * 2,
+        window.innerWidth / window.innerHeight,
         0.1,
         1000
     );
@@ -66,12 +66,11 @@ function resetCamera(camera) {
 }
 
 function buildRenderer() {
-    console.log(document.getElementById('content').offsetWidth)
     const renderer = new THREE.WebGLRenderer({
         antialias: true,
         canvas: document.getElementById('webgl')
     });
-    renderer.setSize(document.getElementById('content').offsetWidth, window.innerHeight * 0.5);
+    renderer.setSize(window.innerWidth, window.innerHeight);
     return renderer;
 }
 // Set up environment map (cube map for reflections/background)
@@ -397,7 +396,7 @@ function checkCollisionBallRaquette(cx, cz, rx, rz, mode, checkFromBall) {
 }
 
 // Maximum score to end the game
-const maxScore = 5;
+const maxScore = 2;
 
 // ==============================
 // Ball and Paddle Movement Functions
@@ -451,7 +450,7 @@ function showCountDown(time) {
     }
 }
 
-function moveTheBall() {
+function moveTheBall(isTournament) {
     // Launch ball if uninitialized
     if (ball.angle === -10) {
         ball.angle = getRandomValidAngle();
@@ -488,7 +487,7 @@ function moveTheBall() {
             scoreData.right++;
         }
         if (scoreData.left >= maxScore || scoreData.right >= maxScore) {
-            onGameOver();
+            onGameOver(isTournament);
         }
         updateScoreDisplay();
         leftPaddle.position.set(-4, 0.1, 0);
@@ -663,25 +662,24 @@ function moveThePad() {
 // ==============================
 function resizeCanvas(render, camera) {
     if (!render || !camera) { return; }
-    console.log('height => ', document.getElementById('content').offsetHeight, 'width => ', document.getElementById('content').offsetWidth);
-    render.setSize(document.getElementById('content').offsetWidth, document.getElementById('content').offsetHeight);
-    camera.aspect = document.getElementById('content').offsetWidth / document.getElementById('content').offsetHeight
+    render.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight
     camera.updateProjectionMatrix();
 }
 let countDownStarted = false;
 let countDownDone = false;
 let countDownCount = 5
 
-function animate() {
+function animate(isTournament) {
     if (!isGameRunning) return;
-    animationId = requestAnimationFrame(animate);
+    animationId = requestAnimationFrame(() => { animate(isTournament) });
     // Move ball and paddles, update controls, render scene
     if (!countDownStarted) {
         startCountdown(countDownCount);
         countDownStarted = true
     }
     if (countDownDone) {
-        moveTheBall();
+        moveTheBall(isTournament);
         moveThePad();
     }
     if (!rendererInstance) {
@@ -698,9 +696,10 @@ function animate() {
     controlsInstance.update();
     rendererInstance.render(scene, cameraInstance);
 }
-
+let gameWinner;
 // Public API (functions called by your SPA)
-export function startGame() {
+export function startGame(isTournament) {
+    gameWinner = null;
     // Reset score and game state if needed
     resetGameState();
     // Ensure canvas is visible (if hidden by your SPA)
@@ -708,8 +707,16 @@ export function startGame() {
 
     if (!isGameRunning) {
         isGameRunning = true;
-        animate();
+        animate(isTournament);
     }
+    setInterval(() => {
+        if (gameWinner) {
+            const winner = gameWinner; gameWinner = null;
+            if (isTournament) {
+                return winner;
+            }
+        }
+    }, 500);
 }
 
 export function stopGame() {
@@ -739,27 +746,32 @@ export function resetGameState() {
     }
 }
 
-export function onGameOver() {
+export function onGameOver(isTournament) {
     // Called when maxScore is reached.
     winner = scoreData.left >= scoreData.right ? "Left" : "Right";
+    if (isTournament) {
+        gameWinner = winner === 'Left' ? "left" : "right";
+    }
     stopGame();
-    // Display winner in your UI (create a DOM element or update a modal)
-    const winnerMessage = document.createElement('h1');
-    winnerMessage.textContent = `Winner: ${winner} Player`;
-    winnerMessage.style.textAlign = "center";
-    winnerMessage.style.marginTop = "20px";
-    document.getElementById('content').appendChild(winnerMessage);
     document.getElementById('webgl').style.display = 'none';
+    // Display winner in your UI (create a DOM element or update a modal)
+    if (!isTournament) {
+        const winnerMessage = document.createElement('h1');
+        winnerMessage.textContent = `Winner: ${winner} Player`;
+        winnerMessage.style.textAlign = "center";
+        winnerMessage.style.marginTop = "20px";
+        document.getElementById('content').appendChild(winnerMessage);
 
-    // Optionally add a "New Game" button:
-    const newGameBtn = document.createElement('button');
-    newGameBtn.textContent = 'Start New Game';
-    newGameBtn.className = 'btn btn-primary';
-    newGameBtn.addEventListener('click', () => {
-        // Remove winner announcement and new game button, then reset state and launch game
-        winnerMessage.remove();
-        newGameBtn.remove();
-        startGame();
-    });
-    document.getElementById('content').appendChild(newGameBtn);
+        // Optionally add a "New Game" button:
+        const newGameBtn = document.createElement('button');
+        newGameBtn.textContent = 'Start New Game';
+        newGameBtn.className = 'btn btn-primary';
+        newGameBtn.addEventListener('click', () => {
+            // Remove winner announcement and new game button, then reset state and launch game
+            winnerMessage.remove();
+            newGameBtn.remove();
+            startGame();
+        });
+        document.getElementById('content').appendChild(newGameBtn);
+    }
 }

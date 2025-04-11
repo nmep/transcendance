@@ -1,3 +1,6 @@
 manque les logs de django, a voir une fois que garfi aura fini
 
 alerts dans prometheus
+
+
+refaire les fonctions du pong avec un setup du canvas en option, on mettra en fullscreen parce que nique sa daronne
