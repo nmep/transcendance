@@ -165,7 +165,9 @@ function setupTournamentPage() {
     const tournament = new PongTournament(
         '#playerForm',
         '#launchTournament',
+        '#resetTournament',
         '#matchInfo',
+        '#tournamentResult',
         '#matchDetails',
         '#webgl'
     );

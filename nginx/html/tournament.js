@@ -1,41 +1,69 @@
 
 export class PongTournament {
-    constructor(formSelector, launchBtnSelector, matchInfoSelector, matchDetailsSelector, canvasSelector) {
+    constructor(formSelector, launchBtnSelector, resetTournamentBtnSelector, matchInfoSelector, tournamentResultSelector, matchDetailsSelector, canvasSelector) {
         this.form = document.querySelector(formSelector);
         this.textarea = this.form.querySelector('textarea');
         this.launchBtn = document.querySelector(launchBtnSelector);
+        this.resetTournamentBtn = document.querySelector(resetTournamentBtnSelector)
         this.matchInfo = document.querySelector(matchInfoSelector);
+        this.tournamentResult = document.querySelector(tournamentResultSelector);
         this.matchDetails = document.querySelector(matchDetailsSelector);
         this.canvas = document.querySelector(canvasSelector);
 
+        this.bindEvents();
+        this.resetTournamentPage();
+    }
+    //good
+    bindEvents() {
+        this.form.addEventListener('submit', (e) => this.handleFormSubmit(e));
+        this.launchBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (this.players.length >= 2) {
+                this.launchBtn.style.display = 'none';
+                this.startTournament();
+            }
+        });
+        this.resetTournamentBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.resetTournamentPage();
+        });
+    }
+
+    resetTournamentPage() {
+        this.form.style.display = 'block';
+        this.textarea.value = '';
+        this.textarea.style.border = '';
         this.players = [];
         this.winners = [];
         this.currentRound = [];
         this.currentMatchIndex = 0;
         this.finalists = [];
+        this.resetTournamentBtn.style.display = 'none';
+        this.tournamentResult.style.display = 'none';
 
-        this.bindEvents();
+    }
+    hasDuplicate(array) {
+        const seen = new Set();
+        for (const item of array) {
+            if (seen.has(item)) {
+                return true;
+            }
+            seen.add(item);
+        }
+        return false;
     }
 
-    bindEvents() {
-        this.form.addEventListener('submit', (e) => this.handleFormSubmit(e));
-        this.launchBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.startTournament();
-        });
-    }
-
+    //good
     handleFormSubmit(e) {
         e.preventDefault();
         const rawInput = this.textarea.value.trim();
         this.players = rawInput.split('\n').map(p => p.trim()).filter(p => p);
 
-        if (this.players.length < 2) {
-            alert('Please enter at least 2 player names.');
-            this.launchBtn.classList.add('disabled');
+        if (this.players.length < 2 || this.hasDuplicate(this.players)) {
+            this.textarea.style.border = '2px solid red';
         } else {
-            alert(`${this.players.length} players ready. Launch the tournament!`);
-            this.launchBtn.classList.remove('disabled');
+            this.launchBtn.style.display = 'block';
+            this.form.style.display = 'none';
         }
     }
 
@@ -58,10 +86,6 @@ export class PongTournament {
 
         if (this.currentMatchIndex < this.currentRound.length) {
             player2 = this.currentRound[this.currentMatchIndex++];
-        } else {
-            this.winners.push(player1);
-            this.nextMatch();
-            return;
         }
 
         this.showMatch(player1, player2);
@@ -69,34 +93,49 @@ export class PongTournament {
 
     showMatch(player1, player2) {
         this.matchInfo.style.display = 'block';
-        this.canvas.style.display = 'block';
-        this.matchDetails.innerHTML = `${player1} (left) vs ${player2} (right)`;
-
         const startLink = document.createElement('a');
-        startLink.textContent = 'Start Game';
         startLink.href = '#';
         startLink.className = 'btn btn-warning mt-3';
         startLink.addEventListener('click', async (e) => {
             e.preventDefault();
-            const winnerSide = 'left'; // Must return 'left' or 'right'
-            const winner = winnerSide === 'left' ? player1 : player2;
-            this.winners.push(winner);
-            this.matchDetails.innerHTML = `${player1} vs ${player2} — <strong>${winner} wins</strong>`;
+            if (player2) {
+                const winnerSide = 'left'; // Must return 'left' or 'right'
+                const winner = winnerSide === 'left' ? player1 : player2;
+                this.winners.push(winner);
+                this.matchDetails.innerHTML = `${player1} vs ${player2} — <strong>${winner} wins</strong>`;
+            }
             startLink.remove();
             setTimeout(() => this.nextMatch(), 1500);
         });
-
+        if (player2) {
+            this.matchDetails.innerHTML = `${player1} (left) vs ${player2} (right)`;
+            startLink.textContent = 'Start Game';
+        }
+        else {
+            this.matchDetails.innerHTML = `Odd number of players on this round <strong>${player1} advances !</strong>`;
+            this.winners.push(player1);
+            startLink.textContent = 'Next Round';
+        }
         this.matchInfo.appendChild(startLink);
+    }
+
+    shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
     }
 
     endRound() {
         this.currentMatchIndex = 0;
 
-        if (this.winners.length <= 3) {
+        if (this.winners.length <= 2) {
             this.finalists = [...this.winners];
             this.resolveFinal();
-        } else {
+        }
+        else {
             this.currentRound = [...this.winners];
+            this.shuffle(this.currentRound);
             this.winners = [];
             this.nextMatch();
         }
@@ -104,37 +143,30 @@ export class PongTournament {
 
     resolveFinal() {
         const finalists = [...this.finalists];
-
-        if (finalists.length === 2) {
-            this.showMatch(finalists[0], finalists[1]);
-            window.startPongGame = async () => {
-                const side = 'left';
-                this.showPodium(side === 'left' ? [finalists[0], finalists[1]] : [finalists[1], finalists[0]], []);
-                return side;
-            };
-        } else if (finalists.length === 3) {
-            this.showMatch(finalists[0], finalists[1]);
-            window.startPongGame = async () => {
-                const side1 = 'left';
-                const winner1 = side1 === 'left' ? finalists[0] : finalists[1];
-                const loser1 = side1 === 'left' ? finalists[1] : finalists[0];
-                this.showMatch(winner1, finalists[2]);
-                window.startPongGame = async () => {
-                    const side2 = 'left';
-                    const winner2 = side2 === 'left' ? winner1 : finalists[2];
-                    const second = side2 === 'left' ? finalists[2] : winner1;
-                    this.showPodium([winner2, second, loser1]);
-                    return side2;
-                };
-                return side1;
-            };
-        }
+        console.log('resolving final with finalists => ', finalists);
+        this.matchInfo.style.display = 'block';
+        const startLink = document.createElement('a');
+        startLink.href = '#';
+        startLink.className = 'btn btn-warning mt-3';
+        startLink.addEventListener('click', async (e) => {
+            e.preventDefault();
+            this.matchInfo.style.display = 'none';
+            const winnerSide = 'left'; // Must return 'left' or 'right' this is the launch game
+            this.showPodium(winnerSide === 'left' ? [finalists[0], finalists[1]] : [finalists[1], finalists[0]], []);
+            startLink.remove();
+            // setTimeout(() => this.nextMatch(), 1500);
+        });
+        this.matchDetails.innerHTML = `FINAL GAME : ${finalists[0]} (left) vs ${finalists[1]} (right)`;
+        startLink.textContent = 'Start Game';
+        this.matchInfo.appendChild(startLink);
     }
 
     showPodium([first, second, third]) {
-        this.matchInfo.innerHTML = `<h4>🏆 Tournament Results</h4>
+        this.tournamentResult.innerHTML = `<h4>🏆 Tournament Results</h4>
         <p><strong>1st:</strong> ${first}</p>
         <p><strong>2nd:</strong> ${second}</p>
         ${third ? `<p><strong>3rd:</strong> ${third}</p>` : ''}`;
+        this.tournamentResult.style.display = 'block';
+        this.resetTournamentBtn.style.display = 'block';
     }
 }
