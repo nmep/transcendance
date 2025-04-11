@@ -2,7 +2,7 @@ FROM nginx/nginx-prometheus-exporter:1.4.0 AS base
 
 FROM alpine:3.21.3
 
-RUN apk update && apk add bash logrotate
+RUN apk add bash logrotate
 
 COPY ./entrypoint.sh /entrypoint.sh
 COPY --from=base /usr/bin/nginx-prometheus-exporter /usr/bin/nginx-prometheus-exporter

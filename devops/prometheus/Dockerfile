@@ -2,7 +2,7 @@ FROM prom/prometheus:v3.1.0 AS base
 
 FROM alpine:3.21.3
 
-RUN apk update && apk add bash logrotate openssl curl
+RUN apk add bash logrotate openssl curl
 
 COPY ./prometheus.yml /etc/prometheus/prometheus.yml
 RUN chmod 644 /etc/prometheus/prometheus.yml
