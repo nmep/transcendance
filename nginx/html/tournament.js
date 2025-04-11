@@ -1,13 +1,14 @@
 
 export class PongTournament {
-    constructor(formSelector, launchBtnSelector, resetTournamentBtnSelector, matchInfoSelector, tournamentResultSelector, matchDetailsSelector, canvasSelector) {
+    constructor(formSelector, launchBtnSelector, resetTournamentBtnSelector, matchInfoSelector, roundDetailsSelector, matchDetailsSelector, tournamentResultSelector, canvasSelector) {
         this.form = document.querySelector(formSelector);
         this.textarea = this.form.querySelector('textarea');
         this.launchBtn = document.querySelector(launchBtnSelector);
         this.resetTournamentBtn = document.querySelector(resetTournamentBtnSelector)
         this.matchInfo = document.querySelector(matchInfoSelector);
-        this.tournamentResult = document.querySelector(tournamentResultSelector);
+        this.roundDetails = document.querySelector(roundDetailsSelector);
         this.matchDetails = document.querySelector(matchDetailsSelector);
+        this.tournamentResult = document.querySelector(tournamentResultSelector);
         this.canvas = document.querySelector(canvasSelector);
 
         this.bindEvents();
@@ -27,6 +28,14 @@ export class PongTournament {
             e.preventDefault();
             this.resetTournamentPage();
         });
+    }
+
+    showRoundPlayers() {
+        this.roundDetails.innerHTML = 'Current round players : ';
+        for (const player of this.currentRound) {
+            this.roundDetails.innerHTML += `${player} `;
+        }
+        this.roundDetails.style.display = 'block';
     }
 
     resetTournamentPage() {
@@ -69,9 +78,11 @@ export class PongTournament {
 
     startTournament() {
         this.currentRound = [...this.players];
+        this.shuffle(this.currentRound);
         this.winners = [];
         this.finalists = [];
         this.currentMatchIndex = 0;
+        this.showRoundPlayers();
         this.nextMatch();
     }
 
@@ -136,12 +147,14 @@ export class PongTournament {
         else {
             this.currentRound = [...this.winners];
             this.shuffle(this.currentRound);
+            this.showRoundPlayers();
             this.winners = [];
             this.nextMatch();
         }
     }
 
     resolveFinal() {
+        this.roundDetails.style.display = 'none';
         const finalists = [...this.finalists];
         console.log('resolving final with finalists => ', finalists);
         this.matchInfo.style.display = 'block';

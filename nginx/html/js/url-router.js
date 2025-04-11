@@ -167,8 +167,9 @@ function setupTournamentPage() {
         '#launchTournament',
         '#resetTournament',
         '#matchInfo',
-        '#tournamentResult',
+        '#roundDetails',
         '#matchDetails',
+        '#tournamentResult',
         '#webgl'
     );
 }
