@@ -76,16 +76,11 @@ function buildRenderer() {
 // Set up environment map (cube map for reflections/background)
 function setupEnvironment() {
     const cubeTextureLoader = new THREE.CubeTextureLoader();
-    const envMap = cubeTextureLoader.load([
-        'textures/environmentMaps/1/px.png',
-        'textures/environmentMaps/1/nx.png',
-        'textures/environmentMaps/1/py.png',
-        'textures/environmentMaps/1/ny.png',
-        'textures/environmentMaps/1/pz.png',
-        'textures/environmentMaps/1/nz.png'
-    ]);
+    const envMap = cubeTextureLoader.load('');
     scene.background = envMap;
     scene.environment = envMap;
+    const light = new THREE.AmbientLight(0xffffff)
+    scene.add(light);
 }
 setupEnvironment();
 
@@ -428,7 +423,7 @@ function showCountDown(time) {
     const scoreText = `${toStart}`;
     const textGeometry = new TextGeometry(scoreText, {
         font: font,
-        size: 1,
+        size: 3,
         depth: 0.2,
         curveSegments: 12,
         bevelEnabled: true,
@@ -444,7 +439,7 @@ function showCountDown(time) {
     } else {
         const textMaterial = new THREE.MeshNormalMaterial();
         countDownMesh = new THREE.Mesh(textGeometry, textMaterial);
-        countDownMesh.position.set(0, 5, 3);
+        countDownMesh.position.set(-1, 3, 7);
         countDownMesh.name = 'countdown';
         scene.add(countDownMesh);
     }
