@@ -1,4 +1,4 @@
-import { startGame, stopGame, resetGameState } from '/pong.js';
+import { startGame, stopGame, resetGameState } from '/pong4.js';
 import { PongTournament } from '/tournament.js'; // Adjust path as needed
 /*******************************
  * URL Routes Mapping

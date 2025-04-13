@@ -23,6 +23,7 @@ services:
       - ./nginx/conf/ssl_certificate.sh:/usr/local/bin/ssl_certificate.sh
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/html/pong.js:/var/www/html/pong.js
+      - ./nginx/html/pong4.js:/var/www/html/pong4.js
       - ./nginx/html/tournament.js:/var/www/html/tournament.js
       # ModSecurity
       - ./security/mod_security/:/etc/modsecurity.d/

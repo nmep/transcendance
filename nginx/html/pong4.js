@@ -187,12 +187,16 @@ function buildArena() {
     const bordPieces =
     {
         up: new THREE.Mesh(new THREE.BoxGeometry(10, 1, 1), neonMaterial),
-        down: new THREE.Mesh(new THREE.BoxGeometry(10, 1, 1), neonMaterial)
+        down: new THREE.Mesh(new THREE.BoxGeometry(10, 1, 1), neonMaterial),
+        left: new THREE.Mesh(new THREE.BoxGeometry(1, 1, 10), neonMaterial),
+        right: new THREE.Mesh(new THREE.BoxGeometry(1, 1, 10), neonMaterial)
         // You can add more borders if needed...
     };
     bordPieces.up.position.set(0, -0.5, -4.5);
     bordPieces.down.position.set(0, -0.5, 4.5);
-    arena.add(bordPieces.up, bordPieces.down)
+    bordPieces.left.position.set(5.5, -0.5, 0);
+    bordPieces.right.position.set(-5.5, -0.5, 0);
+    arena.add(bordPieces.up, bordPieces.down, bordPieces.left, bordPieces.right);
     arena.position.y += 1;
     scene.add(arena);
 }
