@@ -759,9 +759,7 @@ export function resetGameState() {
     updateScoreDisplay();
     ball.angle = -10;
     ball.mesh.position.set(0, ball.mesh.position.y, 0);
-    // Reset paddle positions
-    // leftPaddle.position.set(-4, leftPaddle.position.y, 0);
-    // rightPaddle.position.set(4, rightPaddle.position.y, 0);
+    repositionPaddles();
     if (cameraInstance) {
         resetCamera(cameraInstance);
     }
