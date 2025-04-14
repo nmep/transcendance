@@ -188,17 +188,21 @@ function buildArena() {
     // ----- Border Pieces (Bord)
     bordPieces =
     {
-        up: new THREE.Mesh(new THREE.BoxGeometry(8, 1, 1), neonMaterial),
-        down: new THREE.Mesh(new THREE.BoxGeometry(8, 1, 1), neonMaterial),
+        top: new THREE.Mesh(new THREE.BoxGeometry(8, 1, 1), neonMaterial),
+        bottom: new THREE.Mesh(new THREE.BoxGeometry(8, 1, 1), neonMaterial),
         right: new THREE.Mesh(new THREE.BoxGeometry(1, 1, 8), neonMaterial),
         left: new THREE.Mesh(new THREE.BoxGeometry(1, 1, 8), neonMaterial)
         // You can add more borders if needed...
     };
-    bordPieces.up.position.set(0, -0.5, -4.5);
-    bordPieces.down.position.set(0, -0.5, 6.5);
-    bordPieces.left.position.set(5.5, -0.5, 1);
-    bordPieces.right.position.set(-5.5, -0.5, 1);
-    // arena.add(bordPieces.up, bordPieces.down, bordPieces.left, bordPieces.right);
+    bordPieces.top.position.set(0, 0.5, -4.5);
+    bordPieces.top.name = "topBorder";
+    bordPieces.bottom.position.set(0, 0.5, 6.5);
+    bordPieces.bottom.name = "bottomBorder";
+    bordPieces.left.position.set(-5.5, 0.5, 1);
+    bordPieces.left.name = "leftBorder";
+    bordPieces.right.position.set(5.5, 0.5, 1);
+    bordPieces.right.name = "rightBorder";
+    // arena.add(bordPieces.top, bordPieces.bottom, bordPieces.left, bordPieces.right);
     arena.position.y += 1;
     scene.add(arena);
 }
@@ -224,15 +228,14 @@ function createGameElements() {
     scene.add(rightPaddle);
 
     const topPaddle = new THREE.Mesh(paddleGeometry, paddleMaterial);
-    topPaddle.position.set(0, 0.1, 6.25);
+    topPaddle.position.set(0, 0.1, -4.25);
     topPaddle.rotation.y = Math.PI / 2;
     scene.add(topPaddle);
 
     const bottomPaddle = new THREE.Mesh(paddleGeometry, paddleMaterial);
-    bottomPaddle.position.set(0, 0.1, -4.25);
+    bottomPaddle.position.set(0, 0.1, 7.25);
     bottomPaddle.rotation.y = Math.PI / 2;
     scene.add(bottomPaddle);
-
     // Ball (Puck)
     const puckGeometry = new THREE.CylinderGeometry(0.35, 0.35, 0.1, 32);
     const puckMaterial = new THREE.MeshStandardMaterial({
@@ -471,8 +474,8 @@ function repositionPaddles() {
 
     leftPaddle.position.set(-5.25, 0.1, 1);
     rightPaddle.position.set(5.25, 0.1, 1);
-    topPaddle.position.set(0, 0.1, 6.25);
-    bottomPaddle.position.set(0, 0.1, -4.25);
+    bottomPaddle.position.set(0, 0.1, 6.25);
+    topPaddle.position.set(0, 0.1, -4.25);
 }
 
 function moveTheBall(isTournament) {
@@ -623,6 +626,59 @@ function moveThePad() {
 // ==============================
 // Main Animation Loop and Game State Functions
 // ==============================
+let maxLife = 3;
+let lives = {
+    top: maxLife,
+    bottom: maxLife,
+    left: maxLife,
+    right: maxLife
+}
+
+removeLife("top");
+
+showBorders("left");
+// removeBorders();
+
+function hasLife(which) {
+    return lives[which] > 0;
+}
+
+function removeLife(which) {
+    if (hasLife(which)) {
+        lives[which]--;
+    }
+}
+
+function resetLives() {
+    lives.top = maxLife;
+    lives.bottom = maxLife;
+    lives.left = maxLife;
+    lives.right = maxLife;
+}
+
+function showBorders(which) {
+    if (!scene.children.includes(bordPieces[which])) {
+        scene.add(bordPieces[which])
+    }
+}
+
+function removeBorders() {
+    if (scene.children.includes(bordPieces.top)) {
+        scene.remove(bordPieces.top);
+    }
+    if (scene.children.includes(bordPieces.bottom)) {
+        scene.remove(bordPieces.bottom);
+    }
+    if (scene.children.includes(bordPieces.left)) {
+        scene.remove(bordPieces.left);
+    }
+    if (scene.children.includes(bordPieces.right)) {
+        scene.remove(bordPieces.right);
+    }
+
+}
+
+
 function resizeCanvas(render, camera) {
     if (!render || !camera) { return; }
     render.setSize(window.innerWidth, window.innerHeight);
@@ -654,12 +710,12 @@ function animate(isTournament) {
     if (!controlsInstance) {
         controlsInstance = buildControls(rendererInstance, cameraInstance);
     }
-    console.log(leftPaddle.position, rightPaddle.position)
     resizeCanvas(rendererInstance, cameraInstance);
     cameraInstance.lookAt(arena.position)
     controlsInstance.update();
     rendererInstance.render(scene, cameraInstance);
 }
+
 let gameWinner;
 // Public API (functions called by your SPA)
 export function startGame(isTournament) {
