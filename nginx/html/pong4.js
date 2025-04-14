@@ -382,7 +382,7 @@ function simplifiedAngle(angle) {
  * Checks collision between the ball and a paddle.
  * Returns true if a collision is detected and adjusts the ball's angle.
  */
-function checkCollisionBallRaquette(cx, cz, rx, rz, mode, whichpad) {
+function checkCollisionBallRaquette(cx, cz, rx, rz, whichpad) {
     const leftBound = rx - 0.25 - 0.35;
     const rightBound = rx + 0.25 + 0.35;
     const backBound = rz - 0.6 - 0.35;
@@ -394,7 +394,6 @@ function checkCollisionBallRaquette(cx, cz, rx, rz, mode, whichpad) {
         hitFront = false;
 
     if (cx >= leftBound && cx <= rightBound && cz >= backBound && cz <= frontBound) {
-        if (mode === true) return true;
 
         if (cx >= leftBound && cx <= rx - 0.35 && cz >= backBound && cz <= frontBound) hitLeft = true;
         if (cx <= rightBound && cx >= rx + 0.35 && cz >= backBound && cz <= frontBound) hitRight = true;
@@ -488,25 +487,25 @@ function moveTheBall(isTournament) {
     const futureZ = ball.mesh.position.z + ball.speed * Math.cos(ball.angle);
 
     // Check collisions with left paddle
-    if (checkCollisionBallRaquette(futureX, futureZ, leftPaddle.position.x, leftPaddle.position.z, false, "left")) {
+    if (checkCollisionBallRaquette(futureX, futureZ, leftPaddle.position.x, leftPaddle.position.z, "left")) {
         ball.mesh.position.x = futureX;
         ball.mesh.position.z = futureZ;
         return;
     }
     // Check collisions with right paddle
-    else if (checkCollisionBallRaquette(futureX, futureZ, rightPaddle.position.x, rightPaddle.position.z, false, "right")) {
+    else if (checkCollisionBallRaquette(futureX, futureZ, rightPaddle.position.x, rightPaddle.position.z, "right")) {
         ball.mesh.position.x = futureX;
         ball.mesh.position.z = futureZ;
         return;
     }
     //check collisions with top paddle
-    else if (checkCollisionBallRaquette(futureX, futureZ, topPaddle.position.x, topPaddle.position.z, false, "top")) {
+    else if (checkCollisionBallRaquette(futureX, futureZ, topPaddle.position.x, topPaddle.position.z, "top")) {
         ball.mesh.position.x = futureX;
         ball.mesh.position.z = futureZ;
         return;
     }
     //check collisions with top paddle
-    else if (checkCollisionBallRaquette(futureX, futureZ, bottomPaddle.position.x, bottomPaddle.position.z, false, "bottom")) {
+    else if (checkCollisionBallRaquette(futureX, futureZ, bottomPaddle.position.x, bottomPaddle.position.z, "bottom")) {
         ball.mesh.position.x = futureX;
         ball.mesh.position.z = futureZ;
         return;
@@ -557,9 +556,7 @@ function moveTheBall(isTournament) {
 }
 
 const padSpeed = 0.08;
-let alreadyChangeAngle = false;
 function moveThePad() {
-    alreadyChangeAngle = false;
     // ----- Left Paddle Movement
     if (leftPadMove.up && leftPaddle.position.z > -2.5 &&
         !checkCollisionBallRaquette(
@@ -567,7 +564,6 @@ function moveThePad() {
             ball.mesh.position.z,
             leftPaddle.position.x,
             leftPaddle.position.z - padSpeed,
-            alreadyChangeAngle,
             false
         )) {
         leftPaddle.position.z = Math.max(leftPaddle.position.z - padSpeed, -2.42);
@@ -578,7 +574,6 @@ function moveThePad() {
             ball.mesh.position.z,
             leftPaddle.position.x,
             leftPaddle.position.z + padSpeed,
-            alreadyChangeAngle,
             false
         )) {
         leftPaddle.position.z = Math.min(leftPaddle.position.z + padSpeed, 4.42);
@@ -590,7 +585,6 @@ function moveThePad() {
             ball.mesh.position.z,
             leftPaddle.position.x,
             leftPaddle.position.z - padSpeed,
-            alreadyChangeAngle,
             false
         )) {
         topPaddle.position.x = Math.max(topPaddle.position.x - padSpeed, -3.42);
@@ -602,7 +596,6 @@ function moveThePad() {
             ball.mesh.position.z,
             leftPaddle.position.x,
             leftPaddle.position.z + padSpeed,
-            alreadyChangeAngle,
             false
         )) {
         topPaddle.position.x = Math.min(topPaddle.position.x + padSpeed, 3.42);
@@ -617,7 +610,6 @@ function moveThePad() {
             ball.mesh.position.z,
             rightPaddle.position.x,
             rightPaddle.position.z + padSpeed,
-            alreadyChangeAngle,
             false
         )) {
         rightPaddle.position.z = Math.min(rightPaddle.position.z + padSpeed, 4.42);
@@ -629,7 +621,6 @@ function moveThePad() {
             ball.mesh.position.z,
             rightPaddle.position.x,
             rightPaddle.position.z - padSpeed,
-            alreadyChangeAngle,
             false
         )) {
         rightPaddle.position.z = Math.max(rightPaddle.position.z - padSpeed, -2.42);
