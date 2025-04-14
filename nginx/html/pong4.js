@@ -382,7 +382,7 @@ function simplifiedAngle(angle) {
  * Checks collision between the ball and a paddle.
  * Returns true if a collision is detected and adjusts the ball's angle.
  */
-function checkCollisionBallRaquette(cx, cz, rx, rz, mode, checkFromBall) {
+function checkCollisionBallRaquette(cx, cz, rx, rz, mode, whichpad) {
     const leftBound = rx - 0.25 - 0.35;
     const rightBound = rx + 0.25 + 0.35;
     const backBound = rz - 0.6 - 0.35;
@@ -483,18 +483,30 @@ function moveTheBall(isTournament) {
     if (ball.angle === -10) {
         ball.angle = getRandomValidAngle();
     }
-
+    return; // a virer
     const futureX = ball.mesh.position.x + ball.speed * Math.sin(ball.angle);
     const futureZ = ball.mesh.position.z + ball.speed * Math.cos(ball.angle);
 
     // Check collisions with left paddle
-    if (checkCollisionBallRaquette(futureX, futureZ, leftPaddle.position.x, leftPaddle.position.z, false, true)) {
+    if (checkCollisionBallRaquette(futureX, futureZ, leftPaddle.position.x, leftPaddle.position.z, false, "left")) {
         ball.mesh.position.x = futureX;
         ball.mesh.position.z = futureZ;
         return;
     }
     // Check collisions with right paddle
-    else if (checkCollisionBallRaquette(futureX, futureZ, rightPaddle.position.x, rightPaddle.position.z, false, true)) {
+    else if (checkCollisionBallRaquette(futureX, futureZ, rightPaddle.position.x, rightPaddle.position.z, false, "right")) {
+        ball.mesh.position.x = futureX;
+        ball.mesh.position.z = futureZ;
+        return;
+    }
+    //check collisions with top paddle
+    else if (checkCollisionBallRaquette(futureX, futureZ, topPaddle.position.x, topPaddle.position.z, false, "top")) {
+        ball.mesh.position.x = futureX;
+        ball.mesh.position.z = futureZ;
+        return;
+    }
+    //check collisions with top paddle
+    else if (checkCollisionBallRaquette(futureX, futureZ, bottomPaddle.position.x, bottomPaddle.position.z, false, "bottom")) {
         ball.mesh.position.x = futureX;
         ball.mesh.position.z = futureZ;
         return;
@@ -527,8 +539,6 @@ function moveTheBall(isTournament) {
         ball.speed = 0.1;
         return;
     }
-
-
     // Additional collision checks with borders; adjust angle and speed
     else if (checkCollision(-5, -4, -6, -3, futureX - 0.35, futureZ - 0.35) ||
         checkCollision(5, 4, 6, 3, futureX + 0.35, futureZ + 0.35)) {
@@ -548,17 +558,10 @@ function moveTheBall(isTournament) {
 
 const padSpeed = 0.08;
 let alreadyChangeAngle = false;
-
 function moveThePad() {
     alreadyChangeAngle = false;
-
     // ----- Left Paddle Movement
-    if (leftPadMove.up &&
-        !checkCollision(
-            -5, -4, -6, -3,
-            leftPaddle.position.x - 0.25,
-            leftPaddle.position.z - 0.6 - padSpeed
-        ) &&
+    if (leftPadMove.up && leftPaddle.position.z > -2.5 &&
         !checkCollisionBallRaquette(
             ball.mesh.position.x,
             ball.mesh.position.z,
@@ -567,14 +570,9 @@ function moveThePad() {
             alreadyChangeAngle,
             false
         )) {
-        leftPaddle.position.z = Math.max(leftPaddle.position.z - padSpeed, -3.4);
+        leftPaddle.position.z = Math.max(leftPaddle.position.z - padSpeed, -2.42);
     }
-    if (leftPadMove.down &&
-        !checkCollision(
-            -6, 3, -5, 4,
-            leftPaddle.position.x - 0.25,
-            leftPaddle.position.z + 0.6 + padSpeed
-        ) &&
+    if (leftPadMove.down && leftPaddle.position.z < 4.5 &&
         !checkCollisionBallRaquette(
             ball.mesh.position.x,
             ball.mesh.position.z,
@@ -583,17 +581,37 @@ function moveThePad() {
             alreadyChangeAngle,
             false
         )) {
-        leftPaddle.position.z = Math.min(leftPaddle.position.z + padSpeed, 3.4);
+        leftPaddle.position.z = Math.min(leftPaddle.position.z + padSpeed, 4.42);
+    }
+    // ----- Top Paddle Movement
+    if (topPadMove.left && topPaddle.position.x > -3.5 &&
+        !checkCollisionBallRaquette(
+            ball.mesh.position.x,
+            ball.mesh.position.z,
+            leftPaddle.position.x,
+            leftPaddle.position.z - padSpeed,
+            alreadyChangeAngle,
+            false
+        )) {
+        topPaddle.position.x = Math.max(topPaddle.position.x - padSpeed, -3.42);
+    }
+    if (topPadMove.right &&
+        topPaddle.position.x < 3.5 &&
+        !checkCollisionBallRaquette(
+            ball.mesh.position.x,
+            ball.mesh.position.z,
+            leftPaddle.position.x,
+            leftPaddle.position.z + padSpeed,
+            alreadyChangeAngle,
+            false
+        )) {
+        topPaddle.position.x = Math.min(topPaddle.position.x + padSpeed, 3.42);
     }
 
     // ----- Right Paddle Movement
 
     if (rightPadMove.down &&
-        !checkCollision(
-            5, 4, 6, 3,
-            rightPaddle.position.x + 0.25,
-            rightPaddle.position.z + 0.6 + padSpeed
-        ) &&
+        rightPaddle.position.z < 4.5 &&
         !checkCollisionBallRaquette(
             ball.mesh.position.x,
             ball.mesh.position.z,
@@ -602,15 +620,10 @@ function moveThePad() {
             alreadyChangeAngle,
             false
         )) {
-        rightPaddle.position.z = Math.min(rightPaddle.position.z + padSpeed, 3.4);
+        rightPaddle.position.z = Math.min(rightPaddle.position.z + padSpeed, 4.42);
     }
     if (rightPadMove.up &&
-        !checkCollision(
-
-            6, -3, 5, -4,
-            rightPaddle.position.x + 0.25,
-            rightPaddle.position.z - 0.6 - padSpeed
-        ) &&
+        rightPaddle.position.z > -2.5 &&
         !checkCollisionBallRaquette(
             ball.mesh.position.x,
             ball.mesh.position.z,
@@ -619,7 +632,7 @@ function moveThePad() {
             alreadyChangeAngle,
             false
         )) {
-        rightPaddle.position.z = Math.max(rightPaddle.position.z - padSpeed, -3.4);
+        rightPaddle.position.z = Math.max(rightPaddle.position.z - padSpeed, -2.42);
     }
 }
 
@@ -636,7 +649,7 @@ let lives = {
 
 removeLife("top");
 
-showBorders("left");
+// showBorders("left");
 // removeBorders();
 
 function hasLife(which) {
@@ -687,7 +700,7 @@ function resizeCanvas(render, camera) {
 }
 let countDownStarted = false;
 let countDownDone = false;
-let countDownCount = 5
+let countDownCount = 1
 
 function animate(isTournament) {
     if (!isGameRunning) return;
@@ -700,6 +713,7 @@ function animate(isTournament) {
     if (countDownDone) {
         moveTheBall(isTournament);
         moveThePad();
+        console.log(topPaddle.position.x)
     }
     if (!rendererInstance) {
         rendererInstance = buildRenderer();
