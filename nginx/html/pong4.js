@@ -382,37 +382,63 @@ function simplifiedAngle(angle) {
  * Checks collision between the ball and a paddle.
  * Returns true if a collision is detected and adjusts the ball's angle.
  */
-function checkCollisionBallRaquette(cx, cz, rx, rz, whichpad) {
-    const leftBound = rx - 0.25 - 0.35;
-    const rightBound = rx + 0.25 + 0.35;
-    const backBound = rz - 0.6 - 0.35;
-    const frontBound = rz + 0.6 + 0.35;
+function checkCollisionBallRaquette(futureX, futureZ) {
 
-    let hitLeft = false,
-        hitRight = false,
-        hitBack = false,
-        hitFront = false;
+    const circleRay = 0.35;
+    const xmax = 5 - circleRay;
+    const xmin = -5 + circleRay;
+    const zmax = 6 - circleRay;
+    const zmin = -4 + circleRay;
 
-    if (cx >= leftBound && cx <= rightBound && cz >= backBound && cz <= frontBound) {
-
-        if (cx >= leftBound && cx <= rx - 0.35 && cz >= backBound && cz <= frontBound) hitLeft = true;
-        if (cx <= rightBound && cx >= rx + 0.35 && cz >= backBound && cz <= frontBound) hitRight = true;
-        if (cx >= leftBound && cx <= rightBound && cz >= rz + 0.35 && cz <= frontBound) hitFront = true;
-        if (cx >= leftBound && cx <= rightBound && cz >= backBound && cz <= rz - 0.35) hitBack = true;
-
-
-        if ((hitLeft && simplifiedAngle(ball.angle) <= Math.PI) ||
-            (hitRight && simplifiedAngle(ball.angle) >= Math.PI)) {
-            ball.angle += (Math.PI * 2 - ball.angle) * 2;
-        } else if (hitFront) {
-            ball.angle = simplifiedAngle(ball.angle) <= Math.PI ? Math.PI * 0.25 : Math.PI * 1.75;
-        } else if (hitBack) {
-            ball.angle = simplifiedAngle(ball.angle) <= Math.PI ? Math.PI * 0.75 : Math.PI * 1.25;
+    if (checkCollision(-6, 3, -5, 4, futureX - 0.35, futureZ + 0.35) ||
+        checkCollision(6, -3, 5, -4, futureX + 0.35, futureZ - 0.35)) { return 3; }
+    else if (checkCollision(-6, 3, -5, 4, futureX - 0.35, futureZ + 0.35) ||
+        checkCollision(6, -3, 5, -4, futureX + 0.35, futureZ - 0.35)) { return 4; }
+    else if (futureX < xmin) {
+        if (!hasLife("left") || (hasLife("left") && leftPaddle.position.z + 0.6 >= futureZ - 0.35 && leftPaddle.position.z - 0.6 <= futureZ + 0.35)) { return 5; }
+        else {
+            StopBall = true
+            console.log("left =>", leftPaddle.position)
+            removeLife("left");
+            return 1;
         }
-        return true;
     }
-    return false;
+    else if (futureX > xmax) {
+        if (!hasLife("right") || (hasLife("right") && rightPaddle.position.z + 0.6 >= futureZ - 0.35 && rightPaddle.position.z - 0.6 <= futureZ + 0.35)) { return 5; }
+        else {
+            StopBall = true
+            console.log("right => ", rightPaddle.position)
+            removeLife("right");
+            return 1;
+        }
+    }
+    else if (futureZ > zmax) {
+        if (!hasLife("bottom") || (hasLife("bottom") && bottomPaddle.position.x + 0.6 >= futureX - 0.35 && bottomPaddle.position.x - 0.6 <= futureX + 0.35)) { return 2; }
+        else {
+            StopBall = true
+            console.log("bottom =>", bottomPaddle.position)
+            removeLife("bottom");
+            return 1;
+        }
+    }
+    else if (futureZ < zmin) {
+        if (!hasLife("top") || (hasLife("top") && topPaddle.position.x + 0.6 >= futureX - 0.35 && topPaddle.position.x - 0.6 <= futureX + 0.35)) { return 2; }
+        else {
+            StopBall = true
+            console.log("top =>", topPaddle.position)
+            removeLife("top");
+            return 1;
+        }
+    }
+    else { return 0; }
+
 }
+
+// let xmin = -5
+// let xmax = 5
+// let zmax = 6
+// let zmin = -4
+
 
 // Maximum score to end the game
 const maxScore = 10;
@@ -476,106 +502,68 @@ function repositionPaddles() {
     bottomPaddle.position.set(0, 0.1, 6.25);
     topPaddle.position.set(0, 0.1, -4.25);
 }
+
 let StopBall = false;
-let xmin = -5
-let xmax = 5
-let zmax = 6
-let zmin = -4
 function moveTheBall(isTournament) {
     // Launch ball if uninitialized
     if (ball.angle === -10) {
         ball.angle = getRandomValidAngle();
     }
+    // if (StopBall) { return; }
     const futureX = ball.mesh.position.x + ball.speed * Math.sin(ball.angle);
     const futureZ = ball.mesh.position.z + ball.speed * Math.cos(ball.angle);
-    if (!StopBall) {
-        ball.mesh.position.x = futureX;
-        ball.mesh.position.z = futureZ;
-    }
-    if (ball.mesh.position.z >= 6 || ball.mesh.position.z <= -4) {
-        StopBall = true
-        console.log(ball.mesh.position)
-    }
-    return; // a virer
 
-    // Check collisions with left paddle
-    if (checkCollisionBallRaquette(futureX, futureZ, leftPaddle.position.x, leftPaddle.position.z, "left")) {
-        ball.mesh.position.x = futureX;
-        ball.mesh.position.z = futureZ;
-        return;
-    }
-    // Check collisions with right paddle
-    else if (checkCollisionBallRaquette(futureX, futureZ, rightPaddle.position.x, rightPaddle.position.z, "right")) {
-        ball.mesh.position.x = futureX;
-        ball.mesh.position.z = futureZ;
-        return;
-    }
-    //check collisions with top paddle
-    else if (checkCollisionBallRaquette(futureX, futureZ, topPaddle.position.x, topPaddle.position.z, "top")) {
-        ball.mesh.position.x = futureX;
-        ball.mesh.position.z = futureZ;
-        return;
-    }
-    //check collisions with top paddle
-    else if (checkCollisionBallRaquette(futureX, futureZ, bottomPaddle.position.x, bottomPaddle.position.z, "bottom")) {
-        ball.mesh.position.x = futureX;
-        ball.mesh.position.z = futureZ;
-        return;
-    }
-    // Check collision with top and bottom boundaries
-    if (checkCollision(5, -4, -5, -4, futureX, futureZ - 0.35) ||
-        checkCollision(-5, 4, 5, 4, futureX, futureZ + 0.35)) {
-        ball.angle += (Math.PI * 1.5 - ball.angle) * 2;
-    }
-    // Check goal conditions (ball passed left/right boundaries)
-    else if (checkCollision(6, 3, 6, -3, futureX + 0.35, futureZ) ||
-        checkCollision(-6, -3, -6, 3, futureX - 0.35, futureZ)) {
-        // Update score based on boundary
-        if (checkCollision(6, 3, 6, -3, futureX + 0.35, futureZ)) {
-            scoreData.left++;
-        }
-        if (checkCollision(-6, -3, -6, 3, futureX - 0.35, futureZ)) {
-            scoreData.right++;
-        }
-        if (scoreData.left >= maxScore || scoreData.right >= maxScore) {
-            onGameOver(isTournament);
-        }
-        updateScoreDisplay();
-        repositionPaddles();
-        countDownStarted = false;
-        countDownDone = false;
-        // Reset the ball
-        ball.angle = -10;
-        ball.mesh.position.set(0, 0.05, 0);
-        ball.speed = 0.1;
-        return;
-    }
-    // Additional collision checks with borders; adjust angle and speed
-    else if (checkCollision(-5, -4, -6, -3, futureX - 0.35, futureZ - 0.35) ||
-        checkCollision(5, 4, 6, 3, futureX + 0.35, futureZ + 0.35)) {
-        ball.angle += (Math.PI * 1.75 - ball.angle) * 2;
-        ball.speed += 0.025;
-    }
-    else if (checkCollision(-6, 3, -5, 4, futureX - 0.35, futureZ + 0.35) ||
-        checkCollision(6, -3, 5, -4, futureX + 0.35, futureZ - 0.35)) {
-        ball.angle += (Math.PI * 1.25 - ball.angle) * 2;
-        ball.speed += 0.025;
-    }
-    else {
-        ball.mesh.position.x = futureX;
-        ball.mesh.position.z = futureZ;
+    const collision = checkCollisionBallRaquette(futureX, futureZ);
+    switch (collision) {
+        case 0:
+            ball.mesh.position.x = futureX;
+            ball.mesh.position.z = futureZ;
+            // console.log('no hit x=', ball.mesh.position.x, ' z=', ball.mesh.position.z)
+            break; //no hit
+        case 1:
+            console.log("one life lost x=", ball.mesh.position.x, ' z=', ball.mesh.position.z)
+            if (checkLives()) {
+                onGameOver(isTournament);
+            }
+            updateScoreDisplay();
+            repositionPaddles();
+            countDownStarted = false;
+            countDownDone = false;
+            // Reset the ball
+            // ball.angle = -10;
+            // ball.mesh.position.set(0, 0.05, 0);
+            // ball.speed = 0.1;
+            break; //ball went through
+        case 2:
+            ball.angle += (Math.PI * 1.5 - ball.angle) * 2;
+            console.log("hit top/bottom wall or paddle  x=", ball.mesh.position.x, ' z=', ball.mesh.position.z)
+            break; //hit top/bottom wall or paddle
+        case 5:
+            console.log("gnnn")
+        case 4:
+            ball.angle += (Math.PI * 1.75 - ball.angle) * 2;
+            ball.speed += 0.025;
+            console.log("hit top left/down right  x=", ball.mesh.position.x, ' z=', ball.mesh.position.z)
+            break; //hit coin haut gauche || bas droite
+        case 3:
+            ball.angle += (Math.PI * 1.25 - ball.angle) * 2;
+            ball.speed += 0.025;
+            console.log("hit bottom left/top right x=", ball.mesh.position.x, ' z=', ball.mesh.position.z)
+            break; //hit other coin bas gauche || haut droite
     }
 }
 
 const padSpeed = 0.08;
 function moveThePad() {
     // ----- Left Paddle Movement
+    console.log('left =>', leftPaddle.position, 'top =>', topPaddle.position, 'bottom =>', bottomPaddle.position, 'right =>', rightPaddle.position)
     if (leftPadMove.up && leftPaddle.position.z > -2.5) {
         leftPaddle.position.z = Math.max(leftPaddle.position.z - padSpeed, -2.42);
     }
     if (leftPadMove.down && leftPaddle.position.z < 4.5) {
         leftPaddle.position.z = Math.min(leftPaddle.position.z + padSpeed, 4.42);
     }
+
     // ----- Top Paddle Movement
     if (topPadMove.left && topPaddle.position.x > -3.5) {
         topPaddle.position.x = Math.max(topPaddle.position.x - padSpeed, -3.42);
@@ -592,7 +580,6 @@ function moveThePad() {
     }
 
     // ----- Right Paddle Movement
-
     if (rightPadMove.down &&
         rightPaddle.position.z < 4.5) {
         rightPaddle.position.z = Math.min(rightPaddle.position.z + padSpeed, 4.42);
@@ -629,6 +616,27 @@ function resetLives() {
     lives.bottom = maxLife;
     lives.left = maxLife;
     lives.right = maxLife;
+}
+
+function checkLives() {
+    let alive = 4;
+    if (lives.bottom <= 0) {
+        alive--;
+        showBorders("bottom");
+    }
+    if (lives.top <= 0) {
+        alive--;
+        showBorders("top");
+    }
+    if (lives.left <= 0) {
+        alive--;
+        showBorders("left");
+    }
+    if (lives.right <= 0) {
+        alive--;
+        showBorders("right");
+    }
+    return alive <= 1;
 }
 
 function showBorders(which) {
