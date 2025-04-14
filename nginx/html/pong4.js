@@ -297,34 +297,40 @@ initScoreDisplay();
 // ==============================
 const leftPadMove = { up: false, left: false, down: false, right: false };
 const rightPadMove = { up: false, left: false, down: false, right: false };
+const topPadMove = { up: false, left: false, down: false, right: false };
+const bottomPadMove = { up: false, left: false, down: false, right: false };
 
 function handleKeyDown(event) {
     switch (event.key) {
         // Left paddle controls
-        case 'd': leftPadMove.up = true; break;
-        case 'w': leftPadMove.left = true; break;
-        case 'a': leftPadMove.down = true; break;
-        case 's': leftPadMove.right = true; break;
+        case 'w': leftPadMove.up = true; break;
+        case 's': leftPadMove.down = true; break;
+        // Top paddle controls (arrow keys)
+        case 'g': topPadMove.left = true; break;
+        case 'h': topPadMove.right = true; break;
+        // Bottom paddle controls (arrow keys)
+        case 'k': bottomPadMove.left = true; break;
+        case 'l': bottomPadMove.right = true; break;
         // Right paddle controls (arrow keys)
-        case 'ArrowLeft': rightPadMove.up = true; break;
-        case 'ArrowDown': rightPadMove.left = true; break;
-        case 'ArrowRight': rightPadMove.down = true; break;
-        case 'ArrowUp': rightPadMove.right = true; break;
+        case 'ArrowDown': rightPadMove.down = true; break;
+        case 'ArrowUp': rightPadMove.up = true; break;
     }
 }
 
 function handleKeyUp(event) {
     switch (event.key) {
         // Left paddle controls
-        case 'd': leftPadMove.up = false; break;
-        case 'w': leftPadMove.left = false; break;
-        case 'a': leftPadMove.down = false; break;
-        case 's': leftPadMove.right = false; break;
+        case 'w': leftPadMove.up = false; break;
+        case 's': leftPadMove.down = false; break;
+        // Top paddle controls (arrow keys)
+        case 'g': topPadMove.left = false; break;
+        case 'h': topPadMove.right = false; break;
+        // Bottom paddle controls (arrow keys)
+        case 'k': bottomPadMove.left = false; break;
+        case 'l': bottomPadMove.right = false; break;
         // Right paddle controls (arrow keys)
-        case 'ArrowLeft': rightPadMove.up = false; break;
-        case 'ArrowDown': rightPadMove.left = false; break;
-        case 'ArrowRight': rightPadMove.down = false; break;
-        case 'ArrowUp': rightPadMove.right = false; break;
+        case 'ArrowDown': rightPadMove.down = false; break;
+        case 'ArrowUp': rightPadMove.up = false; break;
     }
 }
 
@@ -545,17 +551,6 @@ function moveThePad() {
 
     // ----- Left Paddle Movement
     if (leftPadMove.up &&
-        !checkCollisionBallRaquette(
-            ball.mesh.position.x,
-            ball.mesh.position.z,
-            leftPaddle.position.x + padSpeed,
-            leftPaddle.position.z,
-            alreadyChangeAngle,
-            false
-        )) {
-        leftPaddle.position.x = Math.min(leftPaddle.position.x + padSpeed, -1.75);
-    }
-    if (leftPadMove.left &&
         !checkCollision(
             -5, -4, -6, -3,
             leftPaddle.position.x - 0.25,
@@ -573,27 +568,6 @@ function moveThePad() {
     }
     if (leftPadMove.down &&
         !checkCollision(
-            -5, -4, -6, -3,
-            leftPaddle.position.x - 0.25 - padSpeed,
-            leftPaddle.position.z - 0.6
-        ) &&
-        !checkCollision(
-            -6, 3, -5, 4,
-            leftPaddle.position.x - 0.25 - padSpeed,
-            leftPaddle.position.z + 0.6
-        ) &&
-        !checkCollisionBallRaquette(
-            ball.mesh.position.x,
-            ball.mesh.position.z,
-            leftPaddle.position.x - padSpeed,
-            leftPaddle.position.z,
-            alreadyChangeAngle,
-            false
-        )) {
-        leftPaddle.position.x = Math.max(leftPaddle.position.x - padSpeed, -5.75);
-    }
-    if (leftPadMove.right &&
-        !checkCollision(
             -6, 3, -5, 4,
             leftPaddle.position.x - 0.25,
             leftPaddle.position.z + 0.6 + padSpeed
@@ -610,18 +584,8 @@ function moveThePad() {
     }
 
     // ----- Right Paddle Movement
-    if (rightPadMove.up &&
-        !checkCollisionBallRaquette(
-            ball.mesh.position.x,
-            ball.mesh.position.z,
-            rightPaddle.position.x - padSpeed,
-            rightPaddle.position.z,
-            alreadyChangeAngle,
-            false
-        )) {
-        rightPaddle.position.x = Math.max(rightPaddle.position.x - padSpeed, 1.75);
-    }
-    if (rightPadMove.left &&
+
+    if (rightPadMove.down &&
         !checkCollision(
             5, 4, 6, 3,
             rightPaddle.position.x + 0.25,
@@ -637,28 +601,7 @@ function moveThePad() {
         )) {
         rightPaddle.position.z = Math.min(rightPaddle.position.z + padSpeed, 3.4);
     }
-    if (rightPadMove.down &&
-        !checkCollision(
-            6, -3, 5, -4,
-            rightPaddle.position.x + 0.25 + padSpeed,
-            rightPaddle.position.z - 0.6
-        ) &&
-        !checkCollision(
-            5, 4, 6, 3,
-            rightPaddle.position.x + 0.25 + padSpeed,
-            rightPaddle.position.z + 0.6
-        ) &&
-        !checkCollisionBallRaquette(
-            ball.mesh.position.x,
-            ball.mesh.position.z,
-            rightPaddle.position.x + padSpeed,
-            rightPaddle.position.z,
-            alreadyChangeAngle,
-            false
-        )) {
-        rightPaddle.position.x = Math.min(rightPaddle.position.x + padSpeed, 5.75);
-    }
-    if (rightPadMove.right &&
+    if (rightPadMove.up &&
         !checkCollision(
 
             6, -3, 5, -4,
