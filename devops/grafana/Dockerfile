@@ -2,7 +2,7 @@ FROM grafana/grafana:latest
 
 USER root
 
-RUN apk update && apk add jq logrotate openssl
+RUN apk add jq logrotate openssl
 
 COPY entrypoint.sh /entrypoint.sh
 

@@ -2,8 +2,6 @@ FROM hashicorp/vault:1.18
 
 USER root
 
-# RUN apk update
-
 RUN apk add openssl logrotate --no-cache
 
 RUN mkdir -p /syslog /vault/tls /vault/data /vault/config
