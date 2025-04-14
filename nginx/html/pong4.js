@@ -100,6 +100,8 @@ function buildControls(renderer, camera) {
 // Arena Construction
 // ==============================
 let arena;
+let bordPieces;
+
 function buildArena() {
     arena = new THREE.Group();
     const neonMaterial = new THREE.MeshNormalMaterial();
@@ -112,23 +114,23 @@ function buildArena() {
     rightFloorShape.moveTo(0, 0);
     rightFloorShape.lineTo(3.5, 0);
     rightFloorShape.lineTo(4.5, 1);
-    rightFloorShape.lineTo(4.5, 7);
-    rightFloorShape.lineTo(3.5, 8);
-    rightFloorShape.lineTo(0, 8);
+    rightFloorShape.lineTo(4.5, 9);
+    rightFloorShape.lineTo(3.5, 10);
+    rightFloorShape.lineTo(0, 10);
     rightFloorShape.lineTo(0, 0);
     const rightFloor = new THREE.Mesh(
         new THREE.ExtrudeGeometry(rightFloorShape, floorExtrudeSettings),
         new THREE.MeshNormalMaterial()
     );
     rightFloor.rotation.x = Math.PI / 2;
-    rightFloor.position.set(1.5, -1, -4);
+    rightFloor.position.set(0.5, -1, -4);
 
     // Center Floor Shape
     const centerFloorShape = new THREE.Shape();
     centerFloorShape.moveTo(0, 0);
     centerFloorShape.lineTo(3, 0);
-    centerFloorShape.lineTo(3, 8);
-    centerFloorShape.lineTo(0, 8);
+    centerFloorShape.lineTo(3, 10);
+    centerFloorShape.lineTo(0, 10);
     centerFloorShape.lineTo(0, 0);
     const centerFloor = new THREE.Mesh(
         new THREE.ExtrudeGeometry(centerFloorShape, floorExtrudeSettings),
@@ -142,16 +144,16 @@ function buildArena() {
     leftFloorShape.moveTo(0, 0);
     leftFloorShape.lineTo(-3.5, 0);
     leftFloorShape.lineTo(-4.5, 1);
-    leftFloorShape.lineTo(-4.5, 7);
-    leftFloorShape.lineTo(-3.5, 8);
-    leftFloorShape.lineTo(0, 8);
+    leftFloorShape.lineTo(-4.5, 9);
+    leftFloorShape.lineTo(-3.5, 10);
+    leftFloorShape.lineTo(0, 10);
     leftFloorShape.lineTo(0, 0);
     const leftFloor = new THREE.Mesh(
         new THREE.ExtrudeGeometry(leftFloorShape, floorExtrudeSettings),
         new THREE.MeshNormalMaterial()
     );
     leftFloor.rotation.x = Math.PI / 2;
-    leftFloor.position.set(-1.5, -1, -4);
+    leftFloor.position.set(-0.5, -1, -4);
 
     arena.add(rightFloor, centerFloor, leftFloor);
 
@@ -177,31 +179,31 @@ function buildArena() {
     corners[1].rotation.z = Math.PI * 0.5;
     corners[2].rotation.z = Math.PI;
     corners[3].rotation.z = Math.PI * 1.5;
-    corners[0].position.set(-7, 0, 3);
-    corners[1].position.set(-5, 0, -5);
-    corners[2].position.set(7, 0, -3);
-    corners[3].position.set(5, 0, 5);
+    corners[0].position.set(-6, 0, 5);
+    corners[1].position.set(-4, 0, -5);
+    corners[2].position.set(6, 0, -3);
+    corners[3].position.set(4, 0, 7);
     corners.forEach(c => arena.add(c));
 
     // ----- Border Pieces (Bord)
-    const bordPieces =
+    bordPieces =
     {
-        up: new THREE.Mesh(new THREE.BoxGeometry(10, 1, 1), neonMaterial),
-        down: new THREE.Mesh(new THREE.BoxGeometry(10, 1, 1), neonMaterial),
-        left: new THREE.Mesh(new THREE.BoxGeometry(1, 1, 10), neonMaterial),
-        right: new THREE.Mesh(new THREE.BoxGeometry(1, 1, 10), neonMaterial)
+        up: new THREE.Mesh(new THREE.BoxGeometry(8, 1, 1), neonMaterial),
+        down: new THREE.Mesh(new THREE.BoxGeometry(8, 1, 1), neonMaterial),
+        right: new THREE.Mesh(new THREE.BoxGeometry(1, 1, 8), neonMaterial),
+        left: new THREE.Mesh(new THREE.BoxGeometry(1, 1, 8), neonMaterial)
         // You can add more borders if needed...
     };
     bordPieces.up.position.set(0, -0.5, -4.5);
-    bordPieces.down.position.set(0, -0.5, 4.5);
-    bordPieces.left.position.set(5.5, -0.5, 0);
-    bordPieces.right.position.set(-5.5, -0.5, 0);
-    arena.add(bordPieces.up, bordPieces.down, bordPieces.left, bordPieces.right);
+    bordPieces.down.position.set(0, -0.5, 6.5);
+    bordPieces.left.position.set(5.5, -0.5, 1);
+    bordPieces.right.position.set(-5.5, -0.5, 1);
+    // arena.add(bordPieces.up, bordPieces.down, bordPieces.left, bordPieces.right);
     arena.position.y += 1;
     scene.add(arena);
 }
 buildArena();
-
+// arena.add(bordPieces.up)
 // ==============================
 // Game Elements: Paddles and Ball
 // ==============================
@@ -214,12 +216,22 @@ function createGameElements() {
     });
 
     const leftPaddle = new THREE.Mesh(paddleGeometry, paddleMaterial);
-    leftPaddle.position.set(-4, 0.1, 0);
+    leftPaddle.position.set(-5.25, 0.1, 1);
     scene.add(leftPaddle);
 
     const rightPaddle = new THREE.Mesh(paddleGeometry, paddleMaterial);
-    rightPaddle.position.set(4, 0.1, 0);
+    rightPaddle.position.set(5.25, 0.1, 1);
     scene.add(rightPaddle);
+
+    const topPaddle = new THREE.Mesh(paddleGeometry, paddleMaterial);
+    topPaddle.position.set(0, 0.1, 6.25);
+    topPaddle.rotation.y = Math.PI / 2;
+    scene.add(topPaddle);
+
+    const bottomPaddle = new THREE.Mesh(paddleGeometry, paddleMaterial);
+    bottomPaddle.position.set(0, 0.1, -4.25);
+    bottomPaddle.rotation.y = Math.PI / 2;
+    scene.add(bottomPaddle);
 
     // Ball (Puck)
     const puckGeometry = new THREE.CylinderGeometry(0.35, 0.35, 0.1, 32);
@@ -238,9 +250,9 @@ function createGameElements() {
         angle: -10
     };
 
-    return { leftPaddle, rightPaddle, ball };
+    return { leftPaddle, rightPaddle, topPaddle, bottomPaddle, ball };
 }
-const { leftPaddle, rightPaddle, ball } = createGameElements();
+const { leftPaddle, rightPaddle, topPaddle, bottomPaddle, ball } = createGameElements();
 
 // ==============================
 // 3D Score Display Setup
@@ -395,7 +407,7 @@ function checkCollisionBallRaquette(cx, cz, rx, rz, mode, checkFromBall) {
 }
 
 // Maximum score to end the game
-const maxScore = 1;
+const maxScore = 10;
 
 // ==============================
 // Ball and Paddle Movement Functions
@@ -449,6 +461,14 @@ function showCountDown(time) {
     }
 }
 
+function repositionPaddles() {
+
+    leftPaddle.position.set(-5.25, 0.1, 1);
+    rightPaddle.position.set(5.25, 0.1, 1);
+    topPaddle.position.set(0, 0.1, 6.25);
+    bottomPaddle.position.set(0, 0.1, -4.25);
+}
+
 function moveTheBall(isTournament) {
     // Launch ball if uninitialized
     if (ball.angle === -10) {
@@ -489,8 +509,7 @@ function moveTheBall(isTournament) {
             onGameOver(isTournament);
         }
         updateScoreDisplay();
-        leftPaddle.position.set(-4, 0.1, 0);
-        rightPaddle.position.set(4, 0.1, 0);
+        repositionPaddles();
         countDownStarted = false;
         countDownDone = false;
         // Reset the ball
@@ -499,6 +518,8 @@ function moveTheBall(isTournament) {
         ball.speed = 0.1;
         return;
     }
+
+
     // Additional collision checks with borders; adjust angle and speed
     else if (checkCollision(-5, -4, -6, -3, futureX - 0.35, futureZ - 0.35) ||
         checkCollision(5, 4, 6, 3, futureX + 0.35, futureZ + 0.35)) {
@@ -690,6 +711,7 @@ function animate(isTournament) {
     if (!controlsInstance) {
         controlsInstance = buildControls(rendererInstance, cameraInstance);
     }
+    console.log(leftPaddle.position, rightPaddle.position)
     resizeCanvas(rendererInstance, cameraInstance);
     cameraInstance.lookAt(arena.position)
     controlsInstance.update();
@@ -738,8 +760,8 @@ export function resetGameState() {
     ball.angle = -10;
     ball.mesh.position.set(0, ball.mesh.position.y, 0);
     // Reset paddle positions
-    leftPaddle.position.set(-4, leftPaddle.position.y, 0);
-    rightPaddle.position.set(4, rightPaddle.position.y, 0);
+    // leftPaddle.position.set(-4, leftPaddle.position.y, 0);
+    // rightPaddle.position.set(4, rightPaddle.position.y, 0);
     if (cameraInstance) {
         resetCamera(cameraInstance);
     }
@@ -761,7 +783,7 @@ export function onGameOver(isTournament) {
         winnerMessage.style.marginTop = "20px";
         document.getElementById('content').appendChild(winnerMessage);
 
-        // Optionally add a "New Game" button:
+        // Optionally add a "Newpad Game" button:
         const newGameBtn = document.createElement('button');
         newGameBtn.textContent = 'Start New Game';
         newGameBtn.className = 'btn btn-primary';
