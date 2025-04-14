@@ -476,15 +476,27 @@ function repositionPaddles() {
     bottomPaddle.position.set(0, 0.1, 6.25);
     topPaddle.position.set(0, 0.1, -4.25);
 }
-
+let StopBall = false;
+let xmin = -5
+let xmax = 5
+let zmax = 6
+let zmin = -4
 function moveTheBall(isTournament) {
     // Launch ball if uninitialized
     if (ball.angle === -10) {
         ball.angle = getRandomValidAngle();
     }
-    return; // a virer
     const futureX = ball.mesh.position.x + ball.speed * Math.sin(ball.angle);
     const futureZ = ball.mesh.position.z + ball.speed * Math.cos(ball.angle);
+    if (!StopBall) {
+        ball.mesh.position.x = futureX;
+        ball.mesh.position.z = futureZ;
+    }
+    if (ball.mesh.position.z >= 6 || ball.mesh.position.z <= -4) {
+        StopBall = true
+        console.log(ball.mesh.position)
+    }
+    return; // a virer
 
     // Check collisions with left paddle
     if (checkCollisionBallRaquette(futureX, futureZ, leftPaddle.position.x, leftPaddle.position.z, "left")) {
@@ -558,71 +570,35 @@ function moveTheBall(isTournament) {
 const padSpeed = 0.08;
 function moveThePad() {
     // ----- Left Paddle Movement
-    if (leftPadMove.up && leftPaddle.position.z > -2.5 &&
-        !checkCollisionBallRaquette(
-            ball.mesh.position.x,
-            ball.mesh.position.z,
-            leftPaddle.position.x,
-            leftPaddle.position.z - padSpeed,
-            false
-        )) {
+    if (leftPadMove.up && leftPaddle.position.z > -2.5) {
         leftPaddle.position.z = Math.max(leftPaddle.position.z - padSpeed, -2.42);
     }
-    if (leftPadMove.down && leftPaddle.position.z < 4.5 &&
-        !checkCollisionBallRaquette(
-            ball.mesh.position.x,
-            ball.mesh.position.z,
-            leftPaddle.position.x,
-            leftPaddle.position.z + padSpeed,
-            false
-        )) {
+    if (leftPadMove.down && leftPaddle.position.z < 4.5) {
         leftPaddle.position.z = Math.min(leftPaddle.position.z + padSpeed, 4.42);
     }
     // ----- Top Paddle Movement
-    if (topPadMove.left && topPaddle.position.x > -3.5 &&
-        !checkCollisionBallRaquette(
-            ball.mesh.position.x,
-            ball.mesh.position.z,
-            leftPaddle.position.x,
-            leftPaddle.position.z - padSpeed,
-            false
-        )) {
+    if (topPadMove.left && topPaddle.position.x > -3.5) {
         topPaddle.position.x = Math.max(topPaddle.position.x - padSpeed, -3.42);
     }
-    if (topPadMove.right &&
-        topPaddle.position.x < 3.5 &&
-        !checkCollisionBallRaquette(
-            ball.mesh.position.x,
-            ball.mesh.position.z,
-            leftPaddle.position.x,
-            leftPaddle.position.z + padSpeed,
-            false
-        )) {
+    if (topPadMove.right && topPaddle.position.x < 3.5) {
         topPaddle.position.x = Math.min(topPaddle.position.x + padSpeed, 3.42);
+    }
+    // ----- Bottom Paddle Movement
+    if (bottomPadMove.left && bottomPaddle.position.x > -3.5) {
+        bottomPaddle.position.x = Math.max(bottomPaddle.position.x - padSpeed, -3.42);
+    }
+    if (bottomPadMove.right && bottomPaddle.position.x < 3.5) {
+        bottomPaddle.position.x = Math.min(bottomPaddle.position.x + padSpeed, 3.42);
     }
 
     // ----- Right Paddle Movement
 
     if (rightPadMove.down &&
-        rightPaddle.position.z < 4.5 &&
-        !checkCollisionBallRaquette(
-            ball.mesh.position.x,
-            ball.mesh.position.z,
-            rightPaddle.position.x,
-            rightPaddle.position.z + padSpeed,
-            false
-        )) {
+        rightPaddle.position.z < 4.5) {
         rightPaddle.position.z = Math.min(rightPaddle.position.z + padSpeed, 4.42);
     }
     if (rightPadMove.up &&
-        rightPaddle.position.z > -2.5 &&
-        !checkCollisionBallRaquette(
-            ball.mesh.position.x,
-            ball.mesh.position.z,
-            rightPaddle.position.x,
-            rightPaddle.position.z - padSpeed,
-            false
-        )) {
+        rightPaddle.position.z > -2.5) {
         rightPaddle.position.z = Math.max(rightPaddle.position.z - padSpeed, -2.42);
     }
 }
@@ -637,11 +613,6 @@ let lives = {
     left: maxLife,
     right: maxLife
 }
-
-removeLife("top");
-
-// showBorders("left");
-// removeBorders();
 
 function hasLife(which) {
     return lives[which] > 0;
@@ -662,7 +633,17 @@ function resetLives() {
 
 function showBorders(which) {
     if (!scene.children.includes(bordPieces[which])) {
-        scene.add(bordPieces[which])
+        scene.add(bordPieces[which]);
+        hidePaddle(which);
+    }
+}
+
+function hidePaddle(which) {
+    switch (which) {
+        case "left": scene.remove(leftPaddle); break;
+        case "right": scene.remove(rightPaddle); break;
+        case "top": scene.remove(topPaddle); break;
+        case "bottom": scene.remove(bottomPaddle); break;
     }
 }
 
@@ -679,8 +660,8 @@ function removeBorders() {
     if (scene.children.includes(bordPieces.right)) {
         scene.remove(bordPieces.right);
     }
-
 }
+
 
 
 function resizeCanvas(render, camera) {
@@ -704,7 +685,6 @@ function animate(isTournament) {
     if (countDownDone) {
         moveTheBall(isTournament);
         moveThePad();
-        console.log(topPaddle.position.x)
     }
     if (!rendererInstance) {
         rendererInstance = buildRenderer();
@@ -764,6 +744,8 @@ export function resetGameState() {
     ball.angle = -10;
     ball.mesh.position.set(0, ball.mesh.position.y, 0);
     repositionPaddles();
+    removeBorders();
+    resetLives();
     if (cameraInstance) {
         resetCamera(cameraInstance);
     }
