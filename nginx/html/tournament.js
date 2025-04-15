@@ -87,7 +87,13 @@ export class PongTournament {
         this.finalists = [];
         this.currentMatchIndex = 0;
         this.showRoundPlayers();
-        this.nextMatch();
+        if (this.currentRound.length == 2) {
+            this.finalists = [...this.currentRound];
+            this.resolveFinal();
+        }
+        else {
+            this.nextMatch();
+        }
     }
 
     nextMatch() {
@@ -113,7 +119,6 @@ export class PongTournament {
     }
 
     showMatch(player1, player2) {
-        console.log(this.lastWinnerDetails);
 
         this.matchInfo.style.display = 'block';
 
