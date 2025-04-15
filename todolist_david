@@ -2,10 +2,4 @@ manque les logs de django, a voir une fois que garfi aura fini
 
 alerts dans prometheus
 
-0/ fonctions pour les lifes
 1/ fonctions pour la balle
-2/ fonctions pour les pads
-
-
-
-refaire les fonctions du pong avec un setup du canvas en option, on mettra en fullscreen parce que nique sa daronne
