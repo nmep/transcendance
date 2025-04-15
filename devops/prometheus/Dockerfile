@@ -25,12 +25,11 @@ RUN touch /tmp/log/prometheus.log
 RUN chown 1000:1000 /tmp/log/prometheus.log /etc/prometheus/cert/prometheus
 RUN chown 1000:1000 /tmp/log/
 
-
 COPY ./web-config.yml /etc/prometheus/web-config.yml
 COPY ./openssl.cnf /etc/prometheus/openssl.cnf
 COPY --from=base /bin/prometheus /bin/prometheus
 RUN mkdir -p /prometheus && chmod 755 /prometheus
-
+RUN chown -R 1000:1000 /prometheus
 USER 1000
 
 ENTRYPOINT [ "/entrypoint.sh" ]
