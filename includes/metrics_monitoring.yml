@@ -7,7 +7,7 @@ services:
       context: ../devops/prometheus
       dockerfile: Dockerfile
     volumes:
-      - prometheusdata:/data
+      - prometheusdata:/prometheus
       - init_vault:/secret/
       - vaultcert:/etc/prometheus/cert/vault
       - log_prometheus:/tmp/log
