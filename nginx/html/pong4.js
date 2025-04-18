@@ -460,15 +460,13 @@ function checkCollisionBallRaquette(futureX, futureZ) {
     const zmax = 6 - circleRay;
     const zmin = -4 + circleRay;
 
-    if (checkCollision(-6, 3, -5, 4, futureX - 0.35, futureZ + 0.35) ||
-        checkCollision(6, -3, 5, -4, futureX + 0.35, futureZ - 0.35)) { return 3; }
-    else if (checkCollision(-6, 3, -5, 4, futureX - 0.35, futureZ + 0.35) ||
-        checkCollision(6, -3, 5, -4, futureX + 0.35, futureZ - 0.35)) { return 4; }
+    if (checkCollision(-5, 5, -4, 6, futureX - 0.35, futureZ + 0.35) ||
+        checkCollision(5, -3, 4, -4, futureX + 0.35, futureZ - 0.35)) { return 3; }
+    else if (checkCollision(-4, -4, -5, -3, futureX - 0.35, futureZ - 0.35) ||
+        checkCollision(4, 6, 5, 5, futureX + 0.35, futureZ + 0.35)) { return 4; }
     else if (futureX < xmin) {
         if (!hasLife("left") || (hasLife("left") && leftPaddle.position.z + 0.6 >= futureZ - 0.35 && leftPaddle.position.z - 0.6 <= futureZ + 0.35)) { return 5; }
         else {
-            // StopBall = true
-            console.log("left =>", leftPaddle.position)
             removeLife("left");
             return 1;
         }
@@ -477,7 +475,6 @@ function checkCollisionBallRaquette(futureX, futureZ) {
         if (!hasLife("right") || (hasLife("right") && rightPaddle.position.z + 0.6 >= futureZ - 0.35 && rightPaddle.position.z - 0.6 <= futureZ + 0.35)) { return 5; }
         else {
             // StopBall = true
-            console.log("right => ", rightPaddle.position)
             removeLife("right");
             return 1;
         }
@@ -485,8 +482,6 @@ function checkCollisionBallRaquette(futureX, futureZ) {
     else if (futureZ > zmax) {
         if (!hasLife("bottom") || (hasLife("bottom") && bottomPaddle.position.x + 0.6 >= futureX - 0.35 && bottomPaddle.position.x - 0.6 <= futureX + 0.35)) { return 2; }
         else {
-            // StopBall = true
-            console.log("bottom =>", bottomPaddle.position)
             removeLife("bottom");
             return 1;
         }
@@ -494,8 +489,6 @@ function checkCollisionBallRaquette(futureX, futureZ) {
     else if (futureZ < zmin) {
         if (!hasLife("top") || (hasLife("top") && topPaddle.position.x + 0.6 >= futureX - 0.35 && topPaddle.position.x - 0.6 <= futureX + 0.35)) { return 2; }
         else {
-            // StopBall = true
-            console.log("top =>", topPaddle.position)
             removeLife("top");
             return 1;
         }
@@ -519,10 +512,8 @@ function moveTheBall(isTournament) {
         case 0:
             ball.mesh.position.x = futureX;
             ball.mesh.position.z = futureZ;
-            // console.log('no hit x=', ball.mesh.position.x, ' z=', ball.mesh.position.z)
             break; //no hit
         case 1:
-            console.log("one life lost x=", ball.mesh.position.x, ' z=', ball.mesh.position.z)
             if (checkLives()) {
                 onGameOver(isTournament);
             }
@@ -536,22 +527,18 @@ function moveTheBall(isTournament) {
             ball.speed = 0.1;
             break; //ball went through
         case 2:
-            ball.angle = (Math.PI * 1.5 - ball.angle);
-            console.log("hit top/bottom wall or paddle  x=", ball.mesh.position.x, ' z=', ball.mesh.position.z)
+            ball.angle += (Math.PI * 1.5 - ball.angle) * 2;
             break; //hit top/bottom wall or paddle
         case 5:
-            console.log("gnnn") // hit left or right wall
-            ball.angle = Math.PI - ball.angle;
+            ball.angle += (Math.PI * 2 - ball.angle) * 2;
             break;
         case 4:
             ball.angle += (Math.PI * 1.75 - ball.angle) * 2;
             ball.speed += 0.025;
-            console.log("hit top left/down right  x=", ball.mesh.position.x, ' z=', ball.mesh.position.z)
             break; //hit coin haut gauche || bas droite
         case 3:
             ball.angle += (Math.PI * 1.25 - ball.angle) * 2;
             ball.speed += 0.025;
-            console.log("hit bottom left/top right x=", ball.mesh.position.x, ' z=', ball.mesh.position.z)
             break; //hit other coin bas gauche || haut droite
     }
 }
@@ -559,7 +546,6 @@ function moveTheBall(isTournament) {
 const padSpeed = 0.08;
 function moveThePad() {
     // ----- Left Paddle Movement
-    console.log('left =>', leftPaddle.position, 'top =>', topPaddle.position, 'bottom =>', bottomPaddle.position, 'right =>', rightPaddle.position)
     if (leftPadMove.up && leftPaddle.position.z > -2.5) {
         leftPaddle.position.z = Math.max(leftPaddle.position.z - padSpeed, -2.42);
     }
