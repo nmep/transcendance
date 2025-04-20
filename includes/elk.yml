@@ -124,6 +124,7 @@ services:
       - log_vault:/tmp/log/vault/
       - log_nginx:/tmp/log/nginx/
       - log_auth:/tmp/log/auth/
+      - log_db_api:/tmp/log/db_api/
     environment:
       - XPACK_MONITORING_ENABLED=false
       - xpack.monitoring.enabled=false

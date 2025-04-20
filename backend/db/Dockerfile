@@ -2,7 +2,7 @@ FROM python:3.10
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
-		postgresql-client && apt-get install -y jq rsyslog \
+		postgresql-client && apt-get install -y jq \
 	&& rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
@@ -17,5 +17,7 @@ COPY connection_to_db.sh /usr/local/bin/
 EXPOSE 8001
 
 ENTRYPOINT ["connection_to_db.sh"]
+
+USER 1000
 
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8001"]

@@ -113,6 +113,12 @@ volumes:
       device: ../volumes/logs/auth
       type: "none"
       o: bind
+  log_db_api:
+    driver: local
+    driver_opts:
+      device: ../volumes/logs/db
+      type: "none"
+      o: bind
   log_postgres_exporter:
     driver: local
     driver_opts:

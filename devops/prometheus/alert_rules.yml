@@ -2,9 +2,10 @@ groups:
   - name: latency-alerts
     rules:
       - alert: HighRequestLatency
-        expr: (rate(django_http_requests_latency_including_middlewares_seconds_sum[5m])
-              /
-              rate(django_http_requests_latency_including_middlewares_seconds_count[5m])) > 1
+        expr:
+          (rate(django_http_requests_latency_including_middlewares_seconds_sum[5m])
+          /
+          rate(django_http_requests_latency_including_middlewares_seconds_count[5m])) > 1
         for: 2m
         labels:
           severity: warning
@@ -17,7 +18,7 @@ groups:
       - alert: CompositeProjectHealthAlert
         expr: |
           (
-            up{job="django"} == 0
+            up{job="auth"} == 0
           )
           or
           (
@@ -29,7 +30,7 @@ groups:
           (
             elasticsearch_cluster_health_status != 1
           )
-          
+
         for: 2m
         labels:
           severity: critical
@@ -39,7 +40,7 @@ groups:
             At least one critical component is experiencing issues:
             - A Django instance is down.
             - The average HTTP request latency (including middleware) has exceeded 1 second.
-            - The Elasticsearch cluster health is not optimal.        
+            - The Elasticsearch cluster health is not optimal.
   - name: basic-alerts
     rules:
       # Alert when any instance is down.
@@ -51,7 +52,7 @@ groups:
         annotations:
           summary: "Instance {{ $labels.instance }} down"
           description: "Instance {{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minute."
-      
+
       # (Optional) Alert when error rates exceed a threshold.
       - alert: HighErrorRate
         expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.05
