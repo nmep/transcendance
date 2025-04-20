@@ -442,7 +442,7 @@ function showCountDown(time) {
 
 function repositionPaddles() {
     leftPaddle.position.set(-5.25, 0.1, 1);
-    if (!scene.children.includes(leftPaddle) && hasLife("left")) { scene.add(leftPaddle); console.log('adding left') }
+    if (!scene.children.includes(leftPaddle) && hasLife("left")) { scene.add(leftPaddle); }
     rightPaddle.position.set(5.25, 0.1, 1);
     if (!scene.children.includes(rightPaddle) && hasLife("right")) { scene.add(rightPaddle); }
     bottomPaddle.position.set(0, 0.1, 6.25);
@@ -706,7 +706,6 @@ let gameWinner;
 export function startGame4(isTournament) {
     gameWinner = null;
     // Reset score and game state if needed
-    console.log("resetting game state")
     resetGameState4();
     // Ensure canvas is visible (if hidden by your SPA)
     document.getElementById('webgl4').style.display = 'block';
