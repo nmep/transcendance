@@ -269,7 +269,7 @@ function initScoreDisplay() {
 }
 
 function updateScoreDisplay() {
-    const scoreText = `${scoreData.left}   -   ${scoreData.right}`;
+    const scoreText = `L${lives.left} R${lives.right} T${lives.top} B${lives.bottom}`;
     const textGeometry = new TextGeometry(scoreText, {
         font: font,
         size: 1,
@@ -288,7 +288,7 @@ function updateScoreDisplay() {
     } else {
         const textMaterial = new THREE.MeshNormalMaterial();
         scoreMesh = new THREE.Mesh(textGeometry, textMaterial);
-        scoreMesh.position.set(-2, 5, 0);
+        scoreMesh.position.set(-3.5, 5, 0);
         scoreMesh.name = 'scoreDisplay';
         scene.add(scoreMesh);
     }
