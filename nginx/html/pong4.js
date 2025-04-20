@@ -752,9 +752,16 @@ export function resetGameState() {
     }
 }
 
+function getWinner() {
+    if (hasLife("left")) { return ("Left") }
+    if (hasLife("right")) { return ("Right") }
+    if (hasLife("top")) { return ("Top") }
+    if (hasLife("bottom")) { return ("Bottom") }
+}
+
 export function onGameOver(isTournament) {
     // Called when maxScore is reached.
-    winner = scoreData.left >= scoreData.right ? "Left" : "Right";
+    winner = getWinner();
     if (isTournament) {
         gameWinner = winner === 'Left' ? "left" : "right";
     }
