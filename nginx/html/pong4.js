@@ -269,7 +269,7 @@ function initScoreDisplay() {
 }
 
 function updateScoreDisplay() {
-    const scoreText = `L${lives.left} R${lives.right} T${lives.top} B${lives.bottom}`;
+    const scoreText = `Lives:\nL${lives.left} R${lives.right} T${lives.top} B${lives.bottom}`;
     const textGeometry = new TextGeometry(scoreText, {
         font: font,
         size: 1,
