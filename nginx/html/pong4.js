@@ -441,11 +441,14 @@ function showCountDown(time) {
 }
 
 function repositionPaddles() {
-
     leftPaddle.position.set(-5.25, 0.1, 1);
+    if (!scene.children.includes(leftPaddle) && hasLife("left")) { scene.add(leftPaddle); console.log('adding left') }
     rightPaddle.position.set(5.25, 0.1, 1);
+    if (!scene.children.includes(rightPaddle) && hasLife("right")) { scene.add(rightPaddle); }
     bottomPaddle.position.set(0, 0.1, 6.25);
+    if (!scene.children.includes(bottomPaddle) && hasLife("bottom")) { scene.add(bottomPaddle); }
     topPaddle.position.set(0, 0.1, -4.25);
+    if (!scene.children.includes(topPaddle) && hasLife("top")) { scene.add(topPaddle); }
 }
 
 /**
@@ -703,6 +706,7 @@ let gameWinner;
 export function startGame(isTournament) {
     gameWinner = null;
     // Reset score and game state if needed
+    console.log("resetting game state")
     resetGameState();
     // Ensure canvas is visible (if hidden by your SPA)
     document.getElementById('webgl').style.display = 'block';
@@ -740,9 +744,9 @@ export function resetGameState() {
     updateScoreDisplay();
     ball.angle = -10;
     ball.mesh.position.set(0, ball.mesh.position.y, 0);
+    resetLives();
     repositionPaddles();
     removeBorders();
-    resetLives();
     if (cameraInstance) {
         resetCamera(cameraInstance);
     }
