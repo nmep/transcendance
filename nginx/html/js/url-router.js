@@ -1,4 +1,5 @@
-import { startGame, stopGame, resetGameState } from '/pong4.js';
+import { startGame, stopGame, resetGameState } from '/pong.js';
+import { startGame4, stopGame4, resetGameState4 } from '/pong4.js';
 import { PongTournament } from '/tournament.js'; // Adjust path as needed
 /*******************************
  * URL Routes Mapping
@@ -49,10 +50,10 @@ const urlRoutes = {
         title: "pong",
         description: "Petite partie de pong en toute détente."
     },
-    "/puissance4": {
-        template: "/templates/puissance4.html",
-        title: "puissance4",
-        description: "Petite partie de puissance4 oklm."
+    "/pong4": {
+        template: "/templates/pong4.html",
+        title: "pong4",
+        description: "Petite partie de pong à 4 oklm."
     },
     "/tournament": {
         template: "/templates/tournament.html",
@@ -123,6 +124,7 @@ function displayUserInfo(user) {
 async function urlLocationHandler() {
     // Remove game
     document.getElementById('webgl').style.display = 'none';
+    document.getElementById('webgl4').style.display = 'none';
     // Determine current location, defaulting "/" to "/home"
     let location = window.location.pathname;
     if (location === "/") {
@@ -134,22 +136,11 @@ async function urlLocationHandler() {
     const html = await response.text();
     document.getElementById("content").innerHTML = html;
 
-    if (location === "/pong") {
-        // Add a "Launch Game" button if not already present
-        const launchBtn = document.getElementById('launchGameBtn') || createLaunchButton();
-        // Optionally bind the button event
-        launchBtn.addEventListener('click', () => {
-            startGame();
-            launchBtn.style.display = 'none'; // Hide once game is running
-        });
-    } else {
-        // When leaving the pong page, ensure the game is stopped, canvas hidden, and state reset
-        stopGame();
-        resetGameState();
-    }
-
+    stopGame();
+    resetGameState();
+    stopGame4();
+    resetGameState4();
     // Additional behavior based on route
-    console.log(location);
     switch (location) {
         case "/profile":
             handleProfileAuthentication();
@@ -160,11 +151,34 @@ async function urlLocationHandler() {
         case "/tournament":
             setupTournamentPage();
             break;
+        case "/pong4":
+            initializePongButton4();
+            break;
     }
 }
 
+
+function initializePongButton() {
+    // Add a "Launch Game" button if not already present
+    const launchBtn = document.getElementById('launchGameBtn') || createLaunchButton();
+    // Optionally bind the button event
+    launchBtn.addEventListener('click', () => {
+        startGame();
+        launchBtn.style.display = 'none'; // Hide once game is running
+    });
+}
+
+function initializePongButton4() {
+    // Add a "Launch Game" button if not already present
+    const launchBtn = document.getElementById('launchGameBtn4') || createLaunchButton4();
+    // Optionally bind the button event
+    launchBtn.addEventListener('click', () => {
+        startGame4();
+        launchBtn.style.display = 'none'; // Hide once game is running
+    });
+}
+
 function setupTournamentPage() {
-    console.log(document.querySelector('#launchTournament').classList)
     const tournament = new PongTournament(
         '#playerForm',
         '#launchTournament',
@@ -182,47 +196,17 @@ function createLaunchButton() {
     btn.id = 'launchGameBtn';
     btn.textContent = 'Launch Game';
     btn.className = 'btn btn-primary'
-    // Append to a known container (for example, in your pong.html there can be a placeholder div)
     document.getElementById('content').appendChild(btn);
     return btn;
 }
 
-/**
- * Loads an external script into the #content container.
- * @param {string} scriptUrl - The URL of the script to load.
- */
-function loadScript(scriptUrl) {
-    const script = document.createElement("script");
-    script.type = "module"; // for ES modules
-    script.src = scriptUrl;
-    document.getElementById("content").appendChild(script);
-    console.log(document.getElementById("content"));
-}
-
-/**
- * Initialize the toggle event for the pong canvas.
- */
-function initializePongButton() {
-    const toggleBtn = document.getElementById("toggleCanvasBtn");
-    if (!toggleBtn) return;
-
-    console.log("Ajout de l'event listener sur le bouton de toggle du canvas.");
-
-    toggleBtn.addEventListener("click", () => {
-        const container = document.getElementById("webgl");
-        if (!container) return;
-        const isVisible = container.style.display !== "none";
-
-        if (isVisible) {
-            container.style.display = "none";
-            // Uncomment if defined: endGame();
-            toggleBtn.innerText = "Show Canvas";
-        } else {
-            container.style.display = "block";
-            // Uncomment if defined: startAnimation();
-            toggleBtn.innerText = "Hide Canvas";
-        }
-    });
+function createLaunchButton4() {
+    const btn = document.createElement('a');
+    btn.id = 'launchGameBtn4';
+    btn.textContent = 'Launch Game';
+    btn.className = 'btn btn-primary'
+    document.getElementById('content').appendChild(btn);
+    return btn;
 }
 
 /**

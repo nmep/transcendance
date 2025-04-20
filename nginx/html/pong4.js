@@ -10,7 +10,7 @@ import { TextGeometry } from '/threejs/textgeometry.js';
 window.addEventListener("keydown", function (e) {
     const keysToPrevent = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "]; // space is optional
 
-    if (keysToPrevent.includes(e.key) && document.getElementById('webgl') && document.getElementById('webgl').style.display !== 'none') {
+    if (keysToPrevent.includes(e.key) && document.getElementById('webgl4') && document.getElementById('webgl4').style.display !== 'none') {
         e.preventDefault();
     }
 }, false);
@@ -68,7 +68,7 @@ function resetCamera(camera) {
 function buildRenderer() {
     const renderer = new THREE.WebGLRenderer({
         antialias: true,
-        canvas: document.getElementById('webgl')
+        canvas: document.getElementById('webgl4')
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
     return renderer;
@@ -518,7 +518,7 @@ function moveTheBall(isTournament) {
             break; //no hit
         case 1:
             if (checkLives()) {
-                onGameOver(isTournament);
+                onGameOver4(isTournament);
             }
             updateScoreDisplay();
             repositionPaddles();
@@ -703,13 +703,13 @@ function animate(isTournament) {
 
 let gameWinner;
 // Public API (functions called by your SPA)
-export function startGame(isTournament) {
+export function startGame4(isTournament) {
     gameWinner = null;
     // Reset score and game state if needed
     console.log("resetting game state")
-    resetGameState();
+    resetGameState4();
     // Ensure canvas is visible (if hidden by your SPA)
-    document.getElementById('webgl').style.display = 'block';
+    document.getElementById('webgl4').style.display = 'block';
 
     if (!isGameRunning) {
         isGameRunning = true;
@@ -725,7 +725,7 @@ export function startGame(isTournament) {
     }, 500);
 }
 
-export function stopGame() {
+export function stopGame4() {
     if (!isGameRunning) return;
     isGameRunning = false;
     cancelAnimationFrame(animationId);
@@ -736,9 +736,9 @@ export function stopGame() {
     if (controlsInstance) { controlsInstance.dispose(); }
     controlsInstance = null;
     // Optionally reset game to initial state
-    resetGameState();
+    resetGameState4();
 }
-export function resetGameState() {
+export function resetGameState4() {
     // Reset score and positions to initial values
     scoreData = { left: 0, right: 0 };
     updateScoreDisplay();
@@ -759,14 +759,14 @@ function getWinner() {
     if (hasLife("bottom")) { return ("Bottom") }
 }
 
-export function onGameOver(isTournament) {
+function onGameOver4(isTournament) {
     // Called when maxScore is reached.
     winner = getWinner();
     if (isTournament) {
         gameWinner = winner === 'Left' ? "left" : "right";
     }
-    stopGame();
-    document.getElementById('webgl').style.display = 'none';
+    stopGame4();
+    document.getElementById('webgl4').style.display = 'none';
     // Display winner in your UI (create a DOM element or update a modal)
     if (!isTournament) {
         const winnerMessage = document.createElement('h1');
@@ -783,7 +783,7 @@ export function onGameOver(isTournament) {
             // Remove winner announcement and new game button, then reset state and launch game
             winnerMessage.remove();
             newGameBtn.remove();
-            startGame();
+            startGame4();
         });
         document.getElementById('content').appendChild(newGameBtn);
     }
