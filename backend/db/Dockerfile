@@ -7,22 +7,21 @@ RUN apt-get update \
 
 WORKDIR /usr/src/app
 
-COPY ./syslog /syslog
-
-RUN chown -R 1000:1000 /syslog
-
-COPY srcs/requirements.txt ./
-RUN pip install -r requirements.txt
-
 COPY srcs/ .
 
-COPY ./logrotate_script.sh /logrotate_script.sh
-
-RUN chmod 755 /logrotate_script.sh
+RUN pip install -r requirements.txt
 
 COPY connection_to_db.sh /usr/local/bin/
 
 EXPOSE 8001
+
+COPY ./syslog /syslog
+
+RUN chown -R 1000:1000 /syslog
+
+COPY ./logrotate_script.sh /logrotate_script.sh
+
+RUN chmod 755 /logrotate_script.sh
 
 RUN mkdir -p /tmp/log
 RUN chown 1000:1000 /tmp/log

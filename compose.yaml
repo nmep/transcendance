@@ -82,6 +82,9 @@ services:
     ports:
       - "8001:8001"
     networks:
-      - transcendance
+      transcendance:
+        aliases:
+          - dbapi
+
     expose:
       - "9999"
