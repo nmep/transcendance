@@ -10,3 +10,4 @@ secrets.json
 volumes/
 .env
 todo
+check_requirements.log

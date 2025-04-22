@@ -51,6 +51,7 @@ help:
 
 
 up: volumes
+	@bash ./check_requirements.sh
 	docker compose up -d
 
 volumes: ${VOLUMES_NAMES}
