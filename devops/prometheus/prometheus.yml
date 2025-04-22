@@ -27,6 +27,13 @@ scrape_configs:
           - auth:8000
     metrics_path: /prometheus/metrics
 
+  - job_name: db_api
+    scrape_interval: 5s
+    static_configs:
+      - targets:
+          - db_api:8001
+    metrics_path: /prometheus/metrics
+
 
   - job_name: grafana
     scheme: https

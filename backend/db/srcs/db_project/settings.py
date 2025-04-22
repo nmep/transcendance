@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-q-v#jf3eh!wvmj7+=+&b5!!0=dqw9t=3j^qs+p=9p^oi_=05p+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'db_api']
 
 
 # Application definition
@@ -40,13 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'django_prometheus',
     'rest_framework',
     'api',
     'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 SIMPLE_JWT = {
@@ -124,15 +126,8 @@ WSGI_APPLICATION = 'db_project.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
+##ATTENTIONNNNN MODIF NEEDED
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
