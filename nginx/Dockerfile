@@ -2,7 +2,6 @@ FROM owasp/modsecurity:nginx
 
 USER root
 RUN apt-get update
-RUN unset LD_LIBRARY_PATH && apt-get upgrade -y
 RUN apt-get install -y procps logrotate 
 
 COPY ./html /var/www/html
