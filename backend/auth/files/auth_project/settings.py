@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import logging
 from datetime import timedelta
+from pythonjsonlogger import jsonlogger
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,6 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+#GARFI
 # SECRET_KEY = os.getenv('DJANGO_KEY')
 SECRET_KEY = 'django-insecure-qr^cc8b@9r7l7$i7zmf)jx3j)z!sucyymm7^_w(70b7##9s_71'
 
@@ -31,34 +33,36 @@ DEBUG = False
 ALLOWED_HOSTS = ['localhost', 'nginx', 'auth', 'db']
 # ALLOWED_HOSTS = []
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'formatters': {
-#         'syslog': {
-#             'format': '%(asctime)s %(levelname)s %(name)s %(message)s'
-#         },
-#     },
-#     'handlers': {
-#         'syslog': {
-#             'level': 'DEBUG',
-#             'class': 'logging.handlers.SysLogHandler',
-#             'address': '/dev/log',  # Local, sinon ('logstash', 514) pour un serveur distant
-#             'formatter': 'syslog',
-#         },
-#     },
-#     'root': {
-#         'handlers': ['syslog'],
-#         'level': 'DEBUG',
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['syslog'],
-#             'level': 'DEBUG',
-#             'propagate': False,
-#         },
-#     },
-# }
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'json': {
+            '()': 'pythonjsonlogger.jsonlogger.JsonFormatter',
+            'format': '%(asctime)s %(levelname)s %(name)s %(message)s',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/tmp/log/auth.log',
+            'formatter': 'json',
+        },
+    },
+    'root': {
+        'handlers': ['file'],
+        'level': 'DEBUG',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -192,7 +196,7 @@ WSGI_APPLICATION = 'auth_project.wsgi.application'
 #         'PORT': '5432',
 #     }
 # }
-
+#GARFI YA CA AUSSI A CHANGER
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

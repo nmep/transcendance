@@ -4,3 +4,4 @@ psycopg2-binary==2.9.10
 django-prometheus==2.3.1
 djangorestframework_simplejwt==5.4.0
 djangorestframework-simplejwt[crypto]==5.4.0
+python-json-logger

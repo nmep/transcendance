@@ -113,6 +113,8 @@ for container in $containers; do
 done
 echo "🚀 Environment variables were properly set using Vault, launching $service"
 
+/logrotate_script.sh &
+
 python manage.py makemigrations && python manage.py migrate
 
 exec "$@"

@@ -117,6 +117,7 @@ done
 
 echo "🚀 Environment variables were properly set using Vault, launching $service"
 
+/logrotate_script.sh &
 python manage.py migrate
 
 exec "$@"

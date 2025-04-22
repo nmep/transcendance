@@ -63,6 +63,7 @@ services:
       - db:db
     volumes:
       - init_vault:/secret/
+      - log_auth:/tmp/log
     ports:
       - "8000:8000"
     networks:
@@ -79,6 +80,7 @@ services:
       - db:db
     volumes:
       - init_vault:/secret/
+      - log_db_api:/tmp/log
     ports:
       - "8001:8001"
     networks:

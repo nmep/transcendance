@@ -19,6 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 # login
 # import os
+#GARFI
 # client_id = os.getenv('CLIENT_ID')
 # client_secret = os.getenv('CLIENT_SECRET')
 client_id = "u-s4t2ud-4db2df15929bada32b77ef1c2ec8086e2d7ff1de72baf9d32a9edcb00ab5f8a0"
