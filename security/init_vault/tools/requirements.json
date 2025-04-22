@@ -47,12 +47,16 @@
         "auth": [
             "POSTGRES_DB",
             "AUTH_USER",
-            "AUTH_PASSWORD"
+            "AUTH_PASSWORD",
+            "CLIENT_ID",
+            "CLIENT_SECRET",
+            "DJANGO_KEY"
         ],
         "db_api": [
             "POSTGRES_DB",
             "DB_API_USER",
-            "DB_API_PASSWORD"
+            "DB_API_PASSWORD",
+            "DJANGO_KEY"
         ],
         "prometheus": [
             "HONEYPOT"

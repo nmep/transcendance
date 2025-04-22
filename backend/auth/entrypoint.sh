@@ -73,16 +73,17 @@ done <<EOVARS
 POSTGRES_DB
 AUTH_USER
 AUTH_PASSWORD
+CLIENT_ID
+CLIENT_SECRET
+DJANGO_KEY
 EOVARS
 unset VAULT_RTOKEN
 
-
 until pg_isready -d "$POSTGRES_DB" -h db -p 5432 -U "$AUTH_USER"; do
 	echo "Connexion to database didn't succeed, retrying..."
-	pg_isready -d "$POSTGRES_DB" -h db -p 5432 -U "$AUTH_USER"  # Affiche l'erreur exacte
+	pg_isready -d "$POSTGRES_DB" -h db -p 5432 -U "$AUTH_USER" # Affiche l'erreur exacte
 	sleep 2
 done
-
 
 echo "Connexion to database succeed !!"
 
