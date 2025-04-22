@@ -25,20 +25,6 @@ let animationId; // for requestAnimationFrame later
 let cameraInstance = null;
 let rendererInstance = null;
 let controlsInstance = null;
-// ==============================
-// eventListener on resize
-// ==============================
-// window.addEventListener('resize', () => {
-//     // Update camera
-//     if (cameraInstance) {
-//         cameraInstance.aspect = window.innerWidth / window.innerHeight;
-//         cameraInstance.updateProjectionMatrix();
-//     }
-//     // Update renderer
-//     if (rendererInstance) {
-//         rendererInstance.setSize(window.innerWidth, window.innerHeight);
-//     }
-// });
 
 // ==============================
 // Scene, Camera, Renderer, and Controls Setup
@@ -391,7 +377,7 @@ function checkCollisionBallRaquette(cx, cz, rx, rz, mode, checkFromBall) {
 }
 
 // Maximum score to end the game
-const maxScore = 1;
+const maxScore = 3;
 
 // ==============================
 // Ball and Paddle Movement Functions
@@ -697,7 +683,6 @@ export function startGame(isTournament) {
     gameWinner = null;
     // Reset score and game state if needed
     resetGameState();
-    // Ensure canvas is visible (if hidden by your SPA)
     document.getElementById('webgl').style.display = 'block';
 
     if (!isGameRunning) {
@@ -718,13 +703,10 @@ export function stopGame() {
     if (!isGameRunning) return;
     isGameRunning = false;
     cancelAnimationFrame(animationId);
-    // Hide the canvas when leaving pong page
-    // document.getElementById('webgl').style.display = 'none';
     if (rendererInstance) { rendererInstance.dispose(); }
     rendererInstance = null;
     if (controlsInstance) { controlsInstance.dispose(); }
     controlsInstance = null;
-    // Optionally reset game to initial state
     resetGameState();
 }
 export function resetGameState() {
@@ -749,7 +731,6 @@ export function onGameOver(isTournament) {
     }
     stopGame();
     document.getElementById('webgl').style.display = 'none';
-    // Display winner in your UI (create a DOM element or update a modal)
     if (!isTournament) {
         const winnerMessage = document.createElement('h1');
         winnerMessage.textContent = `Winner: ${winner} Player`;
@@ -757,12 +738,10 @@ export function onGameOver(isTournament) {
         winnerMessage.style.marginTop = "20px";
         document.getElementById('content').appendChild(winnerMessage);
 
-        // Optionally add a "New Game" button:
         const newGameBtn = document.createElement('button');
         newGameBtn.textContent = 'Start New Game';
         newGameBtn.className = 'btn btn-primary';
         newGameBtn.addEventListener('click', () => {
-            // Remove winner announcement and new game button, then reset state and launch game
             winnerMessage.remove();
             newGameBtn.remove();
             startGame();

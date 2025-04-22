@@ -25,20 +25,6 @@ let animationId; // for requestAnimationFrame later
 let cameraInstance = null;
 let rendererInstance = null;
 let controlsInstance = null;
-// ==============================
-// eventListener on resize
-// ==============================
-// window.addEventListener('resize', () => {
-//     // Update camera
-//     if (cameraInstance) {
-//         cameraInstance.aspect = window.innerWidth / window.innerHeight;
-//         cameraInstance.updateProjectionMatrix();
-//     }
-//     // Update renderer
-//     if (rendererInstance) {
-//         rendererInstance.setSize(window.innerWidth, window.innerHeight);
-//     }
-// });
 
 // ==============================
 // Scene, Camera, Renderer, and Controls Setup
@@ -207,7 +193,7 @@ function buildArena() {
     scene.add(arena);
 }
 buildArena();
-// arena.add(bordPieces.up)
+
 // ==============================
 // Game Elements: Paddles and Ball
 // ==============================
@@ -368,26 +354,6 @@ function checkCollision(x1, z1, x2, z2, x0, z0) {
     return crossProduct >= 0;
 }
 
-/**
- * Returns an equivalent angle between 0 and 2PI.
- */
-function simplifiedAngle(angle) {
-    let result = angle;
-    while (result >= 2 * Math.PI) result -= 2 * Math.PI;
-    while (result < 0) result += 2 * Math.PI;
-    return result;
-}
-
-
-// let xmin = -5
-// let xmax = 5
-// let zmax = 6
-// let zmin = -4
-
-
-// Maximum score to end the game
-const maxScore = 10;
-
 // ==============================
 // Ball and Paddle Movement Functions
 // ==============================
@@ -477,7 +443,6 @@ function checkCollisionBallRaquette(futureX, futureZ) {
     else if (futureX > xmax) {
         if (!hasLife("right") || (hasLife("right") && rightPaddle.position.z + 0.6 >= futureZ - 0.35 && rightPaddle.position.z - 0.6 <= futureZ + 0.35)) { return 5; }
         else {
-            // StopBall = true
             removeLife("right");
             return 1;
         }
@@ -500,13 +465,11 @@ function checkCollisionBallRaquette(futureX, futureZ) {
 
 }
 
-// let StopBall = false;
 function moveTheBall(isTournament) {
     // Launch ball if uninitialized
     if (ball.angle === -10) {
         ball.angle = getRandomValidAngle();
     }
-    // if (StopBall) { return; }
     const futureX = ball.mesh.position.x + ball.speed * Math.sin(ball.angle);
     const futureZ = ball.mesh.position.z + ball.speed * Math.cos(ball.angle);
 
@@ -672,7 +635,7 @@ function resizeCanvas(render, camera) {
 }
 let countDownStarted = false;
 let countDownDone = false;
-let countDownCount = 1
+let countDownCount = 5
 
 function animate(isTournament) {
     if (!isGameRunning) return;
@@ -759,7 +722,6 @@ function getWinner() {
 }
 
 function onGameOver4(isTournament) {
-    // Called when maxScore is reached.
     winner = getWinner();
     if (isTournament) {
         gameWinner = winner === 'Left' ? "left" : "right";
