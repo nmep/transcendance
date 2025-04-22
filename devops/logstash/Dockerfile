@@ -11,7 +11,7 @@ RUN apt-get update
 
 RUN apt-get install -y jq wget logrotate
 
-RUN wget -O /usr/share/logstash/lib/postgresql-42.7.5.jar https://jdbc.postgresql.org/download/postgresql-42.7.5.jar
+COPY ./postgresql-42.7.5.jar /usr/share/logstash/lib/postgresql-42.7.5.jar
 
 RUN wget -O /usr/share/logstash/lib/logstash-exporter https://github.com/kuskoman/logstash-exporter/releases/download/v1.8.4/logstash-exporter-linux
 
@@ -22,8 +22,6 @@ COPY ./exporter_config.yml /exporter_config.yml
 COPY entrypoint.sh /entrypoint.sh
 
 RUN chmod 755 /entrypoint.sh 
-
-# COPY ./log4j2.properties config/log4j2.properties
 
 COPY ./patterns /usr/share/logstash/patterns
 
