@@ -20,11 +20,6 @@ const urlRoutes = {
         title: "Jeux",
         description: "Découvrez nos jeux."
     },
-    "/azer": {
-        template: "/templates/azer.html",
-        title: "Azer",
-        description: "En savoir plus sur Azer."
-    },
     "/login": {
         template: "/templates/login.html",
         title: "Connexion",

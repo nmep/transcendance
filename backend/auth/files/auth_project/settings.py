@@ -24,8 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #GARFI
-# SECRET_KEY = os.getenv('DJANGO_KEY')
-SECRET_KEY = 'django-insecure-qr^cc8b@9r7l7$i7zmf)jx3j)z!sucyymm7^_w(70b7##9s_71'
+SECRET_KEY = os.getenv('DJANGO_KEY')
+# SECRET_KEY = 'django-insecure-qr^cc8b@9r7l7$i7zmf)jx3j)z!sucyymm7^_w(70b7##9s_71'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -200,9 +200,9 @@ WSGI_APPLICATION = 'auth_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'your_postgres_db',
-        'USER': "your_auth_user",
-        'PASSWORD': "your_auth_password",
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('AUTH_USER'),
+        'PASSWORD': os.getenv('AUTH_PASSWORD'),
         'HOST': 'db',
         'PORT': '5432',
     }
@@ -255,7 +255,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'the.42.transcendance@gmail.com'
-EMAIL_HOST_PASSWORD = 'eruibhbfsyzdlgex'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 LOGIN_URL = "/account/login/"
 LOGIN_REDIRECT_URL = "https://localhost:8443/"

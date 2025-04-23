@@ -1,0 +1,29 @@
+pierre
+    manger du caca
+
+david
+    index dans elk pour auth et db_api
+    un peu de front
+    verifier les cas de restart des app
+    
+    de la part de Garfi:
+        quand je make j'ai:
+            - ❌ Missing variable HONEYPOT for service prometheus
+            - ❌ Missing variable KIBANA_USER for service setup_elk
+            - ❌ Missing variable ELASTIC_USER for service setup_elk
+        j'en rajoute a l'arache mais il faudra mettre les valeurs juste
+    
+
+garfi :
+    #GARFI
+    un peu de front
+    testing
+
+
+auth: 
+    CLIENT_ID
+    CLIENT_SECRET
+    DJANGO_KEY
+
+db api:
+    DJANGO_KEY

@@ -50,7 +50,8 @@
             "AUTH_PASSWORD",
             "CLIENT_ID",
             "CLIENT_SECRET",
-            "DJANGO_KEY"
+            "DJANGO_KEY",
+            "EMAIL_HOST_PASSWORD"
         ],
         "db_api": [
             "POSTGRES_DB",

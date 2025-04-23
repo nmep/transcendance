@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
 from pythonjsonlogger import jsonlogger
 
 
@@ -24,8 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #GARFI
-# SECRET_KET = os.getenv('DJANGO_KEY')
-SECRET_KEY = 'django-insecure-q-v#jf3eh!wvmj7+=+&b5!!0=dqw9t=3j^qs+p=9p^oi_=05p+'
+SECRET_KET = os.getenv('DJANGO_KEY')
+# SECRET_KEY = 'django-insecure-q-v#jf3eh!wvmj7+=+&b5!!0=dqw9t=3j^qs+p=9p^oi_=05p+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -162,13 +163,13 @@ WSGI_APPLICATION = 'db_project.wsgi.application'
 
 # Database
 
-##ATTENTIONNNNN MODIF NEEDED
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'your_postgres_db',
-        'USER': 'your_db_api_user',
-        'PASSWORD': 'your_db_api_password',
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('DB_API_USER'),
+        'PASSWORD': os.getenv('DB_API_PASSWORD'),
         'HOST': 'db',
         # 'HOST': '127.0.0.1', # test local
         'PORT': '5432',

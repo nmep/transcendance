@@ -13,13 +13,13 @@
 	  
 		<form id="register-form" class="mt-3">
 		  <div class="mb-3">
-			<input type="text" class="form-control" id="username" placeholder="Nom d'utilisateur" required>
+			<input type="text" class="form-control" id="username" placeholder="Nom d'utilisateur" maxlength="20" required>
 		  </div>
 		  <div class="mb-3">
-			<input type="email" class="form-control" id="email" placeholder="Adresse e-mail" required>
+			<input type="email" class="form-control" id="email" placeholder="Adresse e-mail" maxlength="50" required>
 		  </div>
 		  <div class="mb-3">
-			<input type="password" class="form-control" id="password" placeholder="Mot de passe" required>
+			<input type="password" class="form-control" id="password" placeholder="Mot de passe" maxlength="100" required>
 		  </div>
 		  <!-- Le bouton type "button" avec onclick -->
 		  <button type="button" class="btn btn-primary w-100" onclick="registerUser()">S'inscrire</button>

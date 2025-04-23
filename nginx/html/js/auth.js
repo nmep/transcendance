@@ -47,10 +47,6 @@ function showAuthenticated(authButtons, user) {
     document.getElementById("logout-btn").addEventListener("click", logout);
 }
 
-function loginWith42() {
-    window.location.href = "http://localhost:8000/api/auth/remote";
-}
-
 function login() {
     fetch("/api/auth/login", {
         method: "POST",
@@ -80,7 +76,6 @@ function register() {
         });
 }
 
-// 🔥 Fonction de logout qui supprime la session côté serveur
 function logout() {
     fetch("/api/auth/logout", {
         method: "POST",
@@ -88,7 +83,6 @@ function logout() {
     })
         .then(response => {
             if (response.ok) {
-
                 // 🔥 Supprimer manuellement les cookies
                 localStorage.removeItem("user_info");
                 document.cookie = "sessionid=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC;";
@@ -102,6 +96,9 @@ function logout() {
         })
         .catch(error => console.error("❌ Erreur de requête :", error));
 }
+
+window.logout = logout;
+
 
 // 1) Fonction pour récupérer un cookie par nom
 function getCookie(name) {
@@ -161,3 +158,5 @@ function registerUser() {
         })
         .catch(error => console.error("Erreur lors de l'inscription :", error));
 }
+
+window.registerUser = registerUser;

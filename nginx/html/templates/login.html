@@ -16,7 +16,7 @@
             <!-- Connexion via 42 API -->
             <div class="col-md-6">
                 <button class="btn btn-dark w-100" 
-                        onclick="loginWith42()">
+                        onclick=window.location.href="http://localhost:8000/api/auth/remote">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/8/8d/42_Logo.svg" alt="42 Logo" width="20">
                     Connexion avec 42
                 </button>
@@ -32,7 +32,6 @@
         </div>
     </div>
 
-    <!-- Placer le script js après les éléments HTML -->
     <script src="/js/auth.js"></script>
 </body>
 </html>
