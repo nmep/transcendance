@@ -57,7 +57,7 @@ function login() {
         .then(data => {
             if (data.token) {
                 localStorage.setItem("user", data.username);
-                location.reload();
+                // location.reload();
             }
         });
 }
@@ -72,6 +72,7 @@ function register() {
         .then(data => {
             if (data.success) {
                 login();
+                window.location.href = "/";
             }
         });
 }
@@ -142,7 +143,7 @@ function registerUser() {
     const password = document.getElementById("password").value;
 
     // Envoyer les données via fetch en POST
-    fetch('http://localhost:8000/api/auth/register', {
+    fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password })
