@@ -2,9 +2,7 @@ pierre
     manger du caca
 
 david
-    index dans elk pour auth et db_api
     un peu de front
-    verifier les cas de restart des app
     
     de la part de Garfi:
         quand je make j'ai:
