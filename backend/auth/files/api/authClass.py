@@ -22,9 +22,6 @@ import os
 #GARFI
 client_id = os.getenv('CLIENT_ID')
 client_secret = os.getenv('CLIENT_SECRET')
-# client_id = "u-s4t2ud-4db2df15929bada32b77ef1c2ec8086e2d7ff1de72baf9d32a9edcb00ab5f8a0"
-# client_secret = "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"
-
 class authManager:
     @staticmethod
     def login_user(request, username, password):
@@ -123,6 +120,7 @@ class authManager:
     @staticmethod
     def callback(request):
         print(f"ICI CLIENT ID = {client_id}")
+        #GARFI
         redirect_uri = "http://localhost:8000/api/auth/callback"
         authorization_base_url = "https://api.intra.42.fr/oauth/authorize"
         token_url = "https://api.intra.42.fr/oauth/token"
@@ -144,6 +142,7 @@ class authManager:
         request.session["user_info"] = user_info
     
         # ⬇️ Redirection vers /profile (adapté à ton domaine + HTTPS si nécessaire)
+        #GARFI
         return redirect("https://localhost:8443/profile")
 
     def get_user(request):
@@ -166,16 +165,6 @@ class authManager:
                             "id": user.id
                         })
         return JsonResponse({"error": "Utilisateur non authentifié"}, status=401)
-    # @staticmethod
-    # def get_user(request):
-    #     if request.user.is_authenticated:
-    #         return JsonResponse({
-    #             "username": request.user.username,
-    #             "email": request.user.email,
-    #             "id": request.user.id
-    #         })
-    #     return JsonResponse({"error": "Utilisateur non authentifié"}, status=401)
-
 
     @staticmethod
     def whoami(request):
@@ -183,6 +172,6 @@ class authManager:
         user_info = request.session.get("user_info")
         if not user_info:
             return JsonResponse({"error": "Not authenticated"}, status=401)
-     
+
         # On renvoie les infos
         return JsonResponse(user_info)

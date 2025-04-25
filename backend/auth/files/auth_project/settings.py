@@ -23,15 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#GARFI
 SECRET_KEY = os.getenv('DJANGO_KEY')
-# SECRET_KEY = 'django-insecure-qr^cc8b@9r7l7$i7zmf)jx3j)z!sucyymm7^_w(70b7##9s_71'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', 'nginx', 'auth', 'db']
-# ALLOWED_HOSTS = []
 
 LOGGING = {
     'version': 1,
@@ -44,7 +40,7 @@ LOGGING = {
     },
     'handlers': {
         'file': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': '/tmp/log/auth.log',
             'formatter': 'json',
@@ -52,12 +48,12 @@ LOGGING = {
     },
     'root': {
         'handlers': ['file'],
-        'level': 'DEBUG',
+        'level': 'INFO',
     },
     'loggers': {
         'django': {
             'handlers': ['file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': False,
         },
     },
@@ -175,28 +171,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'auth_project.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.getenv('POSTGRES_DB', 'default_db'),
-#         'USER': os.getenv('AUTH_USER', 'default_db'),
-#         'PASSWORD': os.getenv('AUTH_PASSWORD', 'default_db'),
-#         'HOST': 'db',
-#         'PORT': '5432',
-#     }
-# }
-#GARFI YA CA AUSSI A CHANGER
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
