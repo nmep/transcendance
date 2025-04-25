@@ -17,9 +17,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 # faire une classe qui a des fonctions pour lauthentification
 
-# login
 import os
-#GARFI
+
 client_id = os.getenv('CLIENT_ID')
 client_secret = os.getenv('CLIENT_SECRET')
 class authManager:
