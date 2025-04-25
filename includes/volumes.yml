@@ -53,6 +53,12 @@ volumes:
       device: ../volumes/prometheus/data
       type: "none"
       o: bind
+  postgresdata:
+    driver: local
+    driver_opts:
+      device: ../volumes/postgres/data
+      type: "none"
+      o: bind
   log_elastic:
     driver: local
     driver_opts:
