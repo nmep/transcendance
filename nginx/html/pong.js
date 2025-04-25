@@ -689,14 +689,16 @@ export function startGame(isTournament) {
         isGameRunning = true;
         animate(isTournament);
     }
-    setInterval(() => {
-        if (gameWinner) {
-            const winner = gameWinner; gameWinner = null;
-            if (isTournament) {
-                return winner;
+    return new Promise((resolve) => {
+        const checkWinner = setInterval(() => {
+            if (gameWinner) {
+                const winner = gameWinner;
+                gameWinner = null;
+                clearInterval(checkWinner);
+                resolve(winner);
             }
-        }
-    }, 500);
+        }, 20);
+    });
 }
 
 export function stopGame() {

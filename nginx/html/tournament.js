@@ -128,7 +128,7 @@ export class PongTournament {
         startLink.addEventListener('click', async (e) => {
             e.preventDefault();
             if (player2) {
-                const winnerSide = startGame(true); // Must return 'left' or 'right'
+                const winnerSide = await startGame(true); // Must return 'left' or 'right'
                 const winner = winnerSide === 'left' ? player1 : player2;
                 this.winners.push(winner);
                 this.matchDetails.innerHTML += `${player1} vs ${player2}`;

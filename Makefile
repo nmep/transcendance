@@ -85,6 +85,7 @@ fclean:
 	@docker rm -f $(shell docker ps -qa) || true
 	@docker volume rm -f $(shell docker volume ls -q) || true
 	@docker run --rm -v ./:/test -w /test alpine rm -rf $(VOLUMES_DIR)
+	@docker network rm transcendance_transcendance
 	@docker image rm -f ${BUILD_IMAGES}
 	
 re: fclean up
