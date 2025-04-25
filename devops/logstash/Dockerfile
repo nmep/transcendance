@@ -1,15 +1,10 @@
 FROM docker.elastic.co/logstash/logstash:8.9.2
 
-EXPOSE 5044
-EXPOSE 7777
-EXPOSE 9600
-EXPOSE 9187
-
 USER root
 
 RUN apt-get update 
 
-RUN apt-get install -y jq wget logrotate
+RUN apt-get install -y jq wget logrotate  postgresql-client
 
 COPY ./postgresql-42.7.5.jar /usr/share/logstash/lib/postgresql-42.7.5.jar
 
