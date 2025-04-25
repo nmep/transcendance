@@ -104,7 +104,7 @@ class authManager:
 
     @staticmethod
     def remote_connection(request):
-        redirect_uri = "http://localhost:8000/api/auth/callback"
+        redirect_uri = "https://localhost:8443/api/auth/callback"
         authorization_base_url = "https://api.intra.42.fr/oauth/authorize"
         token_url = "https://api.intra.42.fr/oauth/token"
         user_info_url = "https://api.intra.42.fr/v2/me"
@@ -120,7 +120,7 @@ class authManager:
     def callback(request):
         print(f"ICI CLIENT ID = {client_id}")
         #GARFI
-        redirect_uri = "http://localhost:8000/api/auth/callback"
+        redirect_uri = "https://localhost:8443/api/auth/callback"
         authorization_base_url = "https://api.intra.42.fr/oauth/authorize"
         token_url = "https://api.intra.42.fr/oauth/token"
         user_info_url = "https://api.intra.42.fr/v2/me"
