@@ -20,6 +20,10 @@ RUN chown 1000:1000 /tmp/log/nginx.log
 RUN chown 1000:1000 /tmp/log/
 RUN chmod 644 /tmp/log/nginx.log
 
+RUN mkdir -p /etc/nginx/ssl
+RUN chmod 700 /etc/nginx/ssl
+RUN chown 1000:1000 /etc/nginx/ssl
+
 COPY ./syslog/logrotate.conf /etc/logrotate.conf
 
 USER 1000

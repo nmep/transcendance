@@ -5,6 +5,7 @@ VOLUMES=grafana/data\
 		elasticsearch/data\
 		kibana/data\
 		prometheus/data\
+		nginx/data\
 		postgres/data\
 		vault/data\
 		vault/cert\

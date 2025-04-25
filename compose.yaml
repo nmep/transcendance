@@ -28,6 +28,7 @@ services:
       # ModSecurity
       - ./security/mod_security/:/etc/modsecurity.d/
       - log_nginx:/tmp/log/
+      - nginxdata:/etc/nginx/ssl
     ports:
       - "8080:80"
       - "8443:443"
