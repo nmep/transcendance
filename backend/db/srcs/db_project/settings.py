@@ -23,10 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KET = os.getenv('DJANGO_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 
 ALLOWED_HOSTS = ['localhost', 'dbapi']
 
@@ -41,7 +39,7 @@ LOGGING = {
     },
     'handlers': {
         'file': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': '/tmp/log/db_api.log',
             'formatter': 'json',
@@ -49,12 +47,12 @@ LOGGING = {
     },
     'root': {
         'handlers': ['file'],
-        'level': 'DEBUG',
+        'level': 'INFO',
     },
     'loggers': {
         'django': {
             'handlers': ['file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': False,
         },        
         'django.db.backends': {
@@ -168,7 +166,6 @@ DATABASES = {
         'USER': os.getenv('DB_API_USER'),
         'PASSWORD': os.getenv('DB_API_PASSWORD'),
         'HOST': 'db',
-        # 'HOST': '127.0.0.1', # test local
         'PORT': '5432',
     }
 }
