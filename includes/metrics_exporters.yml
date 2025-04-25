@@ -6,8 +6,6 @@ services:
     build:
       context: ../devops/postgres_exporter
       dockerfile: Dockerfile
-    ports:
-      - "9187:9187"
     volumes:
       - init_vault:/secret/
       - log_postgres_exporter:/tmp/log/
@@ -23,7 +21,5 @@ services:
       dockerfile: Dockerfile
     volumes:
       - log_nginx_exporter:/tmp/log
-    ports:
-      - "9113:9113"
     networks:
       - transcendance

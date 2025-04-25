@@ -32,8 +32,6 @@ services:
       - init_vault:/secret/
       - log_elastic:/tmp/log/
     user: "1000"
-    ports:
-      - 9200:9200
     environment:
       - node.name=elasticsearch
       - cluster.name=transcendance
@@ -103,10 +101,6 @@ services:
       dockerfile: Dockerfile
     labels:
       co.elastic.logs/module: logstash
-    ports:
-      - 5044:5044
-      - 7777:7777
-      - 9600:9600
     volumes:
       - certs:/usr/share/logstash/certs
       - logstashdata01:/usr/share/logstash/data
