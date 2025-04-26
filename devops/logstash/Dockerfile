@@ -4,7 +4,7 @@ USER root
 
 RUN apt-get update 
 
-RUN apt-get install -y jq wget logrotate  postgresql-client
+RUN apt-get install -y jq wget logrotate 
 
 COPY ./postgresql-42.7.5.jar /usr/share/logstash/lib/postgresql-42.7.5.jar
 
