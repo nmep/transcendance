@@ -189,7 +189,7 @@ export class PongTournament {
         startLink.addEventListener('click', async (e) => {
             e.preventDefault();
             this.matchInfo.style.display = 'none';
-            const winnerSide = startGame(true); // Must return 'left' or 'right' this is the launch game
+            const winnerSide = await startGame(true); // Must return 'left' or 'right' this is the launch game
             this.showPodium(winnerSide === 'left' ? [finalists[0], finalists[1]] : [finalists[1], finalists[0]], []);
             startLink.remove();
             // setTimeout(() => this.nextMatch(), 1500);
