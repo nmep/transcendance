@@ -18,7 +18,7 @@ groups:
       - alert: CompositeProjectHealthAlert
         expr: |
           (
-            up{job="auth"} == 1
+            up{job="auth"} == 0
           )
           or
           (
